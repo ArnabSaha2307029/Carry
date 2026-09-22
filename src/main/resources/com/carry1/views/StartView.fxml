@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.StartController">
+
+    <!-- বাম পাশের অর্ধেক: prefWidth 640 সেট করা হলো -->
+    <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
+      <children>
+         <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../../../Carry.001.png" />
+            </image>
+         </ImageView>
+      </children></VBox>
+
+    <!-- ডান পাশের অর্ধেক: এখানেও prefWidth 640 সেট করা হলো -->
+    <VBox alignment="CENTER" prefWidth="640.0" spacing="20.0" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        </padding>
+
+        <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome to Carry!" />
+        <Label style="-fx-font-size: 14px;" text="Please choose an option:" />
+
+        <Button onAction="#handleSignIn" prefWidth="200" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;" text="Sign In" />
+        <Button onAction="#handleSignUp" prefWidth="200" style="-fx-font-weight: bold; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Sign Up" />
+    </VBox>
+
+</HBox>

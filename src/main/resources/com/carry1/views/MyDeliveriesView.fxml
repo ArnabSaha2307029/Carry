@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.MyDeliveriesController">
+    <!-- Main Layer -->
+    <VBox alignment="CENTER" spacing="15.0">
+        <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+        <Label text="My Deliveries" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <Label fx:id="messageAlertLabel" text="You have unread messages!" visible="false" style="-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-color: #FFEBEE; -fx-padding: 5 10; -fx-background-radius: 5;"/>
+
+        <TableView fx:id="deliveriesTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colOrderId" text="Order ID" prefWidth="100"/>
+                <TableColumn fx:id="colItemName" text="Item Name" prefWidth="130"/>
+                <TableColumn fx:id="colPickup" text="Pickup" prefWidth="120"/>
+                <TableColumn fx:id="colDropoff" text="Dropoff" prefWidth="120"/>
+                <TableColumn fx:id="colReward" text="Reward" prefWidth="80"/>
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+                <TableColumn fx:id="colAction" text="Status Action" prefWidth="120"/>
+                <TableColumn fx:id="colChat" text="Chat" prefWidth="100"/> <!-- চ্যাটের জন্য নতুন কলাম -->
+            </columns>
+        </TableView>
+        <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
+    </VBox>
+
+    <!-- Chat Overlay -->
+    <VBox fx:id="chatOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="350" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+        <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #2196F3; -fx-padding: 10;">
+            <Label fx:id="chatHeaderLabel" text="Chat" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <Button text="Close" onAction="#closeChat" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+        <ListView fx:id="chatListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
+        <HBox spacing="5" style="-fx-padding: 10;">
+            <TextField fx:id="chatInputField" promptText="Type a message..." HBox.hgrow="ALWAYS"/>
+            <Button text="Send" onAction="#sendChatMessage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+</StackPane>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.RoleSelectionController">
+
+    <!-- বাম পাশের অর্ধেক: লাল ব্যাকগ্রাউন্ড এবং লোগো -->
+    <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
+        <children>
+            <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="@../../../Carry.001.png" />
+                </image>
+            </ImageView>
+        </children>
+    </VBox>
+
+    <!-- ডান পাশের অর্ধেক: সাদা ব্যাকগ্রাউন্ড এবং তোমার রোল সিলেকশন মেনু -->
+    <VBox alignment="CENTER" prefWidth="640.0" spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+        </padding>
+
+        <Label fx:id="titleLabel" text="Select your role:" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <Button text="Customer" onAction="#selectCustomer" prefWidth="200"/>
+        <Button text="Traveler" onAction="#selectTraveler" prefWidth="200"/>
+        <Button fx:id="adminButton" text="Admin" onAction="#selectAdmin" prefWidth="200"/>
+
+        <Button text="← Back" onAction="#goBack" prefWidth="100" style="-fx-margin-top: 20px;"/>
+    </VBox>
+
+</HBox>

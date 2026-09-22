@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="15.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.LiveOrderFeedController">
+    <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+
+    <Label text="Live Order Feed" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+    <Label text="Accept orders to start earning" style="-fx-text-fill: #555;"/>
+
+    <TableView fx:id="feedTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colOrderId" text="Order ID" prefWidth="100"/>
+            <TableColumn fx:id="colItemName" text="Item Name" prefWidth="120"/>
+            <TableColumn fx:id="colPickup" text="Pickup Route" prefWidth="130"/>
+            <TableColumn fx:id="colDropoff" text="Dropoff Route" prefWidth="130"/>
+            <!-- NEW COLUMNS -->
+            <TableColumn fx:id="colDeliveryFee" text="Delivery Fee" prefWidth="100"/>
+            <TableColumn fx:id="colCharge" text="Charge" prefWidth="80"/>
+            <TableColumn fx:id="colTotalAmount" text="Total Amount" prefWidth="100"/>
+
+            <TableColumn fx:id="colAction" text="Action" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+    <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="250" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;"/>
+</VBox>
