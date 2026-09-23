@@ -25,14 +25,13 @@
         </children>
     </VBox>
 
-    <!-- ডান পাশের অর্ধেক: এখানে তোমার অরিজিনাল ফর্মের ফিল্ডগুলো থাকবে -->
+    <!-- ডান পাশের অর্ধেক: এখানে তোমার ফর্মের ফিল্ডগুলো থাকবে -->
     <VBox alignment="CENTER" prefWidth="640.0" spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
         </padding>
 
-        <!-- তোমার অরিজিনাল fx:id এবং এলিমেন্টগুলো (অপরিবর্তিত) -->
-        <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+        <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
 
         <TextField fx:id="nameField" promptText="Full Name" maxWidth="250"/>
         <TextField fx:id="phoneField" promptText="Phone Number" maxWidth="250"/>
@@ -41,7 +40,11 @@
         <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
 
         <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
-        <Button text="← Back" onAction="#goBack" prefWidth="100"/>
+
+        <!-- NEW FORGOT PASSWORD BUTTON -->
+        <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword" style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
+
+        <Button text="← Back" onAction="#goBack" prefWidth="100" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
     </VBox>
 
 </HBox>

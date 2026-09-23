@@ -19,6 +19,7 @@ public class AuthFormController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
     @FXML private Button actionButton;
+    @FXML private Button forgotPasswordBtn; // New Button Reference
 
     private LoginViewModel viewModel;
 
@@ -26,22 +27,22 @@ public class AuthFormController {
     public void initialize() {
         viewModel = new LoginViewModel();
 
-        // Data binding
         nameField.textProperty().bindBidirectional(viewModel.nameProperty());
         phoneField.textProperty().bindBidirectional(viewModel.phoneProperty());
         passwordField.textProperty().bindBidirectional(viewModel.passwordProperty());
         errorLabel.textProperty().bind(viewModel.errorMessageProperty());
         actionButton.disableProperty().bind(viewModel.isLoadingProperty());
 
-        // UI Setup based on state
         if (AuthFlowState.isSignUpMode) {
             headerLabel.setText("Sign Up - " + AuthFlowState.selectedRole.name());
             actionButton.setText("Create Account");
+            if(forgotPasswordBtn != null) forgotPasswordBtn.setVisible(false); // সাইন আপে ফরগট পাসওয়ার্ড দেখাবে না
         } else {
             headerLabel.setText("Sign In - " + AuthFlowState.selectedRole.name());
             actionButton.setText("Login");
             nameField.setVisible(false);
             nameField.setManaged(false);
+            if(forgotPasswordBtn != null) forgotPasswordBtn.setVisible(true);
         }
 
         viewModel.isLoadingProperty().addListener((obs, oldVal, newVal) -> {
@@ -61,10 +62,14 @@ public class AuthFormController {
             } else if (userRole == Role.TRAVELER) {
                 SceneManager.switchScene("TravelerDashboardView.fxml", "Carry1 - Traveler Dashboard");
             } else if (userRole == Role.ADMIN) {
-                // FIXED: Now properly routes to the Admin Dashboard
                 SceneManager.switchScene("AdminDashboardView.fxml", "Carry1 - Admin Control Panel");
             }
         });
+    }
+
+    @FXML
+    private void goToForgotPassword(ActionEvent event) {
+        SceneManager.switchScene("ForgotPasswordView.fxml", "Carry1 - Reset Password");
     }
 
     @FXML
