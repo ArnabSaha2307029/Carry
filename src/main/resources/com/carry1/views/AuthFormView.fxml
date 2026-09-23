@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -10,22 +11,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<!-- রুট হিসেবে HBox ব্যবহার করা হলো ডান-বাম ভাগের জন্য -->
 <HBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AuthFormController">
 
-    <!-- বাম পাশের অর্ধেক: StartView এর মত ছবি সহ লাল ব্যাকগ্রাউন্ড -->
     <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
         <children>
             <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <!-- StartView এর মত ছবির পাথ -->
                     <Image url="@../../../Carry.001.png" />
                 </image>
             </ImageView>
         </children>
     </VBox>
 
-    <!-- ডান পাশের অর্ধেক: এখানে তোমার ফর্মের ফিল্ডগুলো থাকবে -->
     <VBox alignment="CENTER" prefWidth="640.0" spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
         <padding>
             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
@@ -39,12 +36,26 @@
 
         <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
 
-        <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+        <Label text="Enter the code below:" style="-fx-font-size: 13px; -fx-text-fill: #424242;"/>
 
-        <!-- NEW FORGOT PASSWORD BUTTON -->
-        <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword" style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
+        <Canvas fx:id="captchaCanvas" width="250" height="70"
+                style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);"/>
 
-        <Button text="← Back" onAction="#goBack" prefWidth="100" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+        <HBox spacing="8.0" alignment="CENTER_LEFT" maxWidth="250">
+            <TextField fx:id="captchaInputField" promptText="Type code here" prefWidth="192"
+                       style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+            <Button text="↻" onAction="#handleRefreshCaptcha" prefWidth="50"
+                    style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 5;"/>
+        </HBox>
+
+        <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250"
+                style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+
+        <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword"
+                style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
+
+        <Button text="← Back" onAction="#goBack" prefWidth="100"
+                style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
     </VBox>
 
 </HBox>
