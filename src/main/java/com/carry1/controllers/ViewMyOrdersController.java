@@ -35,7 +35,7 @@ public class ViewMyOrdersController {
     @FXML private VBox ratingOverlayPane;
     @FXML private Label messageAlertLabel;
 
-    // Tip Overlay Elements
+    
     @FXML private VBox tipOverlayPane, tipInputBox;
     @FXML private HBox tipQuestionBox;
     @FXML private TextField tipAmountField;

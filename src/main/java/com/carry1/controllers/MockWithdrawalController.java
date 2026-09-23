@@ -17,18 +17,18 @@ public class MockWithdrawalController {
 
     @FXML private VBox step1Box, step2Box, step3Box, step4Box, confirmBox;
 
-    // Step 1
+    
     @FXML private Label currentBalanceLabel;
     @FXML private TextField amountField;
     @FXML private Label errorLabel1;
 
-    // Step 3
+    
     @FXML private Label step3Header;
     @FXML private ComboBox<String> providerCombo;
     @FXML private TextField accountNoField;
     @FXML private Label errorLabel3;
 
-    // Step 4
+    
     @FXML private PasswordField passwordField;
     @FXML private Label statusLabel;
     @FXML private Button verifyBtn;
@@ -47,7 +47,7 @@ public class MockWithdrawalController {
         showBox(step1Box);
     }
 
-    // --- STEP 1: Amount ---
+    
     @FXML
     private void goToStep2(ActionEvent event) {
         String amountStr = amountField.getText().trim();
@@ -73,7 +73,7 @@ public class MockWithdrawalController {
 
     @FXML private void goBackToStep1(ActionEvent event) { showBox(step1Box); }
 
-    // --- STEP 2: Category ---
+    
     @FXML
     private void selectMobileBanking(ActionEvent event) {
         step3Header.setText("Mobile Banking Details");
@@ -94,7 +94,7 @@ public class MockWithdrawalController {
 
     @FXML private void goBackToStep2(ActionEvent event) { showBox(step2Box); }
 
-    // --- STEP 3: Details ---
+    
     @FXML
     private void goToStep4(ActionEvent event) {
         if (providerCombo.getValue() == null || accountNoField.getText().trim().isEmpty()) {
@@ -107,7 +107,7 @@ public class MockWithdrawalController {
 
     @FXML private void goBackToStep3(ActionEvent event) { showBox(step3Box); }
 
-    // --- STEP 4: Password Verification ---
+    
     @FXML
     private void verifyPassword(ActionEvent event) {
         String pass = passwordField.getText();
@@ -117,14 +117,14 @@ public class MockWithdrawalController {
             return;
         }
 
-        // ডাটাবেস থেকে পাসওয়ার্ড ভেরিফাই
+        
         if (!LocalDatabaseManager.verifyUserPassword(currentUser.getId(), pass)) {
             statusLabel.setStyle("-fx-text-fill: red;");
             statusLabel.setText("Incorrect password. Please try again.");
             return;
         }
 
-        // ওভারলে পপ-আপ দেখানো হচ্ছে
+        
         verifyBtn.setDisable(true);
         confirmBox.setVisible(true);
     }
@@ -137,11 +137,11 @@ public class MockWithdrawalController {
 
     @FXML
     private void processFinalWithdrawal(ActionEvent event) {
-        confirmBox.setVisible(false); // পপ-আপ লুকানো হচ্ছে
+        confirmBox.setVisible(false); 
         statusLabel.setStyle("-fx-text-fill: #2196F3;");
         statusLabel.setText("Processing transfer...");
 
-        // ২ সেকেন্ডের API Delay
+        
         new Thread(() -> {
             try { Thread.sleep(2000); } catch (InterruptedException e) {}
 
@@ -166,7 +166,7 @@ public class MockWithdrawalController {
         }).start();
     }
 
-    // --- Utility Method ---
+    
     private void showBox(VBox boxToShow) {
         step1Box.setVisible(false);
         step2Box.setVisible(false);

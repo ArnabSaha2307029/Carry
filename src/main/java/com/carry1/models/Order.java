@@ -6,7 +6,7 @@ public class Order {
     private String travelerId;
 
     private String itemType;
-    private String itemName; // as Product Description
+    private String itemName; 
     private double weight;
 
     private String senderName;
@@ -20,7 +20,7 @@ public class Order {
     private String dropoffInfo;
 
     private double distanceKm;
-    private double rewardAmount; // Final Delivery Fee
+    private double rewardAmount; 
     private OrderStatus status;
 
     public Order(String orderId, String customerId, String travelerId, String itemType, String itemName, double weight,

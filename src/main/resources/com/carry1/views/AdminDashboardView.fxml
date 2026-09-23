@@ -17,7 +17,7 @@
     </HBox>
 
     <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
-        <!-- GLOBAL LEDGER TAB -->
+        
         <Tab text="Global Ledger &amp; Stats">
             <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
                 <HBox spacing="20" alignment="CENTER">
@@ -44,7 +44,7 @@
             </VBox>
         </Tab>
 
-        <!-- USER MODERATION TAB -->
+        
         <Tab text="User Moderation">
             <VBox spacing="10" style="-fx-padding: 15;">
                 <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
@@ -60,7 +60,7 @@
             </VBox>
         </Tab>
 
-        <!-- ORDER OVERRIDE TAB -->
+        
         <Tab text="Disputes &amp; Orders">
             <VBox spacing="10" style="-fx-padding: 15;">
                 <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">

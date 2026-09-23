@@ -8,7 +8,6 @@ import com.carry1.models.User;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -28,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class CreateOrderController {
 
-    private static final String GOOGLE_API_KEY = "YOUR_GOOGLE_API_KEY_HERE"; // বিলিং এনাবল করা API Key বসাবে
+    private static final String GOOGLE_API_KEY = "YOUR_GOOGLE_API_KEY_HERE"; 
 
     @FXML private VBox step1Box, step2Box, step3Box, step4Box;
 
@@ -82,12 +81,18 @@ public class CreateOrderController {
         if (senderNameField.getText().trim().isEmpty() || senderPhoneField.getText().trim().isEmpty() || pickupLocationField.getText().trim().isEmpty()) {
             errorLabel2.setText("Name, Phone, and Pickup Map Location are required."); return;
         }
+        if (!senderPhoneField.getText().trim().matches("^01\\d{9}$")) {
+            errorLabel2.setText("Invalid Phone No."); return;
+        }
         errorLabel2.setText(""); showBox(step3Box);
     }
 
     @FXML private void calculateAndGoToStep4(ActionEvent event) {
         if (receiverNameField.getText().trim().isEmpty() || receiverPhoneField.getText().trim().isEmpty() || dropoffLocationField.getText().trim().isEmpty()) {
             errorLabel3.setText("Name, Phone, and Delivery Map Location are required."); return;
+        }
+        if (!receiverPhoneField.getText().trim().matches("^01\\d{9}$")) {
+            errorLabel3.setText("Invalid Phone No."); return;
         }
         errorLabel3.setText("");
         showBox(step4Box);
@@ -181,12 +186,15 @@ public class CreateOrderController {
 
         LocalDatabaseManager.createOrderWithEscrow(newOrder, finalTotalCost);
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setContentText("Order created & Funds held in Escrow!\nTrack NO: " + orderId);
-        alert.showAndWait();
+        errorLabel4.setStyle("-fx-text-fill: #4CAF50; -fx-font-weight: bold;");
+        errorLabel4.setText("Order created & Funds held in Escrow!\nTrack NO: " + orderId);
+        confirmBtn.setDisable(true);
+        backBtn4.setDisable(true);
 
-        SceneManager.switchScene("CustomerDashboardView.fxml", "Carry1 - Customer Dashboard");
+        new Thread(() -> {
+            try { Thread.sleep(2000); } catch (InterruptedException e) {}
+            Platform.runLater(() -> SceneManager.switchScene("CustomerDashboardView.fxml", "Carry1 - Customer Dashboard"));
+        }).start();
     }
 
     @FXML

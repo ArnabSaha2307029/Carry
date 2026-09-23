@@ -11,7 +11,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.MockWithdrawalController">
 
-    <!-- STEP 1: Amount Page -->
+    
     <VBox fx:id="step1Box" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
         <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
         <Label text="Withdraw Funds" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
@@ -23,7 +23,7 @@
         <Button text="Cancel" onAction="#handleCancel" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
     </VBox>
 
-    <!-- STEP 2: Category Selection Page -->
+    
     <VBox fx:id="step2Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
         <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
         <Label text="Withdraw via" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
@@ -33,7 +33,7 @@
         <Button text="← Back" onAction="#goBackToStep1" prefWidth="300" style="-fx-margin-top: 20px; -fx-background-color: transparent; -fx-text-fill: #757575;"/>
     </VBox>
 
-    <!-- STEP 3: Details Input -->
+    
     <VBox fx:id="step3Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
         <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
         <Label fx:id="step3Header" text="Withdrawal Details" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
@@ -44,7 +44,7 @@
         <Button text="← Back" onAction="#goBackToStep2" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
     </VBox>
 
-    <!-- STEP 4: Password Verification -->
+    
     <VBox fx:id="step4Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
         <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
         <Label text="Security Verification" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
@@ -57,7 +57,7 @@
         <Button text="← Back" onAction="#goBackToStep3" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
     </VBox>
 
-    <!-- OVERLAY: Custom Confirmation Pop-up -->
+    
     <VBox fx:id="confirmBox" visible="false" alignment="CENTER" spacing="20.0" maxWidth="350" maxHeight="200"
           style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/></padding>

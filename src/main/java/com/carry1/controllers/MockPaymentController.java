@@ -19,25 +19,25 @@ public class MockPaymentController {
 
     @FXML private VBox step1Box, step2Box, step3Box, step4Box;
 
-    // Step 1
+    
     @FXML private TextField amountField;
     @FXML private Label errorLabel1;
 
-    // Step 3
+    
     @FXML private Label step3Header;
     @FXML private ComboBox<String> providerCombo;
     @FXML private TextField accountNoField;
     @FXML private Label errorLabel3;
 
-    // Step 4
+    
     @FXML private TextField otpField;
     @FXML private Label statusLabel;
     @FXML private Button confirmBtn, cancelOtpBtn;
 
-    // Notification
+    
     @FXML private Label notificationToast;
 
-    // State Variables
+    
     private double paymentAmount = 0.0;
     private String generatedOtp = "";
 
@@ -46,7 +46,7 @@ public class MockPaymentController {
         showBox(step1Box);
     }
 
-    // --- STEP 1: Amount ---
+    
     @FXML
     private void goToStep2(ActionEvent event) {
         String amountStr = amountField.getText().trim();
@@ -66,7 +66,7 @@ public class MockPaymentController {
 
     @FXML private void goBackToStep1(ActionEvent event) { showBox(step1Box); }
 
-    // --- STEP 2: Category ---
+    
     @FXML
     private void selectMobileBanking(ActionEvent event) {
         step3Header.setText("Mobile Banking Details");
@@ -87,7 +87,7 @@ public class MockPaymentController {
 
     @FXML private void goBackToStep2(ActionEvent event) { showBox(step2Box); }
 
-    // --- STEP 3: Details ---
+    
     @FXML
     private void goToStep4(ActionEvent event) {
         if (providerCombo.getValue() == null || accountNoField.getText().trim().isEmpty()) {
@@ -99,14 +99,14 @@ public class MockPaymentController {
         triggerOtpSystem();
     }
 
-    // --- STEP 4: OTP & Payment ---
+    
     private void triggerOtpSystem() {
-        // ৬ ডিজিটের র‍্যান্ডম OTP জেনারেট
+        
         Random rnd = new Random();
         int number = rnd.nextInt(999999);
         generatedOtp = String.format("%06d", number);
 
-        // ০.৫ সেকেন্ড পর নোটিফিকেশন দেখাবে
+        
         new Thread(() -> {
             try { Thread.sleep(500); } catch (InterruptedException e) {}
 
@@ -114,7 +114,7 @@ public class MockPaymentController {
                 notificationToast.setText("System Message: Your OTP is " + generatedOtp);
                 notificationToast.setVisible(true);
 
-                // ৫ সেকেন্ড পর নোটিফিকেশন গায়েব হয়ে যাবে
+                
                 new Thread(() -> {
                     try { Thread.sleep(5000); } catch (InterruptedException e) {}
                     Platform.runLater(() -> notificationToast.setVisible(false));
@@ -139,7 +139,7 @@ public class MockPaymentController {
             return;
         }
 
-        // OTP ঠিক থাকলে ২ সেকেন্ডের API Delay শুরু
+        
         confirmBtn.setDisable(true);
         cancelOtpBtn.setDisable(true);
         statusLabel.setStyle("-fx-text-fill: #2196F3;");
@@ -171,7 +171,7 @@ public class MockPaymentController {
         }).start();
     }
 
-    // --- Utility ---
+    
     private void showBox(VBox boxToShow) {
         step1Box.setVisible(false);
         step2Box.setVisible(false);

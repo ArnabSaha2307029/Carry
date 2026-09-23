@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.ViewMyOrdersController">
-    <!-- Main Layer -->
+    
     <VBox alignment="CENTER" spacing="15.0">
         <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
         <Label text="My Order History" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
@@ -31,7 +31,7 @@
         <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;"/>
     </VBox>
 
-    <!-- Rating Overlay -->
+    
     <VBox fx:id="ratingOverlayPane" visible="false" alignment="CENTER" spacing="15" maxHeight="220" maxWidth="450" style="-fx-background-color: rgba(255,255,255,0.98); -fx-border-color: #E0E0E0; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
         <Label text="Order Delivered Successfully!" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2E7D32;"/>
@@ -46,21 +46,21 @@
         <Button text="Skip Rating" onAction="#handleSkipRating" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
     </VBox>
 
-    <!-- Tip Overlay -->
+    
     <VBox fx:id="tipOverlayPane" visible="false" alignment="CENTER" spacing="15" maxHeight="300" maxWidth="400" style="-fx-background-color: rgba(255,255,255,0.98); -fx-border-color: #FF9800; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
         <Label text="Give Tip to Traveler?" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #FF9800;"/>
 
-        <!-- Step A: Yes/No -->
+        
         <HBox fx:id="tipQuestionBox" spacing="20" alignment="CENTER">
             <Button text="No, Thanks" onAction="#handleTipNo" prefWidth="120" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;"/>
             <Button text="Yes, Give Tip" onAction="#handleTipYes" prefWidth="120" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
         </HBox>
 
-        <!-- Step B: Enter Amount & Password (Hidden initially) -->
+        
         <VBox fx:id="tipInputBox" visible="false" managed="false" spacing="15" alignment="CENTER">
             <TextField fx:id="tipAmountField" promptText="Enter Tip Amount (TK)" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
-            <!-- NEW: Password Field for Security -->
+            
             <PasswordField fx:id="tipPasswordField" promptText="Your Account Password" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
 
             <Label fx:id="tipErrorLabel" textFill="RED" style="-fx-font-weight: bold;"/>

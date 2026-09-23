@@ -18,7 +18,7 @@
             <TableColumn fx:id="colItemName" text="Item Name" prefWidth="120"/>
             <TableColumn fx:id="colPickup" text="Pickup Route" prefWidth="130"/>
             <TableColumn fx:id="colDropoff" text="Dropoff Route" prefWidth="130"/>
-            <!-- NEW COLUMNS -->
+            
             <TableColumn fx:id="colDeliveryFee" text="Delivery Fee" prefWidth="100"/>
             <TableColumn fx:id="colCharge" text="Charge" prefWidth="80"/>
             <TableColumn fx:id="colTotalAmount" text="Total Amount" prefWidth="100"/>

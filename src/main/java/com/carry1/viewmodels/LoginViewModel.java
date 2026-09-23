@@ -41,7 +41,7 @@ public class LoginViewModel {
                 String generatedId = role.name() + "-" + phoneStr;
 
                 if (AuthFlowState.isSignUpMode) {
-                    // ডিফল্ট ব্যালেন্স 0.0 করা হয়েছে
+                    
                     User newUser = new User(generatedId, name.get().trim(), role, 0.0, "token_" + generatedId, "ACTIVE");
                     boolean success = LocalDatabaseManager.registerUser(newUser, phoneStr, passStr);
                     if (success) {

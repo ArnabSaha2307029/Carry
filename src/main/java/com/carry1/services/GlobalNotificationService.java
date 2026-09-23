@@ -21,14 +21,14 @@ public class GlobalNotificationService {
     public static void start() {
         if (pollingService != null && !pollingService.isShutdown()) return;
 
-        lastUnreadCount = 0; // লগইনের সময় কাউন্ট জিরো থেকে শুরু হবে
+        lastUnreadCount = 0; 
         pollingService = Executors.newSingleThreadScheduledExecutor();
 
         pollingService.scheduleAtFixedRate(() -> {
             User currentUser = LocalDatabaseManager.getCurrentUser();
             if (currentUser == null) return;
 
-            // ১. অ্যাকাউন্ট স্ট্যাটাস চেক (ব্যান লজিক)
+            
             LocalDatabaseManager.refreshCurrentUser();
             User updatedUser = LocalDatabaseManager.getCurrentUser();
 
@@ -45,10 +45,10 @@ public class GlobalNotificationService {
 
                     SceneManager.switchScene("StartView.fxml", "Carry1 - Login");
                 });
-                return; // অ্যাকাউন্ট ব্যান হলে নিচের মেসেজ চেক আর করবে না
+                return; 
             }
 
-            // ২. নতুন মেসেজ চেক (টোস্ট নোটিফিকেশন লজিক)
+            
             if (updatedUser != null) {
                 int currentUnreadCount = LocalDatabaseManager.getUnreadMessageCount(updatedUser.getId());
 
@@ -78,10 +78,10 @@ public class GlobalNotificationService {
             popup.getContent().add(label);
             popup.setAutoHide(true);
 
-            // উইন্ডোর ডানদিকের উপরের কোণায় নোটিফিকেশন ভাসিয়ে তোলা
+            
             popup.show(stage, stage.getX() + stage.getWidth() - 350, stage.getY() + 80);
 
-            // ৪ সেকেন্ড পর অটোমেটিক গায়েব হয়ে যাবে
+            
             new Thread(() -> {
                 try { Thread.sleep(4000); } catch (InterruptedException e) {}
                 Platform.runLater(popup::hide);

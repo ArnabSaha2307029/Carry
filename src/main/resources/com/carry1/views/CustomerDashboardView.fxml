@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.CustomerDashboardController">
-    <!-- Main Dashboard Content -->
+    
     <VBox alignment="CENTER" spacing="20.0">
         <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
         <Label text="Customer Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
@@ -20,7 +20,7 @@
         <Button text="Create New Order" onAction="#handleCreateOrder" prefWidth="200" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
         <Button text="View My Orders" onAction="#handleViewOrders" prefWidth="200"/>
 
-        <!-- NEW TRACK ORDER BUTTON -->
+        
         <Button text="Track My Order" onAction="#handleTrackOrder" prefWidth="200" style="-fx-background-color: #673AB7; -fx-text-fill: white; -fx-font-weight: bold;"/>
 
         <Button text="📩 Inbox (Active Chats)" onAction="#handleViewInbox" prefWidth="200" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -28,10 +28,10 @@
         <Button text="Logout" onAction="#handleLogout" prefWidth="200" style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
     </VBox>
 
-    <!-- MESSENGER STYLE INBOX OVERLAY (StackPane) -->
+    
     <StackPane fx:id="inboxOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="450" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
 
-        <!-- 1. Profile List View -->
+        
         <VBox fx:id="inboxListPane" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #FF9800; -fx-padding: 10;">
                 <Label text="Inbox (Active Orders)" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
@@ -40,7 +40,7 @@
             <ListView fx:id="inboxListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
         </VBox>
 
-        <!-- 2. Specific Chat View -->
+        
         <VBox fx:id="inboxChatPane" visible="false" VBox.vgrow="ALWAYS">
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #2196F3; -fx-padding: 10;" spacing="10">
                 <Button text="← Back" onAction="#backToInboxList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
@@ -54,7 +54,7 @@
         </VBox>
     </StackPane>
 
-    <!-- Floating Chat Box for AI -->
+    
     <VBox fx:id="chatBox" visible="false" StackPane.alignment="BOTTOM_RIGHT" maxHeight="400" maxWidth="300" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10;">
         <StackPane.margin><Insets top="0" right="20" bottom="70" left="0"/></StackPane.margin>
         <Label text="Carry1 AI Support" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-padding: 10; -fx-font-weight: bold;" maxWidth="Infinity"/>

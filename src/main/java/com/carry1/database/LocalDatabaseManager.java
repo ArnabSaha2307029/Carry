@@ -26,6 +26,7 @@ public class LocalDatabaseManager {
                     "distance_km REAL, reward REAL NOT NULL, status TEXT NOT NULL)");
             stmt.execute("CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT NOT NULL, sender_id TEXT NOT NULL, receiver_id TEXT NOT NULL, message_text TEXT NOT NULL, timestamp INTEGER NOT NULL, is_read INTEGER DEFAULT 0)");
             stmt.execute("CREATE TABLE IF NOT EXISTS ratings (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT NOT NULL, traveler_id TEXT NOT NULL, customer_id TEXT NOT NULL, rating_value INTEGER NOT NULL)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS traveler_profiles (user_id TEXT PRIMARY KEY, roll TEXT NOT NULL, department TEXT NOT NULL, hall TEXT NOT NULL, graduation_year INTEGER NOT NULL)");
 
             ResultSet rs = stmt.executeQuery("SELECT id FROM users WHERE role = 'ADMIN'");
             if (!rs.next()) {
@@ -34,7 +35,7 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
-    // --- USER RELATED METHODS ---
+    
     public static boolean registerUser(User user, String phone, String password) {
         String insertSql = "INSERT INTO users (id, name, phone, password, role, balance, account_status) VALUES (?, ?, ?, ?, ?, ?, 'ACTIVE')";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
@@ -99,7 +100,7 @@ public class LocalDatabaseManager {
 
     public static void clearSession() { AuthFlowState.currentUser = null; }
 
-    // --- ADMIN WALLET CONTROL & MODERATION ---
+    
     public static boolean adjustUserBalance(String userId, double newBalance) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET balance = ? WHERE id = ?")) {
             pstmt.setDouble(1, newBalance); pstmt.setString(2, userId); return pstmt.executeUpdate() > 0;
@@ -140,7 +141,7 @@ public class LocalDatabaseManager {
         } catch (SQLException e) {} return stats;
     }
 
-    // --- ESCROW & ORDER LOGIC ---
+    
     public static boolean createOrderWithEscrow(Order order, double totalDeduction) {
         String sqlOrder = "INSERT INTO orders (order_id, customer_id, traveler_id, item_type, item_name, weight, sender_name, sender_phone, pickup_loc, pickup_info, receiver_name, receiver_phone, dropoff_loc, dropoff_info, distance_km, reward, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String sqlDeduct = "UPDATE users SET balance = balance - ? WHERE id = ?";
@@ -336,6 +337,14 @@ public class LocalDatabaseManager {
             pstmt.setString(1, newPassword);
             pstmt.setString(2, phone);
             pstmt.setString(3, role.name());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { return false; }
+    }
+
+    public static boolean saveTravelerProfile(String userId, String roll, String department, String hall, int graduationYear) {
+        String sql = "INSERT OR REPLACE INTO traveler_profiles (user_id, roll, department, hall, graduation_year) VALUES (?, ?, ?, ?, ?)";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId); pstmt.setString(2, roll); pstmt.setString(3, department); pstmt.setString(4, hall); pstmt.setInt(5, graduationYear);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { return false; }
     }
