@@ -74,5 +74,23 @@
                 </TableView>
             </VBox>
         </Tab>
+
+        <Tab text="Support Tickets">
+            <HBox spacing="10" style="-fx-padding: 15;">
+                <ListView fx:id="complaintListView" prefWidth="250"/>
+                <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 10;">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label fx:id="complaintChatHeader" text="Select a ticket" style="-fx-font-size: 16px; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button fx:id="resolveTicketBtn" text="Resolve Ticket" onAction="#handleResolveTicket" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" visible="false"/>
+                    </HBox>
+                    <ListView fx:id="complaintChatListView" VBox.vgrow="ALWAYS"/>
+                    <HBox spacing="5">
+                        <TextField fx:id="adminChatInput" promptText="Type message to user..." HBox.hgrow="ALWAYS"/>
+                        <Button text="Send" onAction="#sendComplaintMessage" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </Tab>
     </TabPane>
+
 </VBox>

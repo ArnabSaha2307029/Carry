@@ -3,6 +3,9 @@ package com.carry1.controllers;
 import com.carry1.SceneManager;
 import com.carry1.database.LocalDatabaseManager;
 import com.carry1.models.Message;
+import com.carry1.models.Complaint;
+import com.carry1.models.ComplaintMessage;
+import javafx.scene.control.Button;
 import com.carry1.models.Order;
 import com.carry1.models.OrderStatus;
 import com.carry1.models.User;
@@ -41,16 +44,30 @@ public class TravelerDashboardController {
     private String currentInboxOrderId = null;
     private String currentInboxReceiverId = null;
 
+    @FXML private StackPane supportOverlayPane;
+    @FXML private ListView<String> supportChatListView;
+    @FXML private TextField supportChatInputField;
+    @FXML private Button reportIssueBtn;
+
+    private Map<String, Complaint> activeSupportMap = new HashMap<>();
+    private int currentSupportComplaintId = -1;
+
+
     @FXML
     public void initialize() {
         inboxOverlayPane.setVisible(false);
+        supportOverlayPane.setVisible(false);
         inboxListPane.setVisible(true);
         inboxChatPane.setVisible(false);
 
-        inboxListView.setOnMouseClicked(event -> {
+                inboxListView.setOnMouseClicked(event -> {
             String selected = inboxListView.getSelectionModel().getSelectedItem();
-            if (selected != null && activeOrdersMap.containsKey(selected)) {
-                openInboxChat(activeOrdersMap.get(selected));
+            if (selected != null) {
+                if (activeOrdersMap.containsKey(selected)) {
+                    openInboxChat(activeOrdersMap.get(selected));
+                } else if (activeSupportMap.containsKey(selected)) {
+                    openSupportChat(activeSupportMap.get(selected));
+                }
             }
         });
 
@@ -65,12 +82,15 @@ public class TravelerDashboardController {
             if (currentUser != null) {
                 Platform.runLater(() -> welcomeLabel.setText("Welcome, " + currentUser.getName() + " | Balance: " + currentUser.getBalance() + " TK"));
 
-                if (inboxOverlayPane.isVisible()) {
+                                if (inboxOverlayPane.isVisible()) {
                     if (inboxChatPane.isVisible() && currentInboxOrderId != null) {
                         refreshInboxChatMessages(currentUser.getId());
                     } else {
                         refreshInboxList(currentUser);
                     }
+                }
+                if (supportOverlayPane != null && supportOverlayPane.isVisible() && currentSupportComplaintId != -1) {
+                    refreshSupportChatMessages(currentUser.getId());
                 }
             }
         }, 0, 3, TimeUnit.SECONDS);
@@ -95,6 +115,7 @@ public class TravelerDashboardController {
 
     @FXML private void closeInbox(ActionEvent event) {
         inboxOverlayPane.setVisible(false);
+        supportOverlayPane.setVisible(false);
         currentInboxOrderId = null;
         currentInboxReceiverId = null;
     }
@@ -107,10 +128,12 @@ public class TravelerDashboardController {
         refreshInboxList(LocalDatabaseManager.getCurrentUser());
     }
 
-    private void refreshInboxList(User currentUser) {
+        private void refreshInboxList(User currentUser) {
         if (currentUser == null) return;
         List<Order> orders = LocalDatabaseManager.getOrdersByTravelerId(currentUser.getId());
+        List<Complaint> complaints = LocalDatabaseManager.getOpenComplaintsForUser(currentUser.getId());
         activeOrdersMap.clear();
+        activeSupportMap.clear();
         List<String> displayItems = new ArrayList<>();
 
         for(Order o : orders) {
@@ -121,16 +144,24 @@ public class TravelerDashboardController {
                 displayItems.add(display);
             }
         }
+        
+        for(Complaint c : complaints) {
+            String display = "Carry Administrator [ORD-" + c.getOrderId() + "]";
+            activeSupportMap.put(display, c);
+            displayItems.add(display);
+        }
+        
         Platform.runLater(() -> inboxListView.setItems(FXCollections.observableArrayList(displayItems)));
     }
 
-    private void openInboxChat(Order order) {
+        private void openInboxChat(Order order) {
         currentInboxOrderId = order.getOrderId();
         currentInboxReceiverId = order.getCustomerId();
-        String customerName = LocalDatabaseManager.getUserNameById(currentInboxReceiverId);
+        String otherName = LocalDatabaseManager.getUserNameById(currentInboxReceiverId);
 
         Platform.runLater(() -> {
-            inboxChatHeader.setText(customerName + " - " + order.getOrderId());
+            inboxChatHeader.setText(otherName + " - " + order.getOrderId());
+            if (reportIssueBtn != null) reportIssueBtn.setVisible(order.getStatus() == OrderStatus.PICKED_UP);
             inboxListPane.setVisible(false);
             inboxChatPane.setVisible(true);
         });
@@ -159,6 +190,62 @@ public class TravelerDashboardController {
             Platform.runLater(() -> {
                 inboxChatInputField.clear();
                 refreshInboxChatMessages(currentUser.getId());
+            });
+        }).start();
+    }
+
+
+    @FXML private void handleReportIssue(ActionEvent event) {
+        if (currentInboxOrderId != null && currentInboxReceiverId != null) {
+            String currentUserId = LocalDatabaseManager.getCurrentUser().getId();
+            new Thread(() -> {
+                Complaint c = LocalDatabaseManager.createComplaint(currentInboxOrderId, currentUserId, currentInboxReceiverId);
+                if (c != null) {
+                    Platform.runLater(() -> openSupportChat(c));
+                }
+            }).start();
+        }
+    }
+
+    private void openSupportChat(Complaint complaint) {
+        currentSupportComplaintId = complaint.getId();
+        Platform.runLater(() -> {
+            inboxOverlayPane.setVisible(false);
+            supportOverlayPane.setVisible(true);
+        });
+        refreshSupportChatMessages(LocalDatabaseManager.getCurrentUser().getId());
+    }
+
+    @FXML private void closeSupportOverlay(ActionEvent event) {
+        supportOverlayPane.setVisible(false);
+        currentSupportComplaintId = -1;
+    }
+
+    private void refreshSupportChatMessages(String currentUserId) {
+        if(currentSupportComplaintId == -1) return;
+        List<ComplaintMessage> msgs = LocalDatabaseManager.getComplaintMessages(currentSupportComplaintId);
+        List<String> displayMsgs = new java.util.ArrayList<>();
+        for (ComplaintMessage m : msgs) {
+            String prefix = m.getSenderId().equals(currentUserId) ? "You: " : "Admin: ";
+            displayMsgs.add(prefix + m.getMessageText());
+        }
+        Platform.runLater(() -> {
+            supportChatListView.setItems(FXCollections.observableArrayList(displayMsgs));
+            if (!displayMsgs.isEmpty()) supportChatListView.scrollTo(displayMsgs.size() - 1);
+        });
+    }
+
+    @FXML
+    private void sendSupportMessage(ActionEvent event) {
+        String text = supportChatInputField.getText().trim();
+        User currentUser = LocalDatabaseManager.getCurrentUser();
+        if (text.isEmpty() || currentSupportComplaintId == -1 || currentUser == null) return;
+
+        new Thread(() -> {
+            LocalDatabaseManager.sendComplaintMessage(currentSupportComplaintId, currentUser.getId(), text);
+            Platform.runLater(() -> {
+                supportChatInputField.clear();
+                refreshSupportChatMessages(currentUser.getId());
             });
         }).start();
     }

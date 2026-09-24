@@ -45,6 +45,7 @@
             <HBox alignment="CENTER_LEFT" style="-fx-background-color: #2196F3; -fx-padding: 10;" spacing="10">
                 <Button text="← Back" onAction="#backToInboxList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
                 <Label fx:id="inboxChatHeader" text="Chat" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button fx:id="reportIssueBtn" text="Report Issue to Admin" onAction="#handleReportIssue" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" visible="false"/>
             </HBox>
             <ListView fx:id="inboxChatListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
             <HBox spacing="5" style="-fx-padding: 10;">
@@ -55,6 +56,21 @@
     </StackPane>
 
     
+
+    <StackPane fx:id="supportOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="450" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+        <VBox VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F44336; -fx-padding: 10;" spacing="10">
+                <Button text="Close" onAction="#closeSupportOverlay" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                <Label text="Carry Administrator" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+            <ListView fx:id="supportChatListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
+            <HBox spacing="5" style="-fx-padding: 10;">
+                <TextField fx:id="supportChatInputField" promptText="Type a message to admin..." HBox.hgrow="ALWAYS"/>
+                <Button text="Send" onAction="#sendSupportMessage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </StackPane>
+
     <VBox fx:id="chatBox" visible="false" StackPane.alignment="BOTTOM_RIGHT" maxHeight="400" maxWidth="300" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10;">
         <StackPane.margin><Insets top="0" right="20" bottom="70" left="0"/></StackPane.margin>
         <Label text="Carry1 AI Support" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-padding: 10; -fx-font-weight: bold;" maxWidth="Infinity"/>

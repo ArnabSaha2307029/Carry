@@ -6,39 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="Forget Password Feature Added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AdminDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CreateOrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CreateOrderController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CustomerDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CustomerDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/LiveOrderFeedController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/LiveOrderFeedController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockPaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockPaymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockWithdrawalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockWithdrawalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/RoleSelectionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/RoleSelectionController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TravelerDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TravelerDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ViewMyOrdersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ViewMyOrdersController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/models/AuthFlowState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/AuthFlowState.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/models/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/services/AiSupportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/services/AiSupportService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/services/GlobalNotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/services/GlobalNotificationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/viewmodels/LoginViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/viewmodels/LoginViewModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AdminDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AdminDashboardView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CreateOrderView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CreateOrderView.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CustomerDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CustomerDashboardView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/LiveOrderFeedView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/LiveOrderFeedView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockPaymentView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockPaymentView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockWithdrawalView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockWithdrawalView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MyDeliveriesView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MyDeliveriesView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/RoleSelectionView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/RoleSelectionView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/StartView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/StartView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TrackOrderView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TrackOrderView.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TravelerDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TravelerDashboardView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ViewMyOrdersView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ViewMyOrdersView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +31,7 @@
     <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="traveler_student_verification" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -103,7 +77,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "traveler__student__verification",
+    "git-widget-placeholder": "User__Complaints__System",
     "git.auto.fetch.suggestion.counter": "1",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
@@ -145,6 +119,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="This is the base version of the Desktop app Carry" />

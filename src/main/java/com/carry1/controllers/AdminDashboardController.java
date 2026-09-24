@@ -5,6 +5,9 @@ import com.carry1.database.LocalDatabaseManager;
 import com.carry1.models.Order;
 import com.carry1.models.OrderStatus;
 import com.carry1.models.User;
+import com.carry1.models.Complaint;
+import com.carry1.models.ComplaintMessage;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -34,10 +37,20 @@ public class AdminDashboardController {
 
     private ScheduledExecutorService adminPoller;
 
+    @FXML private ListView<Complaint> complaintListView;
+    @FXML private ListView<String> complaintChatListView;
+    @FXML private Label complaintChatHeader;
+    @FXML private TextField adminChatInput;
+    @FXML private Button resolveTicketBtn;
+    
+    private Complaint currentAdminComplaint = null;
+
+
     @FXML
     public void initialize() {
         setupUserTable();
         setupOrderTable();
+        setupComplaintList();
         startAdminPoller();
     }
 
@@ -49,6 +62,8 @@ public class AdminDashboardController {
             List<User> users = LocalDatabaseManager.getAllUsers();
             List<Order> orders = LocalDatabaseManager.getAllOrders();
 
+            
+            List<Complaint> complaints = LocalDatabaseManager.getOpenComplaints();
             Platform.runLater(() -> {
                 activeOrdersLabel.setText(String.valueOf(stats.getOrDefault("activeOrders", 0.0).intValue()));
                 deliveredOrdersLabel.setText(String.valueOf(stats.getOrDefault("deliveredOrders", 0.0).intValue()));
@@ -57,6 +72,21 @@ public class AdminDashboardController {
 
                 userTable.setItems(FXCollections.observableArrayList(users));
                 orderTable.setItems(FXCollections.observableArrayList(orders));
+                
+                Complaint selected = complaintListView.getSelectionModel().getSelectedItem();
+                complaintListView.setItems(FXCollections.observableArrayList(complaints));
+                if (selected != null) {
+                    for (Complaint c : complaints) {
+                        if (c.getId() == selected.getId()) {
+                            complaintListView.getSelectionModel().select(c);
+                            break;
+                        }
+                    }
+                }
+                
+                if (currentAdminComplaint != null) {
+                    refreshComplaintMessages();
+                }
             });
         }, 0, 3, TimeUnit.SECONDS);
     }
@@ -66,6 +96,80 @@ public class AdminDashboardController {
     private void loadStats() {
         
         System.out.println("Stats auto-refreshing via poller...");
+    }
+
+
+    private void setupComplaintList() {
+        complaintListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Complaint item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    String creator = LocalDatabaseManager.getUserNameById(item.getCreatorId());
+                    String against = LocalDatabaseManager.getUserNameById(item.getAgainstId());
+                    setText(creator + " vs " + against + " [ORD-" + item.getOrderId() + "]");
+                }
+            }
+        });
+        
+        complaintListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                currentAdminComplaint = newVal;
+                String creator = LocalDatabaseManager.getUserNameById(newVal.getCreatorId());
+                String against = LocalDatabaseManager.getUserNameById(newVal.getAgainstId());
+                complaintChatHeader.setText(creator + " vs " + against + " [ORD-" + newVal.getOrderId() + "]");
+                resolveTicketBtn.setVisible(true);
+                refreshComplaintMessages();
+            } else {
+                currentAdminComplaint = null;
+                complaintChatHeader.setText("Select a ticket");
+                resolveTicketBtn.setVisible(false);
+                complaintChatListView.getItems().clear();
+            }
+        });
+    }
+
+    private void refreshComplaintMessages() {
+        if (currentAdminComplaint == null) return;
+        List<ComplaintMessage> msgs = LocalDatabaseManager.getComplaintMessages(currentAdminComplaint.getId());
+        List<String> displayMsgs = new java.util.ArrayList<>();
+        for (ComplaintMessage msg : msgs) {
+            String prefix = msg.getSenderId().equals("ADMIN-adm") ? "Admin: " : LocalDatabaseManager.getUserNameById(msg.getSenderId()) + ": ";
+            displayMsgs.add(prefix + msg.getMessageText());
+        }
+        Platform.runLater(() -> {
+            complaintChatListView.setItems(FXCollections.observableArrayList(displayMsgs));
+            if (!displayMsgs.isEmpty()) complaintChatListView.scrollTo(displayMsgs.size() - 1);
+        });
+    }
+    
+    @FXML
+    private void sendComplaintMessage(ActionEvent event) {
+        String text = adminChatInput.getText().trim();
+        if (text.isEmpty() || currentAdminComplaint == null) return;
+        new Thread(() -> {
+            LocalDatabaseManager.sendComplaintMessage(currentAdminComplaint.getId(), "ADMIN-adm", text);
+            Platform.runLater(() -> {
+                adminChatInput.clear();
+                refreshComplaintMessages();
+            });
+        }).start();
+    }
+    
+    @FXML
+    private void handleResolveTicket(ActionEvent event) {
+        if (currentAdminComplaint == null) return;
+        new Thread(() -> {
+            LocalDatabaseManager.resolveComplaint(currentAdminComplaint.getId());
+            Platform.runLater(() -> {
+                currentAdminComplaint = null;
+                complaintChatHeader.setText("Select a ticket");
+                resolveTicketBtn.setVisible(false);
+                complaintChatListView.getItems().clear();
+            });
+        }).start();
     }
 
     private void setupUserTable() {
