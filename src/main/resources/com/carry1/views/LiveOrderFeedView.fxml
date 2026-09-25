@@ -13,7 +13,7 @@
     <Label text="Accept orders to start earning" style="-fx-text-fill: #555;"/>
     <Label fx:id="warningLabel" visible="false" managed="false" style="-fx-text-fill: white; -fx-background-color: #D32F2F; -fx-padding: 10; -fx-background-radius: 5; -fx-font-weight: bold;"/>
 
-    <TableView fx:id="feedTable" VBox.vgrow="ALWAYS">
+    <TableView fx:id="feedTable" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);">
         <columns>
             <TableColumn fx:id="colOrderId" text="Order ID" prefWidth="100"/>
             <TableColumn fx:id="colItemName" text="Item Name" prefWidth="120"/>

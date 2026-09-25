@@ -8,47 +8,50 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AdminDashboardController">
-    <HBox style="-fx-background-color: #212121; -fx-padding: 15;" alignment="CENTER_LEFT">
-        <Label text="Carry1 Admin Control Panel" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-        <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
+    <HBox style="-fx-background-color: #B71C1C; -fx-padding: 12 20;" alignment="CENTER_LEFT" spacing="15">
+        <ImageView fitHeight="35" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+            <image><Image url="@../../../Carry.001.png"/></image>
+        </ImageView>
+        <Label text="Admin Control Panel" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+        <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
     </HBox>
 
-    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE">
-        
+    <TabPane VBox.vgrow="ALWAYS" tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: #FAFAFA;">
         <Tab text="Global Ledger &amp; Stats">
-            <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+            <VBox alignment="CENTER" spacing="20" style="-fx-padding: 40; -fx-background-color: #FAFAFA;">
                 <HBox spacing="20" alignment="CENTER">
-                    <VBox style="-fx-background-color: #E3F2FD; -fx-padding: 30; -fx-background-radius: 10;" alignment="CENTER">
-                        <Label text="Active Orders" style="-fx-font-size: 16px;"/>
-                        <Label fx:id="activeOrdersLabel" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #1976D2;"/>
+                    <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
+                        <Label text="Active Orders" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
+                        <Label fx:id="activeOrdersLabel" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #D32F2F;"/>
                     </VBox>
-                    <VBox style="-fx-background-color: #E8F5E9; -fx-padding: 30; -fx-background-radius: 10;" alignment="CENTER">
-                        <Label text="Delivered Orders" style="-fx-font-size: 16px;"/>
+                    <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
+                        <Label text="Delivered Orders" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
                         <Label fx:id="deliveredOrdersLabel" text="0" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #388E3C;"/>
                     </VBox>
                 </HBox>
                 <HBox spacing="20" alignment="CENTER">
-                    <VBox style="-fx-background-color: #FFF3E0; -fx-padding: 30; -fx-background-radius: 10;" alignment="CENTER">
-                        <Label text="Total System Escrow &amp; Wallets" style="-fx-font-size: 16px;"/>
+                    <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
+                        <Label text="Total System Escrow &amp; Wallets" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
                         <Label fx:id="systemMoneyLabel" text="0 TK" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #F57C00;"/>
                     </VBox>
-                    <VBox style="-fx-background-color: #FCE4EC; -fx-padding: 30; -fx-background-radius: 10;" alignment="CENTER">
-                        <Label text="Admin Carry Wallet (Profit)" style="-fx-font-size: 16px;"/>
+                    <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
+                        <Label text="Admin Profit" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
                         <Label fx:id="adminProfitLabel" text="0 TK" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #C2185B;"/>
                     </VBox>
                 </HBox>
-                <Button text="Refresh Stats" onAction="#loadStats" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 16px;"/>
+                <Button text="Refresh Stats" onAction="#loadStats" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
             </VBox>
         </Tab>
 
-        
         <Tab text="User Moderation">
-            <VBox spacing="10" style="-fx-padding: 15;">
-                <TableView fx:id="userTable" VBox.vgrow="ALWAYS">
+            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #FAFAFA;">
+                <TableView fx:id="userTable" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);">
                     <columns>
                         <TableColumn fx:id="uColId" text="User ID" prefWidth="120"/>
                         <TableColumn fx:id="uColName" text="Name" prefWidth="150"/>
@@ -61,10 +64,9 @@
             </VBox>
         </Tab>
 
-        
         <Tab text="Disputes &amp; Orders">
-            <VBox spacing="10" style="-fx-padding: 15;">
-                <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">
+            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #FAFAFA;">
+                <TableView fx:id="orderTable" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);">
                     <columns>
                         <TableColumn fx:id="oColId" text="Order ID" prefWidth="120"/>
                         <TableColumn fx:id="oColCust" text="Customer" prefWidth="120"/>
@@ -77,21 +79,24 @@
         </Tab>
 
         <Tab text="Support Tickets">
-            <HBox spacing="10" style="-fx-padding: 15;">
-                <ListView fx:id="complaintListView" prefWidth="250"/>
-                <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-border-color: #ccc; -fx-border-radius: 5; -fx-padding: 10;">
+            <HBox spacing="15" style="-fx-padding: 15; -fx-background-color: #FAFAFA;">
+                <VBox prefWidth="270" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2); -fx-padding: 10;">
+                    <Label text="Open Tickets" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #D32F2F; -fx-padding: 0 0 8 0;"/>
+                    <ListView fx:id="complaintListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="10" style="-fx-background-color: white; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 6, 0, 0, 2); -fx-padding: 10;">
                     <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fitHeight="24" preserveRatio="true"><image><Image url="@../../../Carry.001.png"/></image></ImageView>
                         <Label fx:id="complaintChatHeader" text="Select a ticket" style="-fx-font-size: 16px; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                        <Button fx:id="resolveTicketBtn" text="Resolve Ticket" onAction="#handleResolveTicket" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;" visible="false"/>
+                        <Button fx:id="resolveTicketBtn" text="Resolve Ticket" onAction="#handleResolveTicket" style="-fx-background-color: #388E3C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5;" visible="false"/>
                     </HBox>
-                    <ListView fx:id="complaintChatListView" VBox.vgrow="ALWAYS"/>
-                    <HBox spacing="5">
-                        <TextField fx:id="adminChatInput" promptText="Type message to user..." HBox.hgrow="ALWAYS"/>
-                        <Button text="Send" onAction="#sendComplaintMessage" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+                    <ListView fx:id="complaintChatListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);"/>
+                    <HBox spacing="5" style="-fx-background-color: #FAFAFA; -fx-padding: 8; -fx-background-radius: 5;">
+                        <TextField fx:id="adminChatInput" promptText="Type message to user..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                        <Button text="Send" onAction="#sendComplaintMessage" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
                     </HBox>
                 </VBox>
             </HBox>
         </Tab>
     </TabPane>
-
 </VBox>
