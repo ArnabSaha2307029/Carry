@@ -16,4 +16,6 @@ public class User {
     public double getBalance() { return balance; }
     public String getAuthToken() { return authToken; }
     public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
+    public void setBalance(double balance) { this.balance = balance; }
 }
