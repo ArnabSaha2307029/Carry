@@ -33,7 +33,8 @@ public class CreateOrderController {
 
     @FXML private VBox step1Box, step2Box, step3Box, step4Box;
 
-    @FXML private ComboBox<String> itemTypeCombo;
+    @FXML private javafx.scene.layout.VBox typeDocBox, typeFoodBox, typeOtherBox;
+    private String selectedItemType = null;
     @FXML private TextField itemNameField, itemWeightField;
     @FXML private Label errorLabel1;
 
@@ -59,8 +60,8 @@ public class CreateOrderController {
 
     @FXML
     public void initialize() {
-        itemTypeCombo.getItems().addAll("Documents", "Food", "Other");
-        itemTypeCombo.getSelectionModel().selectFirst();
+        
+        selectTypeDoc(null);
 
         try (InputStream is = getClass().getResourceAsStream("/khulna_locations.json")) {
             if (is != null) {
@@ -92,8 +93,21 @@ public class CreateOrderController {
 
     @FXML private void goToStep1(ActionEvent event) { showBox(step1Box); }
 
+
+    @FXML private void selectTypeDoc(javafx.scene.input.MouseEvent event) { setSelection("Documents", typeDocBox, typeFoodBox, typeOtherBox); }
+    @FXML private void selectTypeFood(javafx.scene.input.MouseEvent event) { setSelection("Food", typeFoodBox, typeDocBox, typeOtherBox); }
+    @FXML private void selectTypeOther(javafx.scene.input.MouseEvent event) { setSelection("Other", typeOtherBox, typeDocBox, typeFoodBox); }
+
+    private void setSelection(String type, javafx.scene.layout.VBox selected, javafx.scene.layout.VBox... others) {
+        selectedItemType = type;
+        selected.setStyle("-fx-background-color: #FFEBEE; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;");
+        for (javafx.scene.layout.VBox box : others) {
+            box.setStyle("-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 1; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10; -fx-cursor: hand;");
+        }
+    }
+
     @FXML private void goToStep2(ActionEvent event) {
-        if (itemNameField.getText().trim().isEmpty() || itemWeightField.getText().trim().isEmpty()) {
+        if (selectedItemType == null || itemNameField.getText().trim().isEmpty() || itemWeightField.getText().trim().isEmpty()) {
             errorLabel1.setText("All fields are required."); return;
         }
         try {
@@ -229,7 +243,7 @@ public class CreateOrderController {
         String orderId = "ORD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         Order newOrder = new Order(
                 orderId, currentUser.getId(), null,
-                itemTypeCombo.getValue(), itemNameField.getText().trim(), finalWeight,
+                selectedItemType, itemNameField.getText().trim(), finalWeight,
                 senderNameField.getText().trim(), senderPhoneField.getText().trim(), pickupLocationCombo.getValue(), pickupInfoField.getText().trim(),
                 receiverNameField.getText().trim(), receiverPhoneField.getText().trim(), dropoffLocationCombo.getValue(), dropoffInfoField.getText().trim(),
                 finalDistanceKm, finalFee, OrderStatus.PENDING

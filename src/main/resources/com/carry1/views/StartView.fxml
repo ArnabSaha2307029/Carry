@@ -29,8 +29,8 @@
         <Label style="-fx-font-size: 24px; -fx-font-weight: bold;" text="Welcome to Carry!" />
         <Label style="-fx-font-size: 14px;" text="Please choose an option:" />
 
-        <Button onAction="#handleSignIn" prefWidth="200" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;" text="Sign In" />
-        <Button onAction="#handleSignUp" prefWidth="200" style="-fx-font-weight: bold; -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Sign Up" />
+        <Button onAction="#handleSignIn" prefWidth="200" style="-fx-background-radius: 30; -fx-background-color: #D32F2F; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 10, 0, 0, 4); -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 12 30; -fx-cursor: hand;" text="Sign In" />
+        <Button onAction="#handleSignUp" prefWidth="200" style="-fx-background-radius: 30; -fx-background-color: #D32F2F; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 10, 0, 0, 4); -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 12 30; -fx-cursor: hand;" text="Sign Up" />
     </VBox>
 
 </HBox>

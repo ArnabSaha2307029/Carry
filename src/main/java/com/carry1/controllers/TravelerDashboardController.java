@@ -71,6 +71,27 @@ public class TravelerDashboardController {
             }
         });
 
+        
+        javafx.util.Callback<javafx.scene.control.ListView<String>, javafx.scene.control.ListCell<String>> cellFactory = listView -> new javafx.scene.control.ListCell<String>() {
+            private final javafx.scene.control.Label label = new javafx.scene.control.Label();
+            {
+                label.setWrapText(true);
+                label.prefWidthProperty().bind(listView.widthProperty().subtract(35));
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(label);
+                }
+            }
+        };
+        chatListView.setCellFactory(cellFactory);
+        inboxChatListView.setCellFactory(cellFactory);
+        supportChatListView.setCellFactory(cellFactory);
         startBalancePoller();
     }
 
@@ -80,7 +101,10 @@ public class TravelerDashboardController {
             LocalDatabaseManager.refreshCurrentUser();
             User currentUser = LocalDatabaseManager.getCurrentUser();
             if (currentUser != null) {
-                Platform.runLater(() -> welcomeLabel.setText(String.format("Welcome, %s | Balance: %.2f TK", currentUser.getName(), currentUser.getBalance())));
+                Platform.runLater(() -> {
+                    String ratingText = currentUser.getRating() > 0 ? String.format("%.1f ★", currentUser.getRating()) : "New";
+                    welcomeLabel.setText(String.format("Welcome, %s | Balance: %.2f TK | Rating: %s", currentUser.getName(), currentUser.getBalance(), ratingText));
+                });
 
                                 if (inboxOverlayPane.isVisible()) {
                     if (inboxChatPane.isVisible() && currentInboxOrderId != null) {

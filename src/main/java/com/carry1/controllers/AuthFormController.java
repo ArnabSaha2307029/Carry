@@ -43,6 +43,7 @@ public class AuthFormController {
     @FXML private TextField captchaInputField;
 
     @FXML private TextField rollField;
+    @FXML private TextField customerEmailField;
     @FXML private TextField studentEmailField;
     @FXML private TextField departmentField;
     @FXML private TextField hallField;
@@ -104,6 +105,10 @@ public class AuthFormController {
 
         if (AuthFlowState.selectedRole == Role.ADMIN) {
             phoneField.setPromptText("Admin ID (adm)");
+        }
+
+        if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.CUSTOMER) {
+            customerEmailField.setVisible(true); customerEmailField.setManaged(true);
         }
 
         if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.TRAVELER) {
@@ -264,6 +269,15 @@ public class AuthFormController {
 
         errorLabel.textProperty().bind(viewModel.errorMessageProperty());
 
+        if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.CUSTOMER) {
+            String custEmail = customerEmailField.getText().trim();
+            if (custEmail.isEmpty() || !custEmail.contains("@") || !custEmail.contains(".")) {
+                showError("Invalid Email Address.");
+                return;
+            }
+            viewModel.emailProperty().set(custEmail);
+        }
+
         viewModel.processAction(() -> {
             Platform.runLater(() -> {
                 try {
@@ -321,7 +335,7 @@ public class AuthFormController {
         
         verifyOtpBtn.setDisable(true);
         cancelOtpBtn.setDisable(true);
-        otpErrorLabel.setStyle("-fx-text-fill: #2196F3;");
+        otpErrorLabel.setStyle("-fx-text-fill: #D32F2F;");
         otpErrorLabel.setText("Verification successful. Processing...");
 
         new Thread(() -> {

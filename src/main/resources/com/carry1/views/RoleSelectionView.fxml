@@ -29,11 +29,11 @@
 
         <Label fx:id="titleLabel" text="Select your role:" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
 
-        <Button text="Customer" onAction="#selectCustomer" prefWidth="200"/>
-        <Button text="Traveler" onAction="#selectTraveler" prefWidth="200"/>
-        <Button fx:id="adminButton" text="Admin" onAction="#selectAdmin" prefWidth="200"/>
+        <Button text="Customer" onAction="#selectCustomer" prefWidth="220" style="-fx-background-radius: 30; -fx-background-color: #D32F2F; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 10, 0, 0, 4); -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 12 30; -fx-cursor: hand;"/>
+        <Button text="Traveler" onAction="#selectTraveler" prefWidth="220" style="-fx-background-radius: 30; -fx-background-color: #D32F2F; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 10, 0, 0, 4); -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 12 30; -fx-cursor: hand;"/>
+        <Button fx:id="adminButton" text="Admin" onAction="#selectAdmin" prefWidth="220" style="-fx-background-radius: 30; -fx-background-color: #D32F2F; -fx-text-fill: white; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 10, 0, 0, 4); -fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 12 30; -fx-cursor: hand;"/>
 
-        <Button text="← Back" onAction="#goBack" prefWidth="100" style="-fx-margin-top: 20px;"/>
+        <Button text="← Back" onAction="#goBack" prefWidth="220" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 20; -fx-cursor: hand;"/>
     </VBox>
 
 </HBox>

@@ -37,7 +37,7 @@
                 </HBox>
                 <HBox spacing="20" alignment="CENTER">
                     <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
-                        <Label text="Total System Escrow &amp; Wallets" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
+                        <Label text="Total Liquid Funds" style="-fx-font-size: 14px; -fx-text-fill: #757575;"/>
                         <Label fx:id="systemMoneyLabel" text="0 TK" style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #F57C00;"/>
                     </VBox>
                     <VBox style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);" alignment="CENTER" prefWidth="200">
@@ -92,11 +92,22 @@
                     </HBox>
                     <ListView fx:id="complaintChatListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);"/>
                     <HBox spacing="5" style="-fx-background-color: #FAFAFA; -fx-padding: 8; -fx-background-radius: 5;">
-                        <TextField fx:id="adminChatInput" promptText="Type message to user..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                        <TextField fx:id="adminChatInput" promptText="Type message to user..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15; -fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;"/>
                         <Button text="Send" onAction="#sendComplaintMessage" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
                     </HBox>
                 </VBox>
             </HBox>
+        </Tab>
+
+        <Tab text="Transactions">
+            <VBox spacing="10" style="-fx-padding: 15; -fx-background-color: #FAFAFA;">
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label fx:id="transactionAlertLabel" textFill="RED" style="-fx-font-weight: bold;"/>
+                    <VBox HBox.hgrow="ALWAYS"/>
+                    <Button text="Reverse Transaction" onAction="#handleReverseTransaction" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                </HBox>
+                <ListView fx:id="transactionListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white;"/>
+            </VBox>
         </Tab>
     </TabPane>
 </VBox>

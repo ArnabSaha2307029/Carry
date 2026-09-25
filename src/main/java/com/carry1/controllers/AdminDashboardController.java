@@ -5,6 +5,8 @@ import com.carry1.database.LocalDatabaseManager;
 import com.carry1.models.Order;
 import com.carry1.models.OrderStatus;
 import com.carry1.models.User;
+import com.carry1.models.Transaction;
+import javafx.scene.control.ListCell;
 import com.carry1.models.Complaint;
 import com.carry1.models.ComplaintMessage;
 
@@ -23,6 +25,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class AdminDashboardController {
+    @FXML private javafx.scene.control.ListView<Transaction> transactionListView;
+    @FXML private javafx.scene.control.Label transactionAlertLabel;
 
     @FXML private Label activeOrdersLabel, deliveredOrdersLabel, systemMoneyLabel, adminProfitLabel;
 
@@ -50,11 +54,52 @@ public class AdminDashboardController {
     public void initialize() {
         setupUserTable();
         setupOrderTable();
+        setupTransactionList();
         setupComplaintList();
         startAdminPoller();
     }
 
     
+    
+    private void setupTransactionList() {
+        if (transactionListView == null) return;
+        transactionListView.setCellFactory(param -> new ListCell<>() {
+            @Override
+            protected void updateItem(Transaction t, boolean empty) {
+                super.updateItem(t, empty);
+                if (empty || t == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("[%d] | Sender: %s -> Receiver: %s | Amount: %.2f TK | Type: %s",
+                            t.getId(), t.getSenderId(), t.getReceiverId(), t.getAmount(), t.getType()));
+                }
+            }
+        });
+    }
+
+    @FXML
+    private void handleReverseTransaction(javafx.event.ActionEvent event) {
+        if (transactionListView == null) return;
+        Transaction selected = transactionListView.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            transactionAlertLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+            transactionAlertLabel.setText("Please select a transaction to reverse.");
+            return;
+        }
+        new Thread(() -> {
+            boolean success = LocalDatabaseManager.reverseTransaction(selected.getId());
+            javafx.application.Platform.runLater(() -> {
+                if (success) {
+                    transactionAlertLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+                    transactionAlertLabel.setText("Transaction reversed successfully!");
+                } else {
+                    transactionAlertLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
+                    transactionAlertLabel.setText("Reversal failed: Insufficient receiver balance or already reversed.");
+                }
+            });
+        }).start();
+    }
+
     private void startAdminPoller() {
         adminPoller = Executors.newSingleThreadScheduledExecutor();
         adminPoller.scheduleAtFixedRate(() -> {
@@ -64,11 +109,26 @@ public class AdminDashboardController {
 
             
             List<Complaint> complaints = LocalDatabaseManager.getOpenComplaints();
+            List<Transaction> transactions = LocalDatabaseManager.getAllTransactions();
             Platform.runLater(() -> {
+                if (transactionListView != null) {
+                    Transaction selected = transactionListView.getSelectionModel().getSelectedItem();
+                    transactionListView.getItems().setAll(transactions);
+                    if (selected != null) {
+                        for (Transaction t : transactions) {
+                            if (t.getId() == selected.getId()) {
+                                transactionListView.getSelectionModel().select(t);
+                                break;
+                            }
+                        }
+                    }
+                }
                 activeOrdersLabel.setText(String.valueOf(stats.getOrDefault("activeOrders", 0.0).intValue()));
                 deliveredOrdersLabel.setText(String.valueOf(stats.getOrDefault("deliveredOrders", 0.0).intValue()));
-                systemMoneyLabel.setText(String.format("%.2f TK", stats.getOrDefault("totalSystemMoney", 0.0)));
-                adminProfitLabel.setText(String.format("%.2f TK", stats.getOrDefault("adminProfit", 0.0)));
+                double totalAmount = stats.getOrDefault("totalSystemMoney", 0.0);
+                systemMoneyLabel.setText(String.format("%.2f TK", totalAmount));
+                double adminProfit = stats.getOrDefault("adminProfit", 0.0);
+                adminProfitLabel.setText(String.format("%.2f TK", adminProfit));
 
                 userTable.setItems(FXCollections.observableArrayList(users));
                 orderTable.setItems(FXCollections.observableArrayList(orders));

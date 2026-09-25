@@ -12,6 +12,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 import java.util.Random;
 
@@ -25,7 +28,47 @@ public class MockPaymentController {
 
     
     @FXML private Label step3Header;
-    @FXML private ComboBox<String> providerCombo;
+            private boolean isCardMode = false;
+    @FXML private ImageView method1Image, method2Image, method3Image, method4Image;
+
+    private void safeLoadImage(ImageView imageView, String imagePath) {
+        try {
+            java.io.InputStream stream = getClass().getResourceAsStream(imagePath);
+            if (stream != null) {
+                imageView.setImage(new Image(stream));
+            } else {
+                System.err.println("Warning: Image not found at " + imagePath);
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + imagePath);
+        }
+    }
+
+    private String selectedMethod = null;
+    @FXML private VBox method1Box, method2Box, method3Box, method4Box;
+
+    @FXML private void selectMethod1() { setSelection(isCardMode ? "Visa" : "bKash", method1Box, method2Box, method3Box, method4Box); }
+    @FXML private void selectMethod2() { setSelection(isCardMode ? "MasterCard" : "Nagad", method2Box, method1Box, method3Box, method4Box); }
+    @FXML private void selectMethod3() { setSelection(isCardMode ? "NexusPay" : "Rocket", method3Box, method1Box, method2Box, method4Box); }
+    @FXML private void selectMethod4() { setSelection(isCardMode ? "Amex" : "Upay", method4Box, method1Box, method2Box, method3Box); }
+
+    private void setSelection(String method, VBox selected, VBox... others) {
+        selectedMethod = method;
+        selected.setStyle("-fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-background-color: #FFCDD2; -fx-cursor: hand;");
+        for (VBox box : others) {
+            box.setStyle("-fx-border-color: transparent; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-cursor: hand;");
+        }
+    }
+
+    private void resetSelection() {
+        selectedMethod = null;
+        if (method1Box != null) {
+            method1Box.setStyle("-fx-border-color: transparent; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-cursor: hand;");
+            method2Box.setStyle("-fx-border-color: transparent; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-cursor: hand;");
+            method3Box.setStyle("-fx-border-color: transparent; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-cursor: hand;");
+            method4Box.setStyle("-fx-border-color: transparent; -fx-background-color: white; -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 5; -fx-cursor: hand;");
+        }
+    }
     @FXML private TextField accountNoField;
     @FXML private Label errorLabel3;
 
@@ -69,18 +112,28 @@ public class MockPaymentController {
     
     @FXML
     private void selectMobileBanking(ActionEvent event) {
+        isCardMode = false;
+        safeLoadImage(method1Image, "/bkash.png");
+        safeLoadImage(method2Image, "/nagad.png");
+        safeLoadImage(method3Image, "/rocket.png");
+        safeLoadImage(method4Image, "/upay.png");
+
         step3Header.setText("Mobile Banking Details");
-        providerCombo.getItems().clear();
-        providerCombo.getItems().addAll("bKash", "Nagad", "Upay", "Rocket");
+        resetSelection();
         accountNoField.setPromptText("Mobile Number");
         showBox(step3Box);
     }
 
     @FXML
     private void selectCard(ActionEvent event) {
+        isCardMode = true;
+        safeLoadImage(method1Image, "/visa.png");
+        safeLoadImage(method2Image, "/master.png");
+        safeLoadImage(method3Image, "/nexuspay.png");
+        safeLoadImage(method4Image, "/amex.png");
+
         step3Header.setText("Card Details");
-        providerCombo.getItems().clear();
-        providerCombo.getItems().addAll("Mastercard", "Visa Card", "NexusPay", "Amex");
+        resetSelection();
         accountNoField.setPromptText("Card Number");
         showBox(step3Box);
     }
@@ -90,7 +143,7 @@ public class MockPaymentController {
     
     @FXML
     private void goToStep4(ActionEvent event) {
-        if (providerCombo.getValue() == null || accountNoField.getText().trim().isEmpty()) {
+        if (selectedMethod == null || accountNoField.getText().trim().isEmpty()) {
             errorLabel3.setText("Please select a provider and enter number.");
             return;
         }
@@ -128,13 +181,13 @@ public class MockPaymentController {
         String enteredOtp = otpField.getText().trim();
 
         if (enteredOtp.isEmpty()) {
-            statusLabel.setStyle("-fx-text-fill: red;");
+            statusLabel.setStyle("-fx-text-fill: #D32F2F;");
             statusLabel.setText("Please enter OTP.");
             return;
         }
 
         if (!enteredOtp.equals(generatedOtp)) {
-            statusLabel.setStyle("-fx-text-fill: red;");
+            statusLabel.setStyle("-fx-text-fill: #D32F2F;");
             statusLabel.setText("Invalid OTP. Try again.");
             return;
         }
@@ -142,7 +195,7 @@ public class MockPaymentController {
         
         confirmBtn.setDisable(true);
         cancelOtpBtn.setDisable(true);
-        statusLabel.setStyle("-fx-text-fill: #2196F3;");
+        statusLabel.setStyle("-fx-text-fill: #D32F2F;");
         statusLabel.setText("Processing payment...");
 
         new Thread(() -> {
@@ -154,7 +207,7 @@ public class MockPaymentController {
             Platform.runLater(() -> {
                 if (success) {
                     LocalDatabaseManager.refreshCurrentUser();
-                    statusLabel.setStyle("-fx-text-fill: #4CAF50;");
+                    statusLabel.setStyle("-fx-text-fill: #D32F2F;");
                     statusLabel.setText("Payment Successful!");
 
                     new Thread(() -> {
@@ -162,7 +215,7 @@ public class MockPaymentController {
                         Platform.runLater(this::goBackToDashboard);
                     }).start();
                 } else {
-                    statusLabel.setStyle("-fx-text-fill: red;");
+                    statusLabel.setStyle("-fx-text-fill: #D32F2F;");
                     statusLabel.setText("Payment Failed. DB Error.");
                     confirmBtn.setDisable(false);
                     cancelOtpBtn.setDisable(false);

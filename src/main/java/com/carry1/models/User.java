@@ -5,7 +5,8 @@ public class User {
     private Role role;
     private double balance;
     private String authToken;
-    private String status; 
+    private String status;
+    private double rating; 
 
     public User(String id, String name, Role role, double balance, String authToken, String status) {
         this.id = id; this.name = name; this.role = role; this.balance = balance; this.authToken = authToken; this.status = status;
@@ -18,4 +19,6 @@ public class User {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public void setBalance(double balance) { this.balance = balance; }
+    public double getRating() { return rating; }
+    public void setRating(double rating) { this.rating = rating; }
 }

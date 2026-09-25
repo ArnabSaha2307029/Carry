@@ -71,6 +71,27 @@ public class CustomerDashboardController {
             }
         });
 
+        
+        javafx.util.Callback<javafx.scene.control.ListView<String>, javafx.scene.control.ListCell<String>> cellFactory = listView -> new javafx.scene.control.ListCell<String>() {
+            private final javafx.scene.control.Label label = new javafx.scene.control.Label();
+            {
+                label.setWrapText(true);
+                label.prefWidthProperty().bind(listView.widthProperty().subtract(35));
+            }
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    label.setText(item);
+                    setGraphic(label);
+                }
+            }
+        };
+        chatListView.setCellFactory(cellFactory);
+        inboxChatListView.setCellFactory(cellFactory);
+        supportChatListView.setCellFactory(cellFactory);
         startBalancePoller();
     }
 
