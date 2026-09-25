@@ -10,32 +10,41 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TrackOrderController {
 
-    @FXML private ListView<String> orderListView;
-    @FXML private VBox detailsPane, travelerInfoPane;
+    @FXML private ListView<Order> activeOrdersListView;
+    @FXML private VBox orderDetailPane;
+    @FXML private VBox travelerInfoPane;
 
-    @FXML private Label orderIdLabel, itemNameLabel, routeLabel, statusLabel;
-    @FXML private Label travelerNameLabel, travelerPhoneLabel, travelerIdLabel;
-
-    private Map<String, Order> orderMap = new HashMap<>();
+    @FXML private Label detailOrderId, detailRoute, detailFee, detailStatus;
+    @FXML private Label travelerNameLabel, travelerPhoneLabel;
 
     @FXML
     public void initialize() {
-        detailsPane.setVisible(false);
+        orderDetailPane.setVisible(false);
+        setupListView();
         loadUserOrders();
 
-        orderListView.setOnMouseClicked(event -> {
-            String selectedId = orderListView.getSelectionModel().getSelectedItem();
-            if (selectedId != null && orderMap.containsKey(selectedId)) {
-                showOrderDetails(orderMap.get(selectedId));
+        activeOrdersListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateDetailPane(newVal));
+    }
+
+    private void setupListView() {
+        activeOrdersListView.setCellFactory(param -> new ListCell<Order>() {
+            @Override
+            protected void updateItem(Order order, boolean empty) {
+                super.updateItem(order, empty);
+                if (empty || order == null) {
+                    setText(null);
+                } else {
+                    setText("Order: " + order.getOrderId() + " (" + order.getStatus().toString() + ")");
+                    setStyle("-fx-font-weight: bold; -fx-padding: 10;");
+                }
             }
         });
     }
@@ -46,24 +55,23 @@ public class TrackOrderController {
 
         new Thread(() -> {
             List<Order> orders = LocalDatabaseManager.getOrdersByCustomerId(currentUser.getId());
-            List<String> orderIds = orders.stream().map(Order::getOrderId).toList();
-
-            for (Order o : orders) {
-                orderMap.put(o.getOrderId(), o);
-            }
-
             Platform.runLater(() -> {
-                orderListView.setItems(FXCollections.observableArrayList(orderIds));
+                activeOrdersListView.setItems(FXCollections.observableArrayList(orders));
             });
         }).start();
     }
 
-    private void showOrderDetails(Order order) {
-        detailsPane.setVisible(true);
-        orderIdLabel.setText("Order ID: " + order.getOrderId());
-        itemNameLabel.setText("Item: " + order.getItemName());
-        routeLabel.setText("Route: " + order.getPickupLocation() + " ➔ " + order.getDropoffLocation());
-        statusLabel.setText(order.getStatus().name().replace("_", " "));
+    private void updateDetailPane(Order order) {
+        if (order == null) {
+            orderDetailPane.setVisible(false);
+            return;
+        }
+
+        orderDetailPane.setVisible(true);
+        detailOrderId.setText("Order ID: " + order.getOrderId());
+        detailRoute.setText("Route: " + order.getPickupLocation() + " -> " + order.getDropoffLocation());
+        detailFee.setText("Fee: " + order.getRewardAmount() + " TK");
+        detailStatus.setText(order.getStatus().name().replace("_", " "));
 
         if (order.getTravelerId() != null &&
                 (order.getStatus() == OrderStatus.PICKED_UP ||
@@ -77,7 +85,6 @@ public class TrackOrderController {
                 Platform.runLater(() -> {
                     travelerNameLabel.setText("Name: " + tName);
                     travelerPhoneLabel.setText("Phone: " + tPhone);
-                    travelerIdLabel.setText("Traveler ID: " + order.getTravelerId());
                     travelerInfoPane.setVisible(true);
                 });
             }).start();
