@@ -9,8 +9,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,6 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LiveOrderFeedController {
 
+    @FXML private Label warningLabel;
     @FXML private TableView<Order> feedTable;
     @FXML private TableColumn<Order, String> colOrderId, colItemName, colPickup, colDropoff;
     @FXML private TableColumn<Order, String> colDeliveryFee, colCharge, colTotalAmount;
@@ -90,12 +91,9 @@ public class LiveOrderFeedController {
                 Platform.runLater(() -> {
                     btn.setText("Accept");
                     btn.setDisable(false);
-
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("Insufficient Balance");
-                    alert.setHeaderText("Security Deposit Required");
-                    alert.setContentText("You must have at least 50 TK in your account as a security deposit to accept an order. Please add funds to your wallet.");
-                    alert.showAndWait();
+                    warningLabel.setText("Security Deposit Required: You must have at least 50 TK in your account to accept an order.");
+                    warningLabel.setVisible(true);
+                    warningLabel.setManaged(true);
                 });
                 return;
             }
@@ -103,6 +101,8 @@ public class LiveOrderFeedController {
             boolean success = LocalDatabaseManager.acceptOrder(order.getOrderId(), refreshedUser.getId());
             Platform.runLater(() -> {
                 if (success) {
+                    warningLabel.setVisible(false);
+                    warningLabel.setManaged(false);
                     feedTable.getItems().remove(order);
                 } else {
                     btn.setText("Accept");

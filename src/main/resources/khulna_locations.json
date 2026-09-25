@@ -1,0 +1,29 @@
+{
+  "khulna_locations": [
+    { "name": "KUET", "lon": 89.5024, "lat": 22.9005 },
+    { "name": "Fulbarigate", "lon": 89.5055, "lat": 22.8887 },
+    { "name": "Phultala", "lon": 89.4650, "lat": 22.9750 },
+    { "name": "Natun Rasta More", "lon": 89.5285, "lat": 22.8620 },
+    { "name": "Daulatpur", "lon": 89.5218, "lat": 22.8712 },
+    { "name": "Khalishpur", "lon": 89.5422, "lat": 22.8533 },
+    { "name": "Boyra", "lon": 89.5403, "lat": 22.8398 },
+    { "name": "Joragate", "lon": 89.5445, "lat": 22.8320 },
+    { "name": "Sonadanga", "lon": 89.5434, "lat": 22.8256 },
+    { "name": "Nirala", "lon": 89.5450, "lat": 22.8120 },
+    { "name": "Shib Bari More", "lon": 89.5539, "lat": 22.8159 },
+    { "name": "Moylapota", "lon": 89.5545, "lat": 22.8105 },
+    { "name": "PTI More", "lon": 89.5602, "lat": 22.8125 },
+    { "name": "Dakbangla More", "lon": 89.5663, "lat": 22.8152 },
+    { "name": "Boro Bazar", "lon": 89.5680, "lat": 22.8130 },
+    { "name": "Royal More", "lon": 89.5615, "lat": 22.8094 },
+    { "name": "Tutpara", "lon": 89.5630, "lat": 22.8000 },
+    { "name": "Rupsha Ghat", "lon": 89.5786, "lat": 22.8016 },
+    { "name": "Gollamari", "lon": 89.5398, "lat": 22.8021 },
+    { "name": "Khulna University (KU)", "lon": 89.5348, "lat": 22.8026 },
+    { "name": "Zero Point", "lon": 89.5312, "lat": 22.7845 },
+    { "name": "Batiaghata", "lon": 89.5160, "lat": 22.7430 },
+    { "name": "Dumuria", "lon": 89.4230, "lat": 22.8070 },
+    { "name": "Arongghata", "lon": 89.4890, "lat": 22.8680 },
+    { "name": "Gollamari Bridge", "lon": 89.5385, "lat": 22.8005 }
+  ]
+}
