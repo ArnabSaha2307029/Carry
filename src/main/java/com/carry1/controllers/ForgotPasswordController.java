@@ -45,6 +45,11 @@ public class ForgotPasswordController {
             return;
         }
 
+        if (!phone.matches("^01\\d{9}$")) {
+            errorLabel1.setText("Invalid Phone No.");
+            return;
+        }
+
         boolean exists = LocalDatabaseManager.checkUserExists(phone, currentRole);
         if (!exists) {
             errorLabel1.setText("No account found with this phone number.");
@@ -54,7 +59,7 @@ public class ForgotPasswordController {
         errorLabel1.setText("");
         generatedOtp = String.format("%04d", new Random().nextInt(10000));
 
-        // UI Steps Switch
+        
         step1Box.setVisible(false);
         step2Box.setVisible(true);
 
@@ -81,7 +86,7 @@ public class ForgotPasswordController {
         if (success) {
             showToast("Password reset successfully! Redirecting...");
 
-            // দেড় সেকেন্ড ওয়েট করে লগইন পেজে পাঠাবে যাতে ইউজার সাকসেস মেসেজটা দেখতে পায়
+            
             new Thread(() -> {
                 try { Thread.sleep(1500); } catch (InterruptedException e) {}
                 Platform.runLater(() -> SceneManager.switchScene("AuthFormView.fxml", "Carry1 - Login"));

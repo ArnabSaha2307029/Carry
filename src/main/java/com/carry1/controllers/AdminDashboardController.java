@@ -41,7 +41,7 @@ public class AdminDashboardController {
         startAdminPoller();
     }
 
-    // ডেডিকেটেড অ্যাডমিন পোলিং (৩ সেকেন্ড পরপর সব ডাটা সিঙ্ক করবে)
+    
     private void startAdminPoller() {
         adminPoller = Executors.newSingleThreadScheduledExecutor();
         adminPoller.scheduleAtFixedRate(() -> {
@@ -61,10 +61,10 @@ public class AdminDashboardController {
         }, 0, 3, TimeUnit.SECONDS);
     }
 
-    // ম্যানুয়াল রিফ্রেশ বাটন
+    
     @FXML
     private void loadStats() {
-        // পোলিং অটোমেটিক করছে, তাই এখানে ডামি কল রাখা হলো যাতে বাটনে চাপলে ক্র্যাশ না করে
+        
         System.out.println("Stats auto-refreshing via poller...");
     }
 

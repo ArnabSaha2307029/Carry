@@ -1,9 +1,11 @@
 package com.carry1.controllers;
 
 import com.carry1.SceneManager;
+import com.carry1.database.LocalDatabaseManager;
 import com.carry1.models.AuthFlowState;
 import com.carry1.models.Role;
 import com.carry1.viewmodels.LoginViewModel;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
@@ -12,14 +14,23 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.time.LocalDate;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AuthFormController {
+
+    @FXML private HBox mainFormBox;
+    @FXML private VBox otpVerificationBox;
+    @FXML private Label notificationToast;
 
     @FXML private Label headerLabel;
     @FXML private TextField nameField;
@@ -31,10 +42,30 @@ public class AuthFormController {
     @FXML private Canvas captchaCanvas;
     @FXML private TextField captchaInputField;
 
+    @FXML private TextField rollField;
+    @FXML private TextField studentEmailField;
+    @FXML private TextField departmentField;
+    @FXML private TextField hallField;
+
+    @FXML private TextField otpInputField;
+    @FXML private Label otpErrorLabel;
+    @FXML private Button verifyOtpBtn;
+    @FXML private Button cancelOtpBtn;
+
     private LoginViewModel viewModel;
     private String currentCaptchaText;
     private final Random random = new Random();
     private static final String CAPTCHA_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+
+    private static final String PHONE_REGEX = "^01\\d{9}$";
+    private static final String ROLL_REGEX = "^\\d{7}$";
+    private static final String EMAIL_REGEX = "^[a-zA-Z]+(\\d{7})@stud\\.kuet\\.ac\\.bd$";
+
+    private String currentOtp;
+    private String capturedRoll;
+    private String capturedDept;
+    private String capturedHall;
+    private int capturedGradYear;
 
     @FXML
     public void initialize() {
@@ -62,6 +93,13 @@ public class AuthFormController {
             if (newVal) actionButton.setText("Processing...");
             else actionButton.setText(AuthFlowState.isSignUpMode ? "Create Account" : "Login");
         });
+
+        if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.TRAVELER) {
+            rollField.setVisible(true); rollField.setManaged(true);
+            studentEmailField.setVisible(true); studentEmailField.setManaged(true);
+            departmentField.setVisible(true); departmentField.setManaged(true);
+            hallField.setVisible(true); hallField.setManaged(true);
+        }
 
         generateCaptcha();
     }
@@ -137,21 +175,78 @@ public class AuthFormController {
         generateCaptcha();
     }
 
+    private void showError(String message) {
+        errorLabel.textProperty().unbind();
+        errorLabel.setText(message);
+    }
+
     @FXML
     private void handleSubmit(ActionEvent event) {
-        String userInput = captchaInputField.getText().trim().toUpperCase();
+        String captchaInput = captchaInputField.getText().trim().toUpperCase();
 
-        if (userInput.isEmpty()) {
-            errorLabel.textProperty().unbind();
-            errorLabel.setText("Please enter the CAPTCHA code.");
+        if (captchaInput.isEmpty()) {
+            showError("Please enter the CAPTCHA code.");
             return;
         }
 
-        if (!userInput.equals(currentCaptchaText)) {
-            errorLabel.textProperty().unbind();
-            errorLabel.setText("Incorrect CAPTCHA. Please try again.");
+        if (!captchaInput.equals(currentCaptchaText)) {
+            showError("Incorrect CAPTCHA. Please try again.");
             captchaInputField.clear();
             generateCaptcha();
+            return;
+        }
+
+        String phoneText = phoneField.getText().trim();
+        if (!phoneText.isEmpty() && !phoneText.matches(PHONE_REGEX)) {
+            showError("Invalid Phone No.");
+            return;
+        }
+
+        if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.TRAVELER) {
+            String roll = rollField.getText().trim();
+            String email = studentEmailField.getText().trim();
+            String dept = departmentField.getText().trim();
+            String hall = hallField.getText().trim();
+
+            if (roll.isEmpty() || email.isEmpty() || dept.isEmpty() || hall.isEmpty()) {
+                showError("All student verification fields are required.");
+                return;
+            }
+
+            if (!roll.matches(ROLL_REGEX)) {
+                showError("Invalid Roll No.");
+                return;
+            }
+
+            Matcher emailMatcher = Pattern.compile(EMAIL_REGEX).matcher(email);
+            if (!emailMatcher.matches()) {
+                showError("Invalid Email Address.");
+                return;
+            }
+
+            String emailRollDigits = emailMatcher.group(1);
+            if (!emailRollDigits.equals(roll)) {
+                showError("Invalid Email Address.");
+                return;
+            }
+
+            int admissionYear = 2000 + Integer.parseInt(roll.substring(0, 2));
+            int gradYear = admissionYear + 5;
+            LocalDate expiryDate = LocalDate.of(gradYear, 12, 31);
+
+            if (LocalDate.now().isAfter(expiryDate)) {
+                showError("Student Id validity expired.");
+                return;
+            }
+
+            capturedRoll = roll;
+            capturedDept = dept;
+            capturedHall = hall;
+            capturedGradYear = gradYear;
+
+            mainFormBox.setVisible(false);
+            otpVerificationBox.setVisible(true);
+            triggerOtpSystem();
             return;
         }
 
@@ -169,6 +264,76 @@ public class AuthFormController {
                 SceneManager.switchScene("AdminDashboardView.fxml", "Carry1 - Admin Control Panel");
             }
         });
+    }
+
+    private void triggerOtpSystem() {
+        int number = random.nextInt(999999);
+        currentOtp = String.format("%06d", number);
+
+        new Thread(() -> {
+            try { Thread.sleep(500); } catch (InterruptedException e) {}
+
+            Platform.runLater(() -> {
+                notificationToast.setText("System Message: Your OTP is " + currentOtp);
+                notificationToast.setVisible(true);
+
+                new Thread(() -> {
+                    try { Thread.sleep(5000); } catch (InterruptedException e) {}
+                    Platform.runLater(() -> notificationToast.setVisible(false));
+                }).start();
+            });
+        }).start();
+    }
+
+    @FXML
+    private void handleVerifyOtp(ActionEvent event) {
+        String enteredOtp = otpInputField.getText().trim();
+
+        if (enteredOtp.isEmpty()) {
+            otpErrorLabel.setStyle("-fx-text-fill: red;");
+            otpErrorLabel.setText("Please enter OTP.");
+            return;
+        }
+
+        if (!enteredOtp.equals(currentOtp)) {
+            otpErrorLabel.setStyle("-fx-text-fill: red;");
+            otpErrorLabel.setText("Invalid OTP. Try again.");
+            return;
+        }
+        
+        verifyOtpBtn.setDisable(true);
+        cancelOtpBtn.setDisable(true);
+        otpErrorLabel.setStyle("-fx-text-fill: #2196F3;");
+        otpErrorLabel.setText("Verification successful. Processing...");
+
+        new Thread(() -> {
+            try { Thread.sleep(1000); } catch (InterruptedException e) {}
+
+            Platform.runLater(() -> {
+                otpVerificationBox.setVisible(false);
+                mainFormBox.setVisible(true);
+                errorLabel.textProperty().bind(viewModel.errorMessageProperty());
+
+                viewModel.processAction(() -> {
+                    LocalDatabaseManager.saveTravelerProfile(
+                        LocalDatabaseManager.getCurrentUser().getId(),
+                        capturedRoll, capturedDept, capturedHall, capturedGradYear
+                    );
+                    AuthFlowState.clear();
+                    SceneManager.switchScene("StartView.fxml", "Carry1 - Start");
+                });
+            });
+        }).start();
+    }
+
+    @FXML
+    private void handleCancelOtp(ActionEvent event) {
+        otpVerificationBox.setVisible(false);
+        mainFormBox.setVisible(true);
+        otpInputField.clear();
+        otpErrorLabel.setText("");
+        captchaInputField.clear();
+        generateCaptcha();
     }
 
     @FXML

@@ -81,11 +81,11 @@ public class LiveOrderFeedController {
         btn.setDisable(true);
 
         new Thread(() -> {
-            // ডাটাবেস থেকে ইউজারের লেটেস্ট ব্যালেন্স চেক করা হচ্ছে
+            
             LocalDatabaseManager.refreshCurrentUser();
             User refreshedUser = LocalDatabaseManager.getCurrentUser();
 
-            // জামানত লজিক: ৫০ টাকার কম থাকলে এক্সেপ্ট করতে পারবে না
+            
             if (refreshedUser != null && refreshedUser.getBalance() < 50.0) {
                 Platform.runLater(() -> {
                     btn.setText("Accept");

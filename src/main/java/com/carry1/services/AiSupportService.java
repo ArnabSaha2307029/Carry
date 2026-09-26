@@ -43,7 +43,7 @@ public class AiSupportService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            // 404 বা অন্য কোনো এরর দিলে এক্সাক্ট কারণটা কনসোলে প্রিন্ট হবে, যাতে ব্লাইন্ডলি গেস করতে না হয়
+            
             if (response.statusCode() != 200) {
                 System.out.println("Google API Error Body: " + response.body());
                 return "API Error: " + response.statusCode();

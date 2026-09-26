@@ -80,7 +80,7 @@ public class TravelerDashboardController {
         if(balancePoller != null && !balancePoller.isShutdown()) balancePoller.shutdownNow();
     }
 
-    // NEW METHOD: উইথড্রয়াল পেজে যাওয়ার জন্য
+    
     @FXML private void handleWithdrawFunds(ActionEvent event) { stopPoller(); SceneManager.switchScene("MockWithdrawalView.fxml", "Carry1 - Withdraw Funds"); }
 
     @FXML private void handleLiveFeed(ActionEvent event) { stopPoller(); SceneManager.switchScene("LiveOrderFeedView.fxml", "Carry1 - Live Order Feed"); }

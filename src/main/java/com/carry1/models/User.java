@@ -5,7 +5,7 @@ public class User {
     private Role role;
     private double balance;
     private String authToken;
-    private String status; // ACTIVE or BANNED
+    private String status; 
 
     public User(String id, String name, Role role, double balance, String authToken, String status) {
         this.id = id; this.name = name; this.role = role; this.balance = balance; this.authToken = authToken; this.status = status;

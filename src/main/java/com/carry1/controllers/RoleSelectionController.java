@@ -17,7 +17,7 @@ public class RoleSelectionController {
     public void initialize() {
         if (AuthFlowState.isSignUpMode) {
             titleLabel.setText("Sign Up as:");
-            // Sign Up এর সময় Admin বাটন গায়েব করে দেওয়া হলো
+            
             adminButton.setVisible(false);
             adminButton.setManaged(false);
         } else {

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.MyDeliveriesController">
-    <!-- Main Layer -->
+    
     <VBox alignment="CENTER" spacing="15.0">
         <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
         <Label text="My Deliveries" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
@@ -26,13 +26,13 @@
                 <TableColumn fx:id="colReward" text="Reward" prefWidth="80"/>
                 <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
                 <TableColumn fx:id="colAction" text="Status Action" prefWidth="120"/>
-                <TableColumn fx:id="colChat" text="Chat" prefWidth="100"/> <!-- চ্যাটের জন্য নতুন কলাম -->
+                <TableColumn fx:id="colChat" text="Chat" prefWidth="100"/> 
             </columns>
         </TableView>
         <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
     </VBox>
 
-    <!-- Chat Overlay -->
+    
     <VBox fx:id="chatOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="350" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #2196F3; -fx-padding: 10;">
             <Label fx:id="chatHeaderLabel" text="Chat" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>

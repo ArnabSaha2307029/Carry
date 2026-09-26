@@ -12,7 +12,7 @@ public class Main extends Application {
 
         SceneManager.setMainStage(stage);
 
-        // অ্যাপ চালু হওয়ার সাথে সাথেই ডিফল্টভাবে ফুল স্ক্রিন (Maximized) করে দেবে
+        
         stage.setMaximized(true);
 
         stage.show();

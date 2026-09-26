@@ -9,53 +9,79 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ScrollPane?>
 
-<HBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AuthFormController">
+<StackPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AuthFormController">
 
-    <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
-        <children>
-            <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
-                <image>
-                    <Image url="@../../../Carry.001.png" />
-                </image>
-            </ImageView>
-        </children>
+    <HBox fx:id="mainFormBox" prefHeight="720.0" prefWidth="1280.0">
+        <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
+            <children>
+                <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Carry.001.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
+
+        <ScrollPane fitToWidth="true" prefWidth="640.0" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: white; -fx-background-color: white;" HBox.hgrow="ALWAYS">
+            <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: white;">
+                <padding>
+                    <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
+                </padding>
+
+                <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+
+                <TextField fx:id="nameField" promptText="Full Name" maxWidth="250"/>
+                <TextField fx:id="phoneField" promptText="Phone No" maxWidth="250"/>
+                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+
+                <TextField fx:id="rollField" promptText="Roll No" maxWidth="250" visible="false" managed="false"/>
+                <TextField fx:id="studentEmailField" promptText="Student Email" maxWidth="250" visible="false" managed="false"/>
+                <TextField fx:id="departmentField" promptText="Department" maxWidth="250" visible="false" managed="false"/>
+                <TextField fx:id="hallField" promptText="Hall" maxWidth="250" visible="false" managed="false"/>
+
+                <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
+
+                <Label text="Enter the code below:" style="-fx-font-size: 13px; -fx-text-fill: #424242;"/>
+
+                <Canvas fx:id="captchaCanvas" width="250" height="70"
+                        style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);"/>
+
+                <HBox spacing="8.0" alignment="CENTER_LEFT" maxWidth="250">
+                    <TextField fx:id="captchaInputField" promptText="Type code here" prefWidth="192"
+                               style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <Button text="↻" onAction="#handleRefreshCaptcha" prefWidth="50"
+                            style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                </HBox>
+
+                <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250"
+                        style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+
+                <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword"
+                        style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
+
+                <Button text="← Back" onAction="#goBack" prefWidth="100"
+                        style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+            </VBox>
+        </ScrollPane>
+    </HBox>
+
+    <VBox fx:id="otpVerificationBox" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Verification" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Enter the 6-digit OTP sent to your email" style="-fx-text-fill: #555;"/>
+        <TextField fx:id="otpInputField" promptText="6-Digit OTP" maxWidth="300" alignment="CENTER" style="-fx-font-size: 20px; -fx-letter-spacing: 5px;"/>
+        <Label fx:id="otpErrorLabel" textFill="RED" wrapText="true" maxWidth="300" alignment="CENTER" style="-fx-font-weight: bold;"/>
+        <Button fx:id="verifyOtpBtn" text="OK" onAction="#handleVerifyOtp" prefWidth="300" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+        <Button fx:id="cancelOtpBtn" text="Cancel Registration" onAction="#handleCancelOtp" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: red;"/>
     </VBox>
 
-    <VBox alignment="CENTER" prefWidth="640.0" spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
-        <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-        </padding>
+    <Label fx:id="notificationToast" visible="false" StackPane.alignment="TOP_CENTER"
+           style="-fx-background-color: #333; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);">
+        <StackPane.margin><Insets top="30"/></StackPane.margin>
+    </Label>
 
-        <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
-
-        <TextField fx:id="nameField" promptText="Full Name" maxWidth="250"/>
-        <TextField fx:id="phoneField" promptText="Phone Number" maxWidth="250"/>
-        <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
-
-        <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
-
-        <Label text="Enter the code below:" style="-fx-font-size: 13px; -fx-text-fill: #424242;"/>
-
-        <Canvas fx:id="captchaCanvas" width="250" height="70"
-                style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);"/>
-
-        <HBox spacing="8.0" alignment="CENTER_LEFT" maxWidth="250">
-            <TextField fx:id="captchaInputField" promptText="Type code here" prefWidth="192"
-                       style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
-            <Button text="↻" onAction="#handleRefreshCaptcha" prefWidth="50"
-                    style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 5;"/>
-        </HBox>
-
-        <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250"
-                style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
-
-        <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword"
-                style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
-
-        <Button text="← Back" onAction="#goBack" prefWidth="100"
-                style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
-    </VBox>
-
-</HBox>
+</StackPane>
