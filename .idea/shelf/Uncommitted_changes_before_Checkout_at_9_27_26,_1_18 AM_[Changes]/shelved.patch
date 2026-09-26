@@ -1,0 +1,64 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"74a513a3-2b6e-44d8-bc11-01e2b7d3427a\" name=\"Changes\" comment=\"This is the base version of the Desktop app Carry\">\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java\" afterDir=\"false\" />\n      <change afterPath=\"$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java\" afterDir=\"false\" />\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"FxmlFile\" />\n        <option value=\"Class\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"GitHubPullRequestSearchHistory\"><![CDATA[{\n  \"lastFilter\": {\n    \"state\": \"OPEN\",\n    \"assignee\": \"ArnabSaha2307029\"\n  }\n}]]></component>\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\n  \"selectedUrlAndAccountId\": {\n    \"url\": \"https://github.com/ArnabSaha2307029/Carry.git\",\n    \"accountId\": \"445c0b88-0b19-47a9-895d-7beb82c2a5cf\"\n  }\n}]]></component>\n  <component name=\"MavenImportPreferences\">\n    <option name=\"generalSettings\">\n      <MavenGeneralSettings>\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\n      </MavenGeneralSettings>\n    </option>\n  </component>\n  <component name=\"ProblemsViewState\">\n    <option name=\"selectedTabId\" value=\"CurrentFile\" />\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;customColor&quot;: &quot;&quot;,\n  &quot;associatedIndex&quot;: 0\n}</component>\n  <component name=\"ProjectId\" id=\"3JWM803D0ie2E7TwdO8dc7hfHZt\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\"><![CDATA[{\n  \"keyToString\": {\n    \"Application.Launcher.executor\": \"Run\",\n    \"Application.Main.executor\": \"Run\",\n    \"Maven.carry1 [clean,install,-U].executor\": \"Run\",\n    \"Maven.carry1 [mvn,clean,install,-U].executor\": \"Run\",\n    \"ModuleVcsDetector.initialDetectionPerformed\": \"true\",\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\n    \"RunOnceActivity.typescript.service.memoryLimit.init\": \"true\",\n    \"codeWithMe.voiceChat.enabledByDefault\": \"false\",\n    \"git-widget-placeholder\": \"master\",\n    \"kotlin-language-version-configured\": \"true\",\n    \"last_opened_file_path\": \"/Users/arnabsmacbook/Desktop/carry1\",\n    \"nodejs_package_manager_path\": \"npm\"\n  }\n}]]></component>\n  <component name=\"RunAnythingCache\">\n    <option name=\"myCommands\">\n      <command value=\"mvn mvn clean install -U\" />\n      <command value=\"mvn clean install -U\" />\n    </option>\n  </component>\n  <component name=\"RunManager\">\n    <configuration name=\"Launcher\" type=\"Application\" factoryName=\"Application\" singleton=\"false\">\n      <option name=\"MAIN_CLASS_NAME\" value=\"com.carry1.Launcher\" />\n      <module name=\"carry1\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.337\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.8665.337\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"74a513a3-2b6e-44d8-bc11-01e2b7d3427a\" name=\"Changes\" comment=\"\" />\n      <created>1789772211276</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1789772211276</updated>\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"This is the base version of the Desktop app Carry\" />\n    <MESSAGE value=\"This is the base version of the Desktop app Carry.Next update maybe Forget Password\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"This is the base version of the Desktop app Carry.Next update maybe Forget Password\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision bf43db3af33167d2197c5f077e7bd7c82f8dc569)
++++ b/.idea/workspace.xml	(date 1790450121206)
+@@ -4,14 +4,7 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" afterDir="false" />
+-    </list>
++    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -28,18 +21,18 @@
+   <component name="Git.Settings">
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+   </component>
+-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+-  "lastFilter": {
+-    "state": "OPEN",
+-    "assignee": "ArnabSaha2307029"
++  <component name="GitHubPullRequestSearchHistory">{
++  &quot;lastFilter&quot;: {
++    &quot;state&quot;: &quot;OPEN&quot;,
++    &quot;assignee&quot;: &quot;ArnabSaha2307029&quot;
+   }
+-}]]></component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/ArnabSaha2307029/Carry.git",
+-    "accountId": "445c0b88-0b19-47a9-895d-7beb82c2a5cf"
++}</component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/ArnabSaha2307029/Carry.git&quot;,
++    &quot;accountId&quot;: &quot;445c0b88-0b19-47a9-895d-7beb82c2a5cf&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="MavenImportPreferences">
+     <option name="generalSettings">
+       <MavenGeneralSettings>
+@@ -69,7 +62,7 @@
+     "RunOnceActivity.ShowReadmeOnStart": "true",
+     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+     "codeWithMe.voiceChat.enabledByDefault": "false",
+-    "git-widget-placeholder": "master",
++    "git-widget-placeholder": "Captcha",
+     "kotlin-language-version-configured": "true",
+     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
+     "nodejs_package_manager_path": "npm"
