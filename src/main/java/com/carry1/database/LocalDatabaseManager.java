@@ -31,7 +31,7 @@ public class LocalDatabaseManager {
             if (!rs.next()) {
                 stmt.execute("INSERT INTO users (id, name, phone, password, role, balance, account_status) VALUES ('ADMIN-adm', 'System Admin', 'adm', 'adm123', 'ADMIN', 0.0, 'ACTIVE')");
             }
-        } catch (SQLException e) { System.exit(1); }
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 
     // --- USER RELATED METHODS ---
@@ -71,7 +71,6 @@ public class LocalDatabaseManager {
         } catch (SQLException e) {}
     }
 
-    // NEW ADDED MISSING METHODS FOR MOCK PAYMENT/WITHDRAWAL
     public static boolean addFundsToUser(String userId, double amount) {
         String sql = "UPDATE users SET balance = balance + ? WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -194,7 +193,6 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { return false; }
     }
 
-    // --- DISPUTE & ADMIN OVERRIDE ---
     public static boolean reportDispute(String orderId) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE orders SET status = 'DISPUTED' WHERE order_id = ?")) {
             pstmt.setString(1, orderId); return pstmt.executeUpdate() > 0;
@@ -220,7 +218,6 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { return false; }
     }
 
-    // --- GENERAL ORDER EXTRACTION & FETCHING ---
     private static Order extractOrderFromResultSet(ResultSet rs) throws SQLException {
         return new Order(rs.getString("order_id"), rs.getString("customer_id"), rs.getString("traveler_id"), rs.getString("item_type"), rs.getString("item_name"), rs.getDouble("weight"), rs.getString("sender_name"), rs.getString("sender_phone"), rs.getString("pickup_loc"), rs.getString("pickup_info"), rs.getString("receiver_name"), rs.getString("receiver_phone"), rs.getString("dropoff_loc"), rs.getString("dropoff_info"), rs.getDouble("distance_km"), rs.getDouble("reward"), OrderStatus.valueOf(rs.getString("status")));
     }
@@ -264,7 +261,6 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { return false; }
     }
 
-    // --- RATINGS AND TIPS ---
     public static boolean submitTravelerRating(String orderId, String travelerId, String customerId, int ratingValue) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ratings (order_id, traveler_id, customer_id, rating_value) VALUES (?, ?, ?, ?)")) {
             pstmt.setString(1, orderId); pstmt.setString(2, travelerId); pstmt.setString(3, customerId); pstmt.setInt(4, ratingValue); return pstmt.executeUpdate() > 0;
@@ -284,7 +280,6 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { return false; }
     }
 
-    // --- MESSAGING SYSTEM ---
     public static boolean sendMessage(String orderId, String senderId, String receiverId, String text) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO messages (order_id, sender_id, receiver_id, message_text, timestamp, is_read) VALUES (?, ?, ?, ?, ?, 0)")) {
             pstmt.setString(1, orderId); pstmt.setString(2, senderId); pstmt.setString(3, receiverId); pstmt.setString(4, text); pstmt.setLong(5, System.currentTimeMillis()); return pstmt.executeUpdate() > 0;
@@ -322,5 +317,26 @@ public class LocalDatabaseManager {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE messages SET is_read = 1 WHERE order_id = ? AND receiver_id = ?")) {
             pstmt.setString(1, orderId); pstmt.setString(2, receiverId); pstmt.executeUpdate();
         } catch (SQLException e) {}
+    }
+
+
+    public static boolean checkUserExists(String phone, Role role) {
+        String sql = "SELECT id FROM users WHERE phone = ? AND role = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, phone);
+            pstmt.setString(2, role.name());
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) { return false; }
+    }
+
+    public static boolean updateUserPassword(String phone, Role role, String newPassword) {
+        String sql = "UPDATE users SET password = ? WHERE phone = ? AND role = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, phone);
+            pstmt.setString(3, role.name());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { return false; }
     }
 }
