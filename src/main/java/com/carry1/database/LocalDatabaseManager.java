@@ -22,8 +22,8 @@ public class LocalDatabaseManager {
 
     public static void initializeDatabase() {
         try (Connection conn = DriverManager.getConnection(DB_URL); Statement stmt = conn.createStatement()) {
-            try { stmt.execute("ALTER TABLE users ADD COLUMN email TEXT"); } catch (Exception e) {}
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, balance REAL NOT NULL, account_status TEXT DEFAULT 'ACTIVE', rating REAL DEFAULT 5.0)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, balance REAL NOT NULL, account_status TEXT DEFAULT 'ACTIVE', rating REAL DEFAULT 5.0, email TEXT)");
+            try { stmt.execute("ALTER TABLE users ADD COLUMN email TEXT"); } catch (java.sql.SQLException e) { if (!e.getMessage().contains("duplicate column name")) e.printStackTrace(); }
             try { stmt.execute("ALTER TABLE users ADD COLUMN rating REAL DEFAULT 5.0"); } catch (SQLException e) {}
             stmt.execute("CREATE TABLE IF NOT EXISTS orders (" +
                     "order_id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, traveler_id TEXT, " +
@@ -52,7 +52,7 @@ public class LocalDatabaseManager {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
             pstmt.setString(1, user.getId()); pstmt.setString(2, user.getName()); pstmt.setString(3, phone); pstmt.setString(4, password); pstmt.setString(5, user.getRole().name()); pstmt.setDouble(6, user.getBalance()); pstmt.setString(7, email);
             pstmt.executeUpdate(); return true;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static User authenticateUser(String phone, String password, Role role) {
@@ -73,7 +73,7 @@ public class LocalDatabaseManager {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId); pstmt.setString(2, password);
             ResultSet rs = pstmt.executeQuery(); return rs.next();
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static void saveSession(User user) { AuthFlowState.currentUser = user; }
@@ -94,14 +94,14 @@ public class LocalDatabaseManager {
         String sql = "UPDATE users SET balance = balance + ? WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, amount); pstmt.setString(2, userId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean withdrawFundsFromUser(String userId, double amount) {
         String sql = "UPDATE users SET balance = balance - ? WHERE id = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, amount); pstmt.setString(2, userId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static String getUserPhoneById(String userId) {
@@ -122,13 +122,13 @@ public class LocalDatabaseManager {
     public static boolean adjustUserBalance(String userId, double newBalance) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET balance = ? WHERE id = ?")) {
             pstmt.setDouble(1, newBalance); pstmt.setString(2, userId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean setUserStatus(String userId, String status) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE users SET account_status = ? WHERE id = ?")) {
             pstmt.setString(1, status); pstmt.setString(2, userId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static List<User> getAllUsers() {
@@ -181,7 +181,7 @@ public class LocalDatabaseManager {
                 if(psD.executeUpdate() > 0 && psO.executeUpdate() > 0) { conn.commit(); return true; }
                 else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean cancelOrderAndRefundEscrow(String orderId, String customerId, double reward) {
@@ -194,7 +194,7 @@ public class LocalDatabaseManager {
                 if (psU.executeUpdate() > 0 && psR.executeUpdate() > 0) { conn.commit(); return true; }
                 else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean completeDeliveryWithCommission(String orderId, String travelerId, double reward) {
@@ -225,13 +225,13 @@ public class LocalDatabaseManager {
                 }
                 else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean reportDispute(String orderId) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE orders SET status = 'DISPUTED' WHERE order_id = ?")) {
             pstmt.setString(1, orderId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean forceRefundAdmin(String orderId, String customerId, double reward) {
@@ -244,13 +244,13 @@ public class LocalDatabaseManager {
                 if (psO.executeUpdate() > 0 && psC.executeUpdate() > 0) { conn.commit(); return true; }
                 else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean forceOrderPending(String orderId) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE orders SET status = 'PENDING', traveler_id = NULL WHERE order_id = ?")) {
             pstmt.setString(1, orderId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     private static Order extractOrderFromResultSet(ResultSet rs) throws SQLException {
@@ -303,13 +303,13 @@ public class LocalDatabaseManager {
     public static boolean acceptOrder(String orderId, String travelerId) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE orders SET traveler_id = ?, status = 'PICKED_UP' WHERE order_id = ? AND status = 'PENDING'")) {
             pstmt.setString(1, travelerId); pstmt.setString(2, orderId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean updateOrderStatus(String orderId, OrderStatus newStatus) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("UPDATE orders SET status = ? WHERE order_id = ?")) {
             pstmt.setString(1, newStatus.name()); pstmt.setString(2, orderId); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     
@@ -333,7 +333,7 @@ public class LocalDatabaseManager {
     public static boolean submitTravelerRating(String orderId, String travelerId, String customerId, int ratingValue) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ratings (order_id, traveler_id, customer_id, rating_value) VALUES (?, ?, ?, ?)")) {
             pstmt.setString(1, orderId); pstmt.setString(2, travelerId); pstmt.setString(3, customerId); pstmt.setInt(4, ratingValue); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean sendTipTransaction(String customerId, String travelerId, double tipAmount) {
@@ -352,13 +352,13 @@ public class LocalDatabaseManager {
                     conn.commit(); return true; 
                 } else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean sendMessage(String orderId, String senderId, String receiverId, String text) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO messages (order_id, sender_id, receiver_id, message_text, timestamp, is_read) VALUES (?, ?, ?, ?, ?, 0)")) {
             pstmt.setString(1, orderId); pstmt.setString(2, senderId); pstmt.setString(3, receiverId); pstmt.setString(4, text); pstmt.setLong(5, System.currentTimeMillis()); return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean hasUnreadMessages(String receiverId) {
@@ -402,7 +402,7 @@ public class LocalDatabaseManager {
             pstmt.setString(2, role.name());
             ResultSet rs = pstmt.executeQuery();
             return rs.next();
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean updateUserPassword(String phone, Role role, String newPassword) {
@@ -412,7 +412,7 @@ public class LocalDatabaseManager {
             pstmt.setString(2, phone);
             pstmt.setString(3, role.name());
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean saveTravelerProfile(String userId, String roll, String department, String hall, int graduationYear) {
@@ -420,7 +420,7 @@ public class LocalDatabaseManager {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId); pstmt.setString(2, roll); pstmt.setString(3, department); pstmt.setString(4, hall); pstmt.setInt(5, graduationYear);
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static Complaint createComplaint(String orderId, String creatorId, String againstId) {
@@ -474,7 +474,7 @@ public class LocalDatabaseManager {
             pstmt.setString(3, messageText);
             pstmt.setLong(4, System.currentTimeMillis());
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static List<ComplaintMessage> getComplaintMessages(int complaintId) {
@@ -495,7 +495,7 @@ public class LocalDatabaseManager {
              PreparedStatement pstmt = conn.prepareStatement("UPDATE complaints SET status = 'CLOSED' WHERE id = ?")) {
             pstmt.setInt(1, complaintId);
             return pstmt.executeUpdate() > 0;
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static boolean reverseTransaction(int transactionId) {
@@ -560,7 +560,7 @@ public class LocalDatabaseManager {
                 conn.commit();
                 return true;
             } catch (Exception e) { conn.rollback(); return false; }
-        } catch (SQLException e) { return false; }
+        } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
     public static List<Transaction> getAllTransactions() {
