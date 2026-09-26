@@ -4,13 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml" afterDir="false" />
+    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="Forget Password Feature Added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +21,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory"><![CDATA[{
@@ -69,7 +69,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "admin__database__create",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
     "nodejs_package_manager_path": "npm"
@@ -114,6 +114,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="This is the base version of the Desktop app Carry" />
     <MESSAGE value="This is the base version of the Desktop app Carry.Next update maybe Forget Password" />
-    <option name="LAST_COMMIT_MESSAGE" value="This is the base version of the Desktop app Carry.Next update maybe Forget Password" />
+    <MESSAGE value="Forget Password Feature Added" />
+    <option name="LAST_COMMIT_MESSAGE" value="Forget Password Feature Added" />
   </component>
 </project>
