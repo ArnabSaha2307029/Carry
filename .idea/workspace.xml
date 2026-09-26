@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ForgotPasswordController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ForgotPasswordView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" afterDir="false" />
-    </list>
+    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -28,18 +21,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "ArnabSaha2307029"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ArnabSaha2307029&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ArnabSaha2307029/Carry.git",
-    "accountId": "445c0b88-0b19-47a9-895d-7beb82c2a5cf"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ArnabSaha2307029/Carry.git&quot;,
+    &quot;accountId&quot;: &quot;445c0b88-0b19-47a9-895d-7beb82c2a5cf&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -69,7 +62,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "Captcha",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
     "nodejs_package_manager_path": "npm"
