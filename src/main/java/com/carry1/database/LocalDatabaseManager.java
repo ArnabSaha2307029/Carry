@@ -6,6 +6,10 @@ import com.carry1.models.Order;
 import com.carry1.models.OrderStatus;
 import com.carry1.models.Role;
 import com.carry1.models.User;
+import com.carry1.models.Complaint;
+import com.carry1.models.ComplaintMessage;
+import java.sql.Statement;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,6 +29,8 @@ public class LocalDatabaseManager {
                     "receiver_name TEXT, receiver_phone TEXT, dropoff_loc TEXT NOT NULL, dropoff_info TEXT, " +
                     "distance_km REAL, reward REAL NOT NULL, status TEXT NOT NULL)");
             stmt.execute("CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT NOT NULL, sender_id TEXT NOT NULL, receiver_id TEXT NOT NULL, message_text TEXT NOT NULL, timestamp INTEGER NOT NULL, is_read INTEGER DEFAULT 0)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS complaints (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT, creator_id TEXT, against_id TEXT, status TEXT DEFAULT 'OPEN')");
+            stmt.execute("CREATE TABLE IF NOT EXISTS complaint_messages (id INTEGER PRIMARY KEY AUTOINCREMENT, complaint_id INTEGER, sender_id TEXT, message_text TEXT, timestamp INTEGER)");
             stmt.execute("CREATE TABLE IF NOT EXISTS ratings (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT NOT NULL, traveler_id TEXT NOT NULL, customer_id TEXT NOT NULL, rating_value INTEGER NOT NULL)");
             stmt.execute("CREATE TABLE IF NOT EXISTS traveler_profiles (user_id TEXT PRIMARY KEY, roll TEXT NOT NULL, department TEXT NOT NULL, hall TEXT NOT NULL, graduation_year INTEGER NOT NULL)");
 
@@ -345,6 +351,81 @@ public class LocalDatabaseManager {
         String sql = "INSERT OR REPLACE INTO traveler_profiles (user_id, roll, department, hall, graduation_year) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, userId); pstmt.setString(2, roll); pstmt.setString(3, department); pstmt.setString(4, hall); pstmt.setInt(5, graduationYear);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { return false; }
+    }
+
+    public static Complaint createComplaint(String orderId, String creatorId, String againstId) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO complaints(order_id, creator_id, against_id) VALUES(?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, orderId);
+            pstmt.setString(2, creatorId);
+            pstmt.setString(3, againstId);
+            pstmt.executeUpdate();
+            reportDispute(orderId);
+            try (ResultSet rs = pstmt.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return new Complaint(rs.getInt(1), orderId, creatorId, againstId, "OPEN");
+                }
+            }
+        } catch (SQLException e) { }
+        return null;
+    }
+
+    public static List<Complaint> getOpenComplaints() {
+        List<Complaint> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM complaints WHERE status = 'OPEN'")) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(new Complaint(rs.getInt("id"), rs.getString("order_id"), rs.getString("creator_id"), rs.getString("against_id"), rs.getString("status")));
+            }
+        } catch (SQLException e) { }
+        return list;
+    }
+
+    public static List<Complaint> getOpenComplaintsForUser(String userId) {
+        List<Complaint> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM complaints WHERE status = 'OPEN' AND (creator_id = ? OR against_id = ?)")) {
+            pstmt.setString(1, userId);
+            pstmt.setString(2, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(new Complaint(rs.getInt("id"), rs.getString("order_id"), rs.getString("creator_id"), rs.getString("against_id"), rs.getString("status")));
+            }
+        } catch (SQLException e) { }
+        return list;
+    }
+
+    public static boolean sendComplaintMessage(int complaintId, String senderId, String messageText) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("INSERT INTO complaint_messages(complaint_id, sender_id, message_text, timestamp) VALUES(?, ?, ?, ?)")) {
+            pstmt.setInt(1, complaintId);
+            pstmt.setString(2, senderId);
+            pstmt.setString(3, messageText);
+            pstmt.setLong(4, System.currentTimeMillis());
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) { return false; }
+    }
+
+    public static List<ComplaintMessage> getComplaintMessages(int complaintId) {
+        List<ComplaintMessage> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM complaint_messages WHERE complaint_id = ? ORDER BY timestamp ASC")) {
+            pstmt.setInt(1, complaintId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(new ComplaintMessage(rs.getInt("id"), rs.getInt("complaint_id"), rs.getString("sender_id"), rs.getString("message_text"), rs.getLong("timestamp")));
+            }
+        } catch (SQLException e) { }
+        return list;
+    }
+
+    public static boolean resolveComplaint(int complaintId) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement("UPDATE complaints SET status = 'CLOSED' WHERE id = ?")) {
+            pstmt.setInt(1, complaintId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { return false; }
     }
