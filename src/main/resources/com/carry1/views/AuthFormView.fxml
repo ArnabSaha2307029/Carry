@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- রুট হিসেবে HBox ব্যবহার করা হলো ডান-বাম ভাগের জন্য -->
+<HBox prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AuthFormController">
+
+    <!-- বাম পাশের অর্ধেক: StartView এর মত ছবি সহ লাল ব্যাকগ্রাউন্ড -->
+    <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
+        <children>
+            <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <!-- StartView এর মত ছবির পাথ -->
+                    <Image url="@../../../Carry.001.png" />
+                </image>
+            </ImageView>
+        </children>
+    </VBox>
+
+    <!-- ডান পাশের অর্ধেক: এখানে তোমার অরিজিনাল ফর্মের ফিল্ডগুলো থাকবে -->
+    <VBox alignment="CENTER" prefWidth="640.0" spacing="15.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+        <padding>
+            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+        </padding>
+
+        <!-- তোমার অরিজিনাল fx:id এবং এলিমেন্টগুলো (অপরিবর্তিত) -->
+        <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+        <TextField fx:id="nameField" promptText="Full Name" maxWidth="250"/>
+        <TextField fx:id="phoneField" promptText="Phone Number" maxWidth="250"/>
+        <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+
+        <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
+
+        <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250" style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+        <Button text="← Back" onAction="#goBack" prefWidth="100"/>
+    </VBox>
+
+</HBox>

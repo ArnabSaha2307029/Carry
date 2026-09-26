@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.MockPaymentController">
+
+    <!-- STEP 1: Amount Page -->
+    <VBox fx:id="step1Box" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Add Money" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Enter amount to add in your wallet" style="-fx-text-fill: #555;"/>
+        <TextField fx:id="amountField" promptText="Amount (TK)" maxWidth="300" style="-fx-font-size: 16px;"/>
+        <Label fx:id="errorLabel1" textFill="RED" wrapText="true" maxWidth="300"/>
+        <Button text="Next →" onAction="#goToStep2" prefWidth="300" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="Cancel" onAction="#handleCancel" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
+    </VBox>
+
+    <!-- STEP 2: Category Selection Page -->
+    <VBox fx:id="step2Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Add via" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Select your payment method" style="-fx-text-fill: #555;"/>
+        <Button text="📱 Mobile Banking" onAction="#selectMobileBanking" prefWidth="300" prefHeight="50" style="-fx-font-size: 16px; -fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="💳 Card" onAction="#selectCard" prefWidth="300" prefHeight="50" style="-fx-font-size: 16px; -fx-background-color: #673AB7; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="← Back" onAction="#goBackToStep1" prefWidth="300" style="-fx-margin-top: 20px; -fx-background-color: transparent; -fx-text-fill: #757575;"/>
+    </VBox>
+
+    <!-- STEP 3: Provider & Number Input Page -->
+    <VBox fx:id="step3Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label fx:id="step3Header" text="Payment Details" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <ComboBox fx:id="providerCombo" prefWidth="300" promptText="Select Provider" style="-fx-font-size: 14px;"/>
+        <TextField fx:id="accountNoField" promptText="Account Number" maxWidth="300" style="-fx-font-size: 16px;"/>
+        <Label fx:id="errorLabel3" textFill="RED" wrapText="true" maxWidth="300"/>
+        <Button text="Send OTP" onAction="#goToStep4" prefWidth="300" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="← Back" onAction="#goBackToStep2" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+    </VBox>
+
+    <!-- STEP 4: OTP Verification Page -->
+    <VBox fx:id="step4Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Verification" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Enter the 6-digit OTP sent to your number" style="-fx-text-fill: #555;"/>
+        <TextField fx:id="otpField" promptText="6-Digit OTP" maxWidth="300" alignment="CENTER" style="-fx-font-size: 20px; -fx-letter-spacing: 5px;"/>
+        <Label fx:id="statusLabel" textFill="RED" wrapText="true" maxWidth="300" alignment="CENTER" style="-fx-font-weight: bold;"/>
+        <Button fx:id="confirmBtn" text="OK" onAction="#verifyOtpAndPay" prefWidth="300" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+        <Button fx:id="cancelOtpBtn" text="Cancel Payment" onAction="#handleCancel" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: red;"/>
+    </VBox>
+
+    <!-- FLOATING SYSTEM NOTIFICATION (For OTP) -->
+    <Label fx:id="notificationToast" visible="false" StackPane.alignment="TOP_CENTER"
+           style="-fx-background-color: #333; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);">
+        <StackPane.margin><Insets top="30"/></StackPane.margin>
+    </Label>
+
+</StackPane>

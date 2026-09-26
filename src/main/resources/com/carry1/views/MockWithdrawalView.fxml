@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.MockWithdrawalController">
+
+    <!-- STEP 1: Amount Page -->
+    <VBox fx:id="step1Box" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Withdraw Funds" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label fx:id="currentBalanceLabel" text="Available Balance: 0 TK" style="-fx-text-fill: #4CAF50; -fx-font-weight: bold;"/>
+        <Label text="Enter amount to withdraw from your wallet" style="-fx-text-fill: #555;"/>
+        <TextField fx:id="amountField" promptText="Amount (TK)" maxWidth="300" style="-fx-font-size: 16px;"/>
+        <Label fx:id="errorLabel1" textFill="RED" wrapText="true" maxWidth="300"/>
+        <Button text="Next →" onAction="#goToStep2" prefWidth="300" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="Cancel" onAction="#handleCancel" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
+    </VBox>
+
+    <!-- STEP 2: Category Selection Page -->
+    <VBox fx:id="step2Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Withdraw via" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Select your withdrawal method" style="-fx-text-fill: #555;"/>
+        <Button text="📱 Mobile Banking" onAction="#selectMobileBanking" prefWidth="300" prefHeight="50" style="-fx-font-size: 16px; -fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="💳 Card" onAction="#selectCard" prefWidth="300" prefHeight="50" style="-fx-font-size: 16px; -fx-background-color: #673AB7; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="← Back" onAction="#goBackToStep1" prefWidth="300" style="-fx-margin-top: 20px; -fx-background-color: transparent; -fx-text-fill: #757575;"/>
+    </VBox>
+
+    <!-- STEP 3: Details Input -->
+    <VBox fx:id="step3Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label fx:id="step3Header" text="Withdrawal Details" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <ComboBox fx:id="providerCombo" prefWidth="300" promptText="Select Provider" style="-fx-font-size: 14px;"/>
+        <TextField fx:id="accountNoField" promptText="Account Number" maxWidth="300" style="-fx-font-size: 16px;"/>
+        <Label fx:id="errorLabel3" textFill="RED" wrapText="true" maxWidth="300"/>
+        <Button text="Next →" onAction="#goToStep4" prefWidth="300" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        <Button text="← Back" onAction="#goBackToStep2" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+    </VBox>
+
+    <!-- STEP 4: Password Verification -->
+    <VBox fx:id="step4Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Security Verification" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Label text="Enter your account password to authorize transfer" style="-fx-text-fill: #555;"/>
+
+        <PasswordField fx:id="passwordField" promptText="Your Password" maxWidth="300" style="-fx-font-size: 16px;"/>
+        <Label fx:id="statusLabel" textFill="RED" wrapText="true" maxWidth="300" alignment="CENTER" style="-fx-font-weight: bold;"/>
+
+        <Button fx:id="verifyBtn" text="Verify &amp; Proceed" onAction="#verifyPassword" prefWidth="300" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+        <Button text="← Back" onAction="#goBackToStep3" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+    </VBox>
+
+    <!-- OVERLAY: Custom Confirmation Pop-up -->
+    <VBox fx:id="confirmBox" visible="false" alignment="CENTER" spacing="20.0" maxWidth="350" maxHeight="200"
+          style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+        <padding><Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/></padding>
+        <Label text="Confirm Withdrawal" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Label text="Confirm Cash withdrawal?" style="-fx-text-fill: #555; -fx-font-size: 16px;"/>
+        <HBox spacing="20" alignment="CENTER">
+            <Button text="Cancel" onAction="#cancelConfirmation" prefWidth="100" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="Confirm" onAction="#processFinalWithdrawal" prefWidth="100" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+</StackPane>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.CreateOrderController">
+
+    <!-- Step 1: Item Details -->
+    <VBox fx:id="step1Box" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Step 1: Item Details" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <ComboBox fx:id="itemTypeCombo" prefWidth="300" promptText="Select Item Type"/>
+        <TextField fx:id="itemNameField" promptText="Product Description" maxWidth="300"/>
+        <TextField fx:id="itemWeightField" promptText="Product Weight (in KG)" maxWidth="300"/>
+        <Label fx:id="errorLabel1" textFill="RED" wrapText="true" maxWidth="300"/>
+        <HBox spacing="10" alignment="CENTER" maxWidth="300">
+            <Button text="Cancel" onAction="#handleCancel" prefWidth="145" style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
+            <Button text="Next →" onAction="#goToStep2" prefWidth="145" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Step 2: Pickup Details -->
+    <VBox fx:id="step2Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Step 2: Pickup Details" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <TextField fx:id="senderNameField" promptText="Sender Name" maxWidth="300"/>
+        <TextField fx:id="senderPhoneField" promptText="Sender Contact No" maxWidth="300"/>
+        <TextField fx:id="pickupLocationField" promptText="Pickup Location (for Map)" maxWidth="300"/>
+        <TextField fx:id="pickupInfoField" promptText="Additional Pickup Info" maxWidth="300"/>
+        <Label fx:id="errorLabel2" textFill="RED" wrapText="true" maxWidth="300"/>
+        <HBox spacing="10" alignment="CENTER" maxWidth="300">
+            <Button text="← Back" onAction="#goToStep1" prefWidth="145" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
+            <Button text="Next →" onAction="#goToStep3" prefWidth="145" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Step 3: Delivery Details -->
+    <VBox fx:id="step3Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Step 3: Delivery Details" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <TextField fx:id="receiverNameField" promptText="Receiver Name" maxWidth="300"/>
+        <TextField fx:id="receiverPhoneField" promptText="Receiver Contact No" maxWidth="300"/>
+        <TextField fx:id="dropoffLocationField" promptText="Delivery Location (for Map)" maxWidth="300"/>
+        <TextField fx:id="dropoffInfoField" promptText="Additional Delivery Info" maxWidth="300"/>
+        <Label fx:id="errorLabel3" textFill="RED" wrapText="true" maxWidth="300"/>
+        <HBox spacing="10" alignment="CENTER" maxWidth="300">
+            <Button text="← Back" onAction="#goToStep2" prefWidth="145" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
+            <Button text="Calculate Fee →" onAction="#calculateAndGoToStep4" prefWidth="145" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+
+    <!-- Step 4: Summary & API Validation -->
+    <VBox fx:id="step4Box" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
+        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
+        <Label text="Review &amp; Confirm" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+        <VBox fx:id="loadingBox" alignment="CENTER" spacing="10" visible="false" managed="false">
+            <ProgressIndicator/>
+            <Label text="Validating map locations and calculating distance..."/>
+        </VBox>
+
+        <VBox fx:id="summaryBox" alignment="CENTER" spacing="10" style="-fx-background-color: #F5F5F5; -fx-padding: 20; -fx-background-radius: 5;" maxWidth="350">
+            <Label fx:id="distanceLabel" text="Distance: --" style="-fx-font-size: 14px;"/>
+            <Label fx:id="weightLabel" text="Weight: --" style="-fx-font-size: 14px;"/>
+            <Label fx:id="feeLabel" text="Total Delivery Fee: -- TK" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #4CAF50;"/>
+            <Label fx:id="balanceWarningLabel" textFill="RED" wrapText="true"/>
+        </VBox>
+
+        <Label fx:id="errorLabel4" textFill="RED" wrapText="true" maxWidth="300" alignment="CENTER"/>
+
+        <HBox spacing="10" alignment="CENTER" maxWidth="300">
+            <Button fx:id="backBtn4" text="← Edit Details" onAction="#goToStep3" prefWidth="145" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
+            <Button fx:id="confirmBtn" text="Confirm Order" onAction="#handleConfirmOrder" prefWidth="145" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+    </VBox>
+</StackPane>

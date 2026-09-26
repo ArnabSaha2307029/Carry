@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="This is the base version of the Desktop app Carry">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/Launcher.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/SceneManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AdminDashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CreateOrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CustomerDashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/LiveOrderFeedController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockPaymentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MockWithdrawalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/MyDeliveriesController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/RoleSelectionController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/StartController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TrackOrderController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TravelerDashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/ViewMyOrdersController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/AuthFlowState.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/Message.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/OrderStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/models/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/services/AiSupportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/services/GlobalNotificationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/carry1/viewmodels/LoginViewModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/Carry.001.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AdminDashboardView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AuthFormView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CreateOrderView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CustomerDashboardView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/LiveOrderFeedView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockPaymentView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MockWithdrawalView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/MyDeliveriesView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/RoleSelectionView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/StartView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TrackOrderView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TravelerDashboardView.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/ViewMyOrdersView.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="FxmlFile" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "ArnabSaha2307029"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ArnabSaha2307029/Carry.git",
+    "accountId": "445c0b88-0b19-47a9-895d-7beb82c2a5cf"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3JWM803D0ie2E7TwdO8dc7hfHZt" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Launcher.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Maven.carry1 [clean,install,-U].executor": "Run",
+    "Maven.carry1 [mvn,clean,install,-U].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn mvn clean install -U" />
+      <command value="mvn clean install -U" />
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Launcher" type="Application" factoryName="Application" singleton="false">
+      <option name="MAIN_CLASS_NAME" value="com.carry1.Launcher" />
+      <module name="carry1" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.337" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.8665.337" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="" />
+      <created>1789772211276</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1789772211276</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="This is the base version of the Desktop app Carry" />
+    <option name="LAST_COMMIT_MESSAGE" value="This is the base version of the Desktop app Carry" />
+  </component>
+</project>

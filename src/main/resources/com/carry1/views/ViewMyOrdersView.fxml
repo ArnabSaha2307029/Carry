@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.ViewMyOrdersController">
+    <!-- Main Layer -->
+    <VBox alignment="CENTER" spacing="15.0">
+        <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+        <Label text="My Order History" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+        <Label fx:id="messageAlertLabel" text="You have a new message!" visible="false" style="-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-color: #FFEBEE; -fx-padding: 5 10; -fx-background-radius: 5;"/>
+
+        <TableView fx:id="ordersTable" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colOrderId" text="Order ID" prefWidth="110"/>
+                <TableColumn fx:id="colItemName" text="Item Name" prefWidth="130"/>
+                <TableColumn fx:id="colPickup" text="Pickup" prefWidth="120"/>
+                <TableColumn fx:id="colDropoff" text="Dropoff" prefWidth="120"/>
+                <TableColumn fx:id="colReward" text="Reward" prefWidth="80"/>
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="110"/>
+                <TableColumn fx:id="colAction" text="Action" prefWidth="150"/>
+            </columns>
+        </TableView>
+        <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    </VBox>
+
+    <!-- Rating Overlay -->
+    <VBox fx:id="ratingOverlayPane" visible="false" alignment="CENTER" spacing="15" maxHeight="220" maxWidth="450" style="-fx-background-color: rgba(255,255,255,0.98); -fx-border-color: #E0E0E0; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+        <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+        <Label text="Order Delivered Successfully!" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2E7D32;"/>
+        <Label text="Please rate the Traveler to help us improve the platform." style="-fx-font-size: 14px;"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="1 ★" onAction="#submitRating1" prefWidth="60" style="-fx-background-color: #F44336; -fx-text-fill: white;"/>
+            <Button text="2 ★" onAction="#submitRating2" prefWidth="60" style="-fx-background-color: #FF9800; -fx-text-fill: white;"/>
+            <Button text="3 ★" onAction="#submitRating3" prefWidth="60" style="-fx-background-color: #FFC107; -fx-text-fill: black;"/>
+            <Button text="4 ★" onAction="#submitRating4" prefWidth="60" style="-fx-background-color: #8BC34A; -fx-text-fill: white;"/>
+            <Button text="5 ★" onAction="#submitRating5" prefWidth="60" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        </HBox>
+        <Button text="Skip Rating" onAction="#handleSkipRating" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
+    </VBox>
+
+    <!-- Tip Overlay -->
+    <VBox fx:id="tipOverlayPane" visible="false" alignment="CENTER" spacing="15" maxHeight="300" maxWidth="400" style="-fx-background-color: rgba(255,255,255,0.98); -fx-border-color: #FF9800; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+        <padding><Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/></padding>
+        <Label text="Give Tip to Traveler?" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #FF9800;"/>
+
+        <!-- Step A: Yes/No -->
+        <HBox fx:id="tipQuestionBox" spacing="20" alignment="CENTER">
+            <Button text="No, Thanks" onAction="#handleTipNo" prefWidth="120" style="-fx-background-color: #9E9E9E; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="Yes, Give Tip" onAction="#handleTipYes" prefWidth="120" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+        </HBox>
+
+        <!-- Step B: Enter Amount & Password (Hidden initially) -->
+        <VBox fx:id="tipInputBox" visible="false" managed="false" spacing="15" alignment="CENTER">
+            <TextField fx:id="tipAmountField" promptText="Enter Tip Amount (TK)" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
+            <!-- NEW: Password Field for Security -->
+            <PasswordField fx:id="tipPasswordField" promptText="Your Account Password" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
+
+            <Label fx:id="tipErrorLabel" textFill="RED" style="-fx-font-weight: bold;"/>
+
+            <HBox spacing="10" alignment="CENTER">
+                <Button fx:id="cancelTipBtn" text="Cancel" onAction="#handleTipNo" prefWidth="100" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>
+                <Button fx:id="confirmTipBtn" text="Confirm Tip" onAction="#confirmTip" prefWidth="120" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </VBox>
+
+</StackPane>
