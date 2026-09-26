@@ -187,7 +187,13 @@ public class AdminDashboardController {
                 btnBan.setOnAction(e -> {
                     User u = getTableView().getItems().get(getIndex());
                     String newStatus = u.getStatus().equals("BANNED") ? "ACTIVE" : "BANNED";
-                    new Thread(() -> LocalDatabaseManager.setUserStatus(u.getId(), newStatus)).start();
+                    new Thread(() -> {
+                        LocalDatabaseManager.setUserStatus(u.getId(), newStatus);
+                        Platform.runLater(() -> {
+                            u.setStatus(newStatus);
+                            getTableView().refresh();
+                        });
+                    }).start();
                 });
                 btnBal.setOnAction(e -> {
                     User u = getTableView().getItems().get(getIndex());
@@ -196,7 +202,13 @@ public class AdminDashboardController {
                     dialog.showAndWait().ifPresent(res -> {
                         try {
                             double newBal = Double.parseDouble(res);
-                            new Thread(() -> LocalDatabaseManager.adjustUserBalance(u.getId(), newBal)).start();
+                            new Thread(() -> {
+                                LocalDatabaseManager.adjustUserBalance(u.getId(), newBal);
+                                Platform.runLater(() -> {
+                                    u.setBalance(newBal);
+                                    getTableView().refresh();
+                                });
+                            }).start();
                         } catch(Exception ignored){}
                     });
                 });
