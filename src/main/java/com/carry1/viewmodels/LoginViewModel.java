@@ -41,7 +41,6 @@ public class LoginViewModel {
                 String generatedId = role.name() + "-" + phoneStr;
 
                 if (AuthFlowState.isSignUpMode) {
-                    
                     User newUser = new User(generatedId, name.get().trim(), role, 0.0, "token_" + generatedId, "ACTIVE");
                     boolean success = LocalDatabaseManager.registerUser(newUser, phoneStr, passStr);
                     if (success) {
@@ -65,7 +64,9 @@ public class LoginViewModel {
                         Platform.runLater(() -> { errorMessage.set("Invalid credentials."); isLoading.set(false); });
                     }
                 }
-            } catch (InterruptedException e) { e.printStackTrace(); }
+            } catch (Throwable e) {
+                Platform.runLater(() -> { System.out.println("LoginThread Error: " + e.getMessage()); e.printStackTrace(); errorMessage.set("An error occurred during authentication."); isLoading.set(false); });
+            }
         }).start();
     }
 }

@@ -86,13 +86,25 @@ public class AuthFormController {
             actionButton.setText("Login");
             nameField.setVisible(false);
             nameField.setManaged(false);
-            if (forgotPasswordBtn != null) forgotPasswordBtn.setVisible(true);
+            if (forgotPasswordBtn != null) {
+                if (AuthFlowState.selectedRole == Role.ADMIN) {
+                    forgotPasswordBtn.setVisible(false);
+                    forgotPasswordBtn.setManaged(false);
+                } else {
+                    forgotPasswordBtn.setVisible(true);
+                    forgotPasswordBtn.setManaged(true);
+                }
+            }
         }
 
         viewModel.isLoadingProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal) actionButton.setText("Processing...");
             else actionButton.setText(AuthFlowState.isSignUpMode ? "Create Account" : "Login");
         });
+
+        if (AuthFlowState.selectedRole == Role.ADMIN) {
+            phoneField.setPromptText("Admin ID (adm)");
+        }
 
         if (AuthFlowState.isSignUpMode && AuthFlowState.selectedRole == Role.TRAVELER) {
             rollField.setVisible(true); rollField.setManaged(true);
@@ -197,7 +209,7 @@ public class AuthFormController {
         }
 
         String phoneText = phoneField.getText().trim();
-        if (!phoneText.isEmpty() && !phoneText.matches(PHONE_REGEX)) {
+        if (AuthFlowState.selectedRole != Role.ADMIN && !phoneText.isEmpty() && !phoneText.matches(PHONE_REGEX)) {
             showError("Invalid Phone No.");
             return;
         }
@@ -253,16 +265,22 @@ public class AuthFormController {
         errorLabel.textProperty().bind(viewModel.errorMessageProperty());
 
         viewModel.processAction(() -> {
-            Role userRole = AuthFlowState.selectedRole;
-            AuthFlowState.clear();
+            Platform.runLater(() -> {
+                try {
+                    Role userRole = AuthFlowState.selectedRole;
+                    AuthFlowState.clear();
 
-            if (userRole == Role.CUSTOMER) {
-                SceneManager.switchScene("CustomerDashboardView.fxml", "Carry1 - Customer Dashboard");
-            } else if (userRole == Role.TRAVELER) {
-                SceneManager.switchScene("TravelerDashboardView.fxml", "Carry1 - Traveler Dashboard");
-            } else if (userRole == Role.ADMIN) {
-                SceneManager.switchScene("AdminDashboardView.fxml", "Carry1 - Admin Control Panel");
-            }
+                    if (userRole == Role.CUSTOMER) {
+                        SceneManager.switchScene("CustomerDashboardView.fxml", "Carry1 - Customer Dashboard");
+                    } else if (userRole == Role.TRAVELER) {
+                        SceneManager.switchScene("TravelerDashboardView.fxml", "Carry1 - Traveler Dashboard");
+                    } else if (userRole == Role.ADMIN) {
+                        SceneManager.switchScene("AdminDashboardView.fxml", "Carry1 - Admin Dashboard");
+                    }
+                } catch (Throwable e) {
+                    System.out.println("Scene Switch Error: " + e.getMessage()); e.printStackTrace(); viewModel.isLoadingProperty().set(false);
+                }
+            });
         });
     }
 

@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="Forget Password Feature Added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AdminDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AdminDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CustomerDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/CustomerDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TravelerDashboardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/TravelerDashboardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/database/LocalDatabaseManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/controllers/AuthFormController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/carry1/viewmodels/LoginViewModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/carry1/viewmodels/LoginViewModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AdminDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/AdminDashboardView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CustomerDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/CustomerDashboardView.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TravelerDashboardView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/com/carry1/views/TravelerDashboardView.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,9 +71,10 @@
     "Maven.carry1 [mvn,clean,install,-U].executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "User__Complaints__System",
+    "git-widget-placeholder": "bug__fix(admin__Login)",
     "git.auto.fetch.suggestion.counter": "1",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
@@ -135,6 +132,7 @@
     <MESSAGE value="This is the base version of the Desktop app Carry" />
     <MESSAGE value="This is the base version of the Desktop app Carry.Next update maybe Forget Password" />
     <MESSAGE value="Forget Password Feature Added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Forget Password Feature Added" />
+    <MESSAGE value="Live User Complaints, Support Ticket system &amp; Admin User Message System Integrated" />
+    <option name="LAST_COMMIT_MESSAGE" value="Live User Complaints, Support Ticket system &amp; Admin User Message System Integrated" />
   </component>
 </project>
