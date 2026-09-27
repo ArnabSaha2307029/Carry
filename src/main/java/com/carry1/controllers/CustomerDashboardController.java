@@ -80,7 +80,7 @@ public class CustomerDashboardController {
             LocalDatabaseManager.refreshCurrentUser();
             User currentUser = LocalDatabaseManager.getCurrentUser();
             if (currentUser != null) {
-                Platform.runLater(() -> welcomeLabel.setText("Welcome, " + currentUser.getName() + " | Balance: " + currentUser.getBalance() + " TK"));
+                Platform.runLater(() -> welcomeLabel.setText(String.format("Welcome, %s | Balance: %.2f TK", currentUser.getName(), currentUser.getBalance())));
 
                                 if (inboxOverlayPane.isVisible()) {
                     if (inboxChatPane.isVisible() && currentInboxOrderId != null) {
@@ -100,28 +100,28 @@ public class CustomerDashboardController {
         if(balancePoller != null && !balancePoller.isShutdown()) balancePoller.shutdownNow();
     }
 
-    @FXML private void handleAddFunds(ActionEvent event) { stopPoller(); SceneManager.switchScene("MockPaymentView.fxml", "Carry1 - Secure Payment"); }
-    @FXML private void handleCreateOrder(ActionEvent event) { stopPoller(); SceneManager.switchScene("CreateOrderView.fxml", "Carry1 - Create Order"); }
-    @FXML private void handleViewOrders(ActionEvent event) { stopPoller(); SceneManager.switchScene("ViewMyOrdersView.fxml", "Carry1 - My Orders"); }
+    @FXML private void handleAddFunds() { stopPoller(); SceneManager.switchScene("MockPaymentView.fxml", "Carry1 - Secure Payment"); }
+    @FXML private void handleCreateOrder() { stopPoller(); SceneManager.switchScene("CreateOrderView.fxml", "Carry1 - Create Order"); }
+    @FXML private void handleViewOrders() { stopPoller(); SceneManager.switchScene("ViewMyOrdersView.fxml", "Carry1 - My Orders"); }
 
     
-    @FXML private void handleTrackOrder(ActionEvent event) { stopPoller(); SceneManager.switchScene("TrackOrderView.fxml", "Carry1 - Track My Order"); }
+    @FXML private void handleTrackOrder() { stopPoller(); SceneManager.switchScene("TrackOrderView.fxml", "Carry1 - Track My Order"); }
 
-    @FXML private void handleViewInbox(ActionEvent event) {
+    @FXML private void handleViewInbox() {
         inboxOverlayPane.setVisible(true);
         inboxListPane.setVisible(true);
         inboxChatPane.setVisible(false);
         refreshInboxList(LocalDatabaseManager.getCurrentUser());
     }
 
-    @FXML private void closeInbox(ActionEvent event) {
+    @FXML private void closeInbox() {
         inboxOverlayPane.setVisible(false);
         supportOverlayPane.setVisible(false);
         currentInboxOrderId = null;
         currentInboxReceiverId = null;
     }
 
-    @FXML private void backToInboxList(ActionEvent event) {
+    @FXML private void backToInboxList() {
         currentInboxOrderId = null;
         currentInboxReceiverId = null;
         inboxChatPane.setVisible(false);
@@ -183,7 +183,7 @@ public class CustomerDashboardController {
     }
 
     @FXML
-    private void sendInboxMessage(ActionEvent event) {
+    private void sendInboxMessage() {
         String text = inboxChatInputField.getText().trim();
         User currentUser = LocalDatabaseManager.getCurrentUser();
         if (text.isEmpty() || currentInboxOrderId == null || currentUser == null) return;
@@ -198,7 +198,7 @@ public class CustomerDashboardController {
     }
 
 
-    @FXML private void handleReportIssue(ActionEvent event) {
+    @FXML private void handleReportIssue() {
         if (currentInboxOrderId != null && currentInboxReceiverId != null) {
             String currentUserId = LocalDatabaseManager.getCurrentUser().getId();
             new Thread(() -> {
@@ -219,7 +219,7 @@ public class CustomerDashboardController {
         refreshSupportChatMessages(LocalDatabaseManager.getCurrentUser().getId());
     }
 
-    @FXML private void closeSupportOverlay(ActionEvent event) {
+    @FXML private void closeSupportOverlay() {
         supportOverlayPane.setVisible(false);
         currentSupportComplaintId = -1;
     }
@@ -239,7 +239,7 @@ public class CustomerDashboardController {
     }
 
     @FXML
-    private void sendSupportMessage(ActionEvent event) {
+    private void sendSupportMessage() {
         String text = supportChatInputField.getText().trim();
         User currentUser = LocalDatabaseManager.getCurrentUser();
         if (text.isEmpty() || currentSupportComplaintId == -1 || currentUser == null) return;
@@ -254,7 +254,7 @@ public class CustomerDashboardController {
     }
 
     @FXML
-    private void handleLogout(ActionEvent event) {
+    private void handleLogout() {
         stopPoller(); GlobalNotificationService.stop();
         LocalDatabaseManager.clearSession(); SceneManager.switchScene("StartView.fxml", "Carry1 - Delivery");
     }

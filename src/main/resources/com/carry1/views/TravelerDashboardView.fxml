@@ -4,77 +4,102 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
 <StackPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.TravelerDashboardController">
-    
-    <VBox alignment="CENTER" spacing="20.0">
-        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
-        <Label text="Traveler Dashboard" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-        <Label fx:id="welcomeLabel" text="Welcome!" style="-fx-font-size: 16px;"/>
 
-        <Button text="Withdraw Funds" onAction="#handleWithdrawFunds" prefWidth="200" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;"/>
+    <HBox style="-fx-background-color: #F5F5F5;">
+        <VBox prefWidth="220" spacing="8" style="-fx-background-color: #D32F2F; -fx-padding: 20;">
+            <ImageView fitHeight="60" fitWidth="160" pickOnBounds="true" preserveRatio="true">
+                <image><Image url="@../../../Carry.001.png"/></image>
+            </ImageView>
+            <Label fx:id="welcomeLabel" text="Welcome!" style="-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;" wrapText="true"/>
+            <VBox spacing="6" style="-fx-padding: 10 0 0 0;">
+                <Button text="Add Funds" onAction="#handleAddFunds" maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                <Button text="Withdraw Funds" onAction="#handleWithdrawFunds" maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                <Button text="Live Order Feed" onAction="#handleLiveFeed" maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                <Button text="My Deliveries" onAction="#handleMyDeliveries" maxWidth="Infinity" style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+                <Button text="📩 Inbox" onAction="#handleViewInbox" maxWidth="Infinity" style="-fx-background-color: white; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+            </VBox>
+            <VBox VBox.vgrow="ALWAYS"/>
+            <Button text="Logout" onAction="#handleLogout" maxWidth="Infinity" style="-fx-background-color: rgba(0,0,0,0.2); -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-cursor: hand;"/>
+        </VBox>
 
-        <Button text="Live Order Feed" onAction="#handleLiveFeed" prefWidth="200" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
-        <Button text="My Deliveries" onAction="#handleMyDeliveries" prefWidth="200"/>
+        <VBox HBox.hgrow="ALWAYS" alignment="CENTER" spacing="20" style="-fx-padding: 40;">
+            <Label text="Traveler Dashboard" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #D32F2F;"/>
+            <Label text="Pick up orders, deliver packages, and earn rewards." style="-fx-font-size: 14px; -fx-text-fill: #757575;" wrapText="true"/>
+            <HBox spacing="20" alignment="CENTER">
+                <VBox onMouseClicked="#handleLiveFeed" alignment="CENTER" spacing="5" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand;" prefWidth="180">
+                    <Label text="📋" style="-fx-font-size: 30px;"/>
+                    <Label text="Live Feed" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label text="Browse orders" style="-fx-text-fill: #999; -fx-font-size: 12px;"/>
+                </VBox>
+                <VBox onMouseClicked="#handleMyDeliveries" alignment="CENTER" spacing="5" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand;" prefWidth="180">
+                    <Label text="🚚" style="-fx-font-size: 30px;"/>
+                    <Label text="My Deliveries" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label text="Active orders" style="-fx-text-fill: #999; -fx-font-size: 12px;"/>
+                </VBox>
+                <VBox onMouseClicked="#handleWithdrawFunds" alignment="CENTER" spacing="5" style="-fx-background-color: white; -fx-padding: 30; -fx-background-radius: 10; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 8, 0, 0, 2); -fx-cursor: hand;" prefWidth="180">
+                    <Label text="💰" style="-fx-font-size: 30px;"/>
+                    <Label text="Withdraw" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+                    <Label text="Cash out" style="-fx-text-fill: #999; -fx-font-size: 12px;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </HBox>
 
-        <Button text="📩 Inbox (Active Chats)" onAction="#handleViewInbox" prefWidth="200" style="-fx-background-color: #FF9800; -fx-text-fill: white; -fx-font-weight: bold;"/>
-
-        <Button text="Logout" onAction="#handleLogout" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
-    </VBox>
-
-    
-    <StackPane fx:id="inboxOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="450" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+    <StackPane fx:id="inboxOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="500" maxWidth="550" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <VBox fx:id="inboxListPane" VBox.vgrow="ALWAYS">
-            <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #FF9800; -fx-padding: 10;">
-                <Label text="Inbox (Active Orders)" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                <Button text="Close" onAction="#closeInbox" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <HBox alignment="CENTER_RIGHT" style="-fx-background-color: #D32F2F; -fx-padding: 12;">
+                <Label text="Inbox (Active Orders)" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                <Button text="✕" onAction="#closeInbox" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
             </HBox>
             <ListView fx:id="inboxListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
         </VBox>
 
         <VBox fx:id="inboxChatPane" visible="false" VBox.vgrow="ALWAYS">
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #2196F3; -fx-padding: 10;" spacing="10">
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #D32F2F; -fx-padding: 12;" spacing="10">
                 <Button text="← Back" onAction="#backToInboxList" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
                 <Label fx:id="inboxChatHeader" text="Chat" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                <Button fx:id="reportIssueBtn" text="Report Issue to Admin" onAction="#handleReportIssue" style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;" visible="false"/>
+                <Button fx:id="reportIssueBtn" text="Report Issue" onAction="#handleReportIssue" style="-fx-background-color: #FFCDD2; -fx-text-fill: #B71C1C; -fx-font-weight: bold; -fx-background-radius: 5;" visible="false"/>
             </HBox>
             <ListView fx:id="inboxChatListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
-            <HBox spacing="5" style="-fx-padding: 10;">
-                <TextField fx:id="inboxChatInputField" promptText="Type a message..." HBox.hgrow="ALWAYS"/>
-                <Button text="Send" onAction="#sendInboxMessage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <HBox spacing="5" style="-fx-padding: 10; -fx-background-color: #FAFAFA;">
+                <TextField fx:id="inboxChatInputField" promptText="Type a message..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                <Button text="Send" onAction="#sendInboxMessage" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
             </HBox>
         </VBox>
     </StackPane>
 
-    
-
-    <StackPane fx:id="supportOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="450" maxWidth="450" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+    <StackPane fx:id="supportOverlayPane" visible="false" StackPane.alignment="CENTER" maxHeight="500" maxWidth="550" style="-fx-background-color: white; -fx-border-color: #B71C1C; -fx-border-width: 2; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
         <VBox VBox.vgrow="ALWAYS">
-            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #F44336; -fx-padding: 10;" spacing="10">
-                <Button text="Close" onAction="#closeSupportOverlay" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold;"/>
-                <Label text="Carry Administrator" style="-fx-text-fill: white; -fx-font-weight: bold;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            <HBox alignment="CENTER_LEFT" style="-fx-background-color: #B71C1C; -fx-padding: 12;" spacing="10">
+                <Button text="✕" onAction="#closeSupportOverlay" style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
+                <Label text="Carry Administrator" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
             </HBox>
             <ListView fx:id="supportChatListView" VBox.vgrow="ALWAYS" style="-fx-padding: 10;"/>
-            <HBox spacing="5" style="-fx-padding: 10;">
-                <TextField fx:id="supportChatInputField" promptText="Type a message to admin..." HBox.hgrow="ALWAYS"/>
-                <Button text="Send" onAction="#sendSupportMessage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <HBox spacing="5" style="-fx-padding: 10; -fx-background-color: #FAFAFA;">
+                <TextField fx:id="supportChatInputField" promptText="Type a message to admin..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+                <Button text="Send" onAction="#sendSupportMessage" style="-fx-background-color: #B71C1C; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 20;"/>
             </HBox>
         </VBox>
     </StackPane>
 
-    <VBox fx:id="chatBox" visible="false" StackPane.alignment="BOTTOM_RIGHT" maxHeight="400" maxWidth="300" style="-fx-background-color: white; -fx-border-color: #ccc; -fx-border-radius: 10; -fx-background-radius: 10;">
+    <VBox fx:id="chatBox" visible="false" StackPane.alignment="BOTTOM_RIGHT" maxHeight="400" maxWidth="320" style="-fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-radius: 12; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 3);">
         <StackPane.margin><Insets top="0" right="20" bottom="70" left="0"/></StackPane.margin>
-        <Label text="Carry1 AI Support" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-padding: 10; -fx-font-weight: bold;" maxWidth="Infinity"/>
+        <Label text="CarryChat AI" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-padding: 12; -fx-font-weight: bold; -fx-font-size: 14px; -fx-background-radius: 12 12 0 0;" maxWidth="Infinity"/>
         <ListView fx:id="chatListView" VBox.vgrow="ALWAYS"/>
         <HBox spacing="5" style="-fx-padding: 10;">
-            <TextField fx:id="chatInputField" promptText="Ask me anything..." HBox.hgrow="ALWAYS"/>
-            <Button text="Send" onAction="#handleSendMessage" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+            <TextField fx:id="chatInputField" promptText="Ask me anything..." HBox.hgrow="ALWAYS" style="-fx-background-radius: 20; -fx-padding: 8 15;"/>
+            <Button text="Send" onAction="#handleSendMessage" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-background-radius: 20;"/>
         </HBox>
     </VBox>
-    <Button text="💬 Support" onAction="#toggleChatBox" StackPane.alignment="BOTTOM_RIGHT" style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 20; -fx-font-weight: bold; -fx-padding: 10 20;">
+
+    <Button text="💬 CarryChat" onAction="#toggleChatBox" StackPane.alignment="BOTTOM_RIGHT" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-background-radius: 25; -fx-font-weight: bold; -fx-padding: 12 22; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3); -fx-cursor: hand;">
         <StackPane.margin><Insets top="0" right="20" bottom="20" left="0"/></StackPane.margin>
     </Button>
 </StackPane>
