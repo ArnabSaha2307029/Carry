@@ -7,18 +7,14 @@ import com.carry1.models.OrderStatus;
 import com.carry1.models.User;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Pos;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -27,73 +23,85 @@ import java.util.concurrent.TimeUnit;
 
 public class ViewMyOrdersController {
 
-    @FXML private TableView<Order> ordersTable;
-    @FXML private TableColumn<Order, String> colOrderId, colItemName, colPickup, colDropoff, colStatus;
-    @FXML private TableColumn<Order, Double> colReward;
-    @FXML private TableColumn<Order, Void> colAction;
-
-    @FXML private VBox ratingOverlayPane;
+    @FXML private ListView<Order> ordersListView;
     @FXML private Label messageAlertLabel;
 
-    
-    @FXML private VBox tipOverlayPane, tipInputBox;
+    @FXML private VBox ratingOverlayPane;
+    @FXML private VBox tipOverlayPane;
     @FXML private HBox tipQuestionBox;
+    @FXML private VBox tipInputBox;
     @FXML private TextField tipAmountField;
     @FXML private PasswordField tipPasswordField;
     @FXML private Label tipErrorLabel;
-    @FXML private Button confirmTipBtn, cancelTipBtn;
+    @FXML private Button cancelTipBtn;
+    @FXML private Button confirmTipBtn;
 
+    private ObservableList<Order> ordersData = FXCollections.observableArrayList();
     private ScheduledExecutorService pollingService;
+
     private String completedOrderIdForRating = null;
     private String completedTravelerIdForRating = null;
 
     @FXML
     public void initialize() {
-        colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        colItemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        colPickup.setCellValueFactory(new PropertyValueFactory<>("pickupLocation"));
-        colDropoff.setCellValueFactory(new PropertyValueFactory<>("dropoffLocation"));
-        colReward.setCellValueFactory(new PropertyValueFactory<>("rewardAmount"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-
-        setupActionColumn();
-        startAutoRefresh();
-
-        ratingOverlayPane.setVisible(false);
-        tipOverlayPane.setVisible(false);
-        messageAlertLabel.setVisible(false);
+        ordersListView.setItems(ordersData);
+        setupListView();
+        startPolling();
     }
 
-    private void startAutoRefresh() {
+    private void startPolling() {
         pollingService = Executors.newSingleThreadScheduledExecutor();
         pollingService.scheduleAtFixedRate(() -> {
             User currentUser = LocalDatabaseManager.getCurrentUser();
             if (currentUser != null) {
                 List<Order> myOrders = LocalDatabaseManager.getOrdersByCustomerId(currentUser.getId());
-                boolean hasNewMessage = LocalDatabaseManager.hasUnreadMessages(currentUser.getId());
-
                 Platform.runLater(() -> {
-                    ordersTable.setItems(FXCollections.observableArrayList(myOrders));
-                    messageAlertLabel.setVisible(hasNewMessage);
-                    if (hasNewMessage) messageAlertLabel.setText("You have unread messages in your active orders!");
+                    ordersData.setAll(myOrders);
                 });
             }
         }, 0, 2, TimeUnit.SECONDS);
     }
 
-    private void setupActionColumn() {
-        colAction.setCellFactory(param -> new TableCell<>() {
+    private void setupListView() {
+        ordersListView.setCellFactory(param -> new ListCell<Order>() {
+            private final HBox root = new HBox(15);
+            private final VBox detailsBox = new VBox(5);
+            private final Label idLabel = new Label();
+            private final Label itemLabel = new Label();
+            private final Label routeLabel = new Label();
+            private final Label rewardLabel = new Label();
+            private final Label statusLabel = new Label();
+            
             private final Button btn1 = new Button();
             private final Button btn2 = new Button();
-            private final HBox actionBox = new HBox(5, btn1, btn2);
+            private final VBox actionBox = new VBox(5, btn1, btn2);
+
             {
+                root.setAlignment(Pos.CENTER_LEFT);
+                root.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;");
+                
+                idLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                itemLabel.setStyle("-fx-text-fill: #555; -fx-font-size: 14px;");
+                routeLabel.setStyle("-fx-text-fill: #777; -fx-font-size: 12px;");
+                rewardLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #2196F3;");
+                
+                statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4;");
+
+                actionBox.setAlignment(Pos.CENTER_RIGHT);
+                HBox.setHgrow(detailsBox, Priority.ALWAYS);
+
+                detailsBox.getChildren().addAll(idLabel, itemLabel, routeLabel, rewardLabel);
+                root.getChildren().addAll(detailsBox, statusLabel, actionBox);
+
                 btn1.setOnAction(event -> {
-                    Order order = getTableView().getItems().get(getIndex());
+                    Order order = getItem();
+                    if (order == null) return;
                     if (order.getStatus() == OrderStatus.AWAITING_CONFIRMATION) handleConfirmDelivery(order, btn1);
                     else if (order.getStatus() == OrderStatus.PENDING) handleCancelOrder(order, btn1);
                 });
                 btn2.setOnAction(event -> {
-                    Order order = getTableView().getItems().get(getIndex());
+                    Order order = getItem();
+                    if (order == null) return;
                     if (order.getStatus() == OrderStatus.PICKED_UP || order.getStatus() == OrderStatus.AWAITING_CONFIRMATION) {
                         btn2.setText("Reported"); btn2.setDisable(true);
                         new Thread(() -> LocalDatabaseManager.reportDispute(order.getOrderId())).start();
@@ -102,30 +110,49 @@ public class ViewMyOrdersController {
             }
 
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) setGraphic(null);
-                else {
-                    Order order = getTableView().getItems().get(getIndex());
+            protected void updateItem(Order order, boolean empty) {
+                super.updateItem(order, empty);
+                if (empty || order == null) {
+                    setGraphic(null);
+                } else {
+                    idLabel.setText("Order: " + order.getOrderId());
+                    itemLabel.setText("Item: " + order.getItemName());
+                    routeLabel.setText(order.getPickupLocation() + " -> " + order.getDropoffLocation());
+                    rewardLabel.setText("Reward: " + order.getRewardAmount() + " TK");
+                    
+                    statusLabel.setText(order.getStatus().toString());
+                    if (order.getStatus() == OrderStatus.DELIVERED) {
+                        statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-background-color: #4CAF50;");
+                    } else if (order.getStatus() == OrderStatus.PENDING) {
+                        statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-background-color: #FFC107;");
+                    } else if (order.getStatus() == OrderStatus.CANCELLED) {
+                        statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-background-color: #F44336;");
+                    } else {
+                        statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-background-color: #2196F3;");
+                    }
+
                     btn1.setVisible(true); btn2.setVisible(false);
                     btn1.setDisable(false); btn2.setDisable(false);
+                    actionBox.getChildren().clear();
 
                     if (order.getStatus() == OrderStatus.AWAITING_CONFIRMATION) {
-                        btn1.setText("Confirm Delivery"); btn1.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-                        btn2.setText("Report Dispute"); btn2.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+                        btn1.setText("Confirm Delivery"); btn1.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
+                        btn2.setText("Report Dispute"); btn2.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;");
                         btn2.setVisible(true);
-                        setGraphic(actionBox);
+                        actionBox.getChildren().addAll(statusLabel, btn1, btn2);
                     } else if (order.getStatus() == OrderStatus.PICKED_UP) {
                         btn1.setVisible(false);
-                        btn2.setText("Report Issue"); btn2.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+                        btn2.setText("Report Issue"); btn2.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;");
                         btn2.setVisible(true);
-                        setGraphic(actionBox);
+                        actionBox.getChildren().addAll(statusLabel, btn2);
                     } else if (order.getStatus() == OrderStatus.PENDING) {
-                        btn1.setText("Cancel Order"); btn1.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
-                        setGraphic(actionBox);
+                        btn1.setText("Cancel Order"); btn1.setStyle("-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-weight: bold;");
+                        actionBox.getChildren().addAll(statusLabel, btn1);
                     } else {
-                        setGraphic(null);
+                        actionBox.getChildren().add(statusLabel);
                     }
+                    
+                    setGraphic(root);
                 }
             }
         });

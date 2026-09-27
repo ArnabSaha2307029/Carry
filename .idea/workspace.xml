@@ -24,7 +24,7 @@
     <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="Mapbox-integration-updates" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -71,7 +71,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "bug__fix(admin__Login)",
+    "git-widget-placeholder": "master",
     "git.auto.fetch.suggestion.counter": "1",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/arnabsmacbook/Desktop/carry1",
@@ -132,6 +132,8 @@
     <MESSAGE value="Live User Complaints, Support Ticket system &amp; Admin User Message System Integrated" />
     <MESSAGE value="Admin Login -&gt; Admin Dashboard Freezed Problem Solved" />
     <MESSAGE value="Ban/Unban state changes instantly without waiting for time polling update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ban/Unban state changes instantly without waiting for time polling update" />
+    <MESSAGE value="Mapbox Integration &amp; Major Updates" />
+    <MESSAGE value="Mapbox Integration &amp; Major Updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mapbox Integration &amp; Major Updates" />
   </component>
 </project>
