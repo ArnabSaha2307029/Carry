@@ -11,6 +11,7 @@
 
     <Label text="Live Order Feed" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
     <Label text="Accept orders to start earning" style="-fx-text-fill: #555;"/>
+    <Label fx:id="warningLabel" visible="false" managed="false" style="-fx-text-fill: white; -fx-background-color: #D32F2F; -fx-padding: 10; -fx-background-radius: 5; -fx-font-weight: bold;"/>
 
     <TableView fx:id="feedTable" VBox.vgrow="ALWAYS">
         <columns>

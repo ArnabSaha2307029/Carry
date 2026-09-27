@@ -31,7 +31,7 @@
         <Label text="Step 2: Pickup Details" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
         <TextField fx:id="senderNameField" promptText="Sender Name" maxWidth="300"/>
         <TextField fx:id="senderPhoneField" promptText="Sender Contact No" maxWidth="300"/>
-        <TextField fx:id="pickupLocationField" promptText="Pickup Location (for Map)" maxWidth="300"/>
+        <ComboBox fx:id="pickupLocationCombo" promptText="Select Pickup Location" prefWidth="300"/>
         <TextField fx:id="pickupInfoField" promptText="Additional Pickup Info" maxWidth="300"/>
         <Label fx:id="errorLabel2" textFill="RED" wrapText="true" maxWidth="300"/>
         <HBox spacing="10" alignment="CENTER" maxWidth="300">
@@ -46,7 +46,7 @@
         <Label text="Step 3: Delivery Details" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
         <TextField fx:id="receiverNameField" promptText="Receiver Name" maxWidth="300"/>
         <TextField fx:id="receiverPhoneField" promptText="Receiver Contact No" maxWidth="300"/>
-        <TextField fx:id="dropoffLocationField" promptText="Delivery Location (for Map)" maxWidth="300"/>
+        <ComboBox fx:id="dropoffLocationCombo" promptText="Select Delivery Location" prefWidth="300"/>
         <TextField fx:id="dropoffInfoField" promptText="Additional Delivery Info" maxWidth="300"/>
         <Label fx:id="errorLabel3" textFill="RED" wrapText="true" maxWidth="300"/>
         <HBox spacing="10" alignment="CENTER" maxWidth="300">
