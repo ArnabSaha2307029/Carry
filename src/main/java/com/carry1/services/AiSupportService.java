@@ -11,7 +11,7 @@ import java.time.Duration;
 public class AiSupportService {
 
 
-    private static final String API_KEY = "AQ.Ab8RN6IwkrGf4J-5ssMM9qVyk8Ls0O1FfdwhzMYUH6uqtm2qtQ".trim();
+    private static final String API_KEY = "AQ.Ab8RN6JD0xhMeKqP0CpR3TGVITLYz1vNrD-zLH-KRbZHlNX3aA".trim();
 
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-lite-latest:generateContent?key=" + API_KEY;
     public static String getBotResponse(String finalPrompt) {
