@@ -20,7 +20,7 @@ public class AiSupportService {
         }
 
         try {
-            String systemInstructions = "You are Carry1 Support Bot. Carry1 is a P2P delivery app. Answer clearly and concisely. Do not use markdown (no asterisks or bold text). If the prompt contains a [System hidden data] note, use that exact data to formulate your answer about the order status. User input: ";
+            String systemInstructions = "You are Carry Support Bot. Carry is a P2P delivery app. Answer clearly and concisely. Do not use markdown (no asterisks or bold text). If the prompt contains a [System hidden data] note, use that exact data to formulate your answer about the order status. User input: ";
 
             JSONObject requestBody = new JSONObject();
             JSONArray contents = new JSONArray();
