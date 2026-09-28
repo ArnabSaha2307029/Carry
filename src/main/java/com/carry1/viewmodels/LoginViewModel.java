@@ -43,6 +43,10 @@ public class LoginViewModel {
                 String generatedId = role.name() + "-" + phoneStr;
 
                 if (AuthFlowState.isSignUpMode) {
+                    if (LocalDatabaseManager.checkUserExists(phoneStr, role)) {
+                        Platform.runLater(() -> { errorMessage.set("Account already exists."); isLoading.set(false); });
+                        return;
+                    }
                     User newUser = new User(generatedId, name.get().trim(), role, 0.0, "token_" + generatedId, "ACTIVE");
                     boolean success = LocalDatabaseManager.registerUser(newUser, phoneStr, passStr, email.get().trim());
                     if (success) {
@@ -50,7 +54,7 @@ public class LoginViewModel {
                         GlobalNotificationService.start();
                         Platform.runLater(onSuccess);
                     } else {
-                        Platform.runLater(() -> { errorMessage.set("Account already exists."); isLoading.set(false); });
+                        Platform.runLater(() -> { errorMessage.set("Registration failed due to system error."); isLoading.set(false); });
                     }
                 } else {
                     User user = LocalDatabaseManager.authenticateUser(phoneStr, passStr, role);
