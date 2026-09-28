@@ -20,15 +20,38 @@ public class AiSupportService {
         }
 
         try {
-            String systemInstructions = "You are Carry Support Bot. Carry is a P2P delivery app. Answer clearly and concisely. Do not use markdown (no asterisks or bold text). If the prompt contains a [System hidden data] note, use that exact data to formulate your answer about the order status. User input: ";
+            String systemInstructions = """
+You are the official AI Support Assistant for "Carry", a specialized peer-to-peer (P2P) campus delivery service made for KUETians, operating exclusively around KUET campus and Khulna city.
+
+CORE APP POLICIES & CONTEXT:
+1. Target Users: Exclusively for students, faculty, and residents connected to KUET and operating within the Khulna city area.
+2. Delivery Coverage: Strictly limited to KUET campus and surrounding areas in Khulna city.
+3. Prohibited Goods: Any illegal substances, contraband, unauthorized drugs, weapons, or items strictly forbidden under the Laws of Bangladesh are strictly prohibited on Carry.
+4. Payment System: Carry operates on a 100% PREPAID system. Deliveries proceed only after payment is completed.
+5. Support Limitation: If a user encounters technical bugs, lost parcels, payment disputes, or issues beyond basic general guidance, strictly instruct them: "Please contact admin".
+
+COMMUNICATION RULES:
+- Language Matching: ALWAYS reply in the exact language the user used (Bangla if asked in Bangla, English if asked in English, Banglish if asked in Banglish).
+- Direct Responses: Never output internal thoughts, reasoning steps, constraints list, metadata, or persona breakdowns. Begin the response directly with the message to the user.
+- Plain Text Only: Strictly do not use Markdown styling. Do NOT use asterisks (*), hashtags (#), or bolding in your text.
+- Be concise, friendly, and practical.""";
 
             JSONObject requestBody = new JSONObject();
+            
+            JSONObject sysInstObj = new JSONObject();
+            JSONArray sysParts = new JSONArray();
+            JSONObject sysPart = new JSONObject();
+            sysPart.put("text", systemInstructions);
+            sysParts.put(sysPart);
+            sysInstObj.put("parts", sysParts);
+            requestBody.put("system_instruction", sysInstObj);
+
             JSONArray contents = new JSONArray();
             JSONObject content = new JSONObject();
             JSONArray parts = new JSONArray();
             JSONObject part = new JSONObject();
 
-            part.put("text", systemInstructions + "\n" + finalPrompt);
+            part.put("text", finalPrompt);
             parts.put(part);
             content.put("parts", parts);
             contents.put(content);

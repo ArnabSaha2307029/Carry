@@ -242,8 +242,24 @@ public class AdminDashboardController {
         uColAction.setCellFactory(param -> new TableCell<>() {
             private final Button btnBan = new Button();
             private final Button btnBal = new Button("Edit Balance");
-            private final HBox pane = new HBox(5, btnBan, btnBal);
+            private final Button btnDel = new Button("Delete");
+            private final HBox pane = new HBox(5, btnBan, btnBal, btnDel);
             {
+                btnDel.setStyle("-fx-background-color: #F44336; -fx-text-fill: white;");
+                btnDel.setOnAction(e -> {
+                    User u = getTableView().getItems().get(getIndex());
+                    new Thread(() -> {
+                        boolean success = LocalDatabaseManager.deleteUser(u.getId());
+                        Platform.runLater(() -> {
+                            if (success) {
+                                getTableView().getItems().remove(u);
+                            } else {
+                                Alert alert = new Alert(Alert.AlertType.ERROR, "Cannot delete user. They likely have existing orders or transactions.");
+                                alert.showAndWait();
+                            }
+                        });
+                    }).start();
+                });
                 btnBan.setOnAction(e -> {
                     User u = getTableView().getItems().get(getIndex());
                     String newStatus = u.getStatus().equals("BANNED") ? "ACTIVE" : "BANNED";

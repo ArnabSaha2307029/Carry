@@ -55,6 +55,18 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { e.printStackTrace(); return false; }
     }
 
+    public static boolean deleteUser(String userId) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static User authenticateUser(String phone, String password, Role role) {
         String sql = "SELECT * FROM users WHERE phone = ? AND password = ? AND role = ?";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
