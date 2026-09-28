@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="Update">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="74a513a3-2b6e-44d8-bc11-01e2b7d3427a" name="Changes" comment="AI-model was on high demand so model changed">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,7 +152,6 @@
     <MESSAGE value="Sign up issue resolved" />
     <MESSAGE value="Bug-Fix" />
     <MESSAGE value="AI-model was on high demand so model changed" />
-    <MESSAGE value="Update" />
-    <option name="LAST_COMMIT_MESSAGE" value="Update" />
+    <option name="LAST_COMMIT_MESSAGE" value="AI-model was on high demand so model changed" />
   </component>
 </project>
