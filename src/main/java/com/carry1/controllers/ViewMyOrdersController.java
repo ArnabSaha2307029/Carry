@@ -198,6 +198,7 @@ public class ViewMyOrdersController {
                         messageAlertLabel.setStyle("-fx-text-fill: white; -fx-background-color: #4CAF50; -fx-padding: 5 10; -fx-background-radius: 5;");
                         messageAlertLabel.setVisible(true);
                     }
+                    showTipOverlay();
                 });
             }).start();
         }
