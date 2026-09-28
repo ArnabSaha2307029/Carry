@@ -6,8 +6,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+
+
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -20,18 +20,7 @@
         <Label text="My Deliveries" style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
         <Label fx:id="messageAlertLabel" text="You have unread messages!" visible="false" style="-fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-background-color: #FFEBEE; -fx-padding: 5 10; -fx-background-radius: 5;"/>
 
-        <TableView fx:id="deliveriesTable" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);">
-            <columns>
-                <TableColumn fx:id="colOrderId" text="Order ID" prefWidth="100"/>
-                <TableColumn fx:id="colItemName" text="Item Name" prefWidth="130"/>
-                <TableColumn fx:id="colPickup" text="Pickup" prefWidth="120"/>
-                <TableColumn fx:id="colDropoff" text="Dropoff" prefWidth="120"/>
-                <TableColumn fx:id="colReward" text="Reward" prefWidth="80"/>
-                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
-                <TableColumn fx:id="colAction" text="Status Action" prefWidth="120"/>
-                <TableColumn fx:id="colChat" text="Chat" prefWidth="100"/> 
-            </columns>
-        </TableView>
+        <ListView fx:id="deliveriesListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);"/>
         <Button text="← Back to Dashboard" onAction="#handleBack" prefWidth="200" style="-fx-background-color: #9E9E9E; -fx-text-fill: white;"/>
     </VBox>
 
@@ -44,7 +33,7 @@
         </HBox>
         <ListView fx:id="chatListView" VBox.vgrow="ALWAYS" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 8; -fx-background-radius: 8; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.2), 10, 0, 0, 4);"/>
         <HBox spacing="5" style="-fx-padding: 10;">
-            <TextField fx:id="chatInputField" promptText="Type a message..." HBox.hgrow="ALWAYS"/>
+            <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="chatInputField" promptText="Type a message..." HBox.hgrow="ALWAYS"/>
             <Button text="Send" onAction="#sendChatMessage" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"/>
         </HBox>
     </VBox>

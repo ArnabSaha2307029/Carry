@@ -188,9 +188,19 @@ public class ViewMyOrdersController {
     private void submitRating(int starValue) {
         User currentUser = LocalDatabaseManager.getCurrentUser();
         if (completedOrderIdForRating != null && completedTravelerIdForRating != null && currentUser != null) {
-            new Thread(() -> LocalDatabaseManager.submitTravelerRating(completedOrderIdForRating, completedTravelerIdForRating, currentUser.getId(), starValue)).start();
+            new Thread(() -> {
+                LocalDatabaseManager.submitTravelerRating(completedOrderIdForRating, completedTravelerIdForRating, currentUser.getId(), starValue);
+                boolean success = LocalDatabaseManager.updateTravelerRating(completedTravelerIdForRating, starValue);
+                javafx.application.Platform.runLater(() -> {
+                    ratingOverlayPane.setVisible(false);
+                    if (success) {
+                        messageAlertLabel.setText("Rating Submitted Successfully!");
+                        messageAlertLabel.setStyle("-fx-text-fill: white; -fx-background-color: #4CAF50; -fx-padding: 5 10; -fx-background-radius: 5;");
+                        messageAlertLabel.setVisible(true);
+                    }
+                });
+            }).start();
         }
-        showTipOverlay();
     }
 
     @FXML

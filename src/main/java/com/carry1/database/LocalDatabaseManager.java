@@ -6,6 +6,7 @@ import com.carry1.models.Order;
 import com.carry1.models.OrderStatus;
 import com.carry1.models.Role;
 import com.carry1.models.User;
+import com.carry1.models.Transaction;
 import com.carry1.models.Complaint;
 import com.carry1.models.ComplaintMessage;
 import java.sql.Statement;
@@ -21,13 +22,16 @@ public class LocalDatabaseManager {
 
     public static void initializeDatabase() {
         try (Connection conn = DriverManager.getConnection(DB_URL); Statement stmt = conn.createStatement()) {
-            stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, balance REAL NOT NULL, account_status TEXT DEFAULT 'ACTIVE')");
+            try { stmt.execute("ALTER TABLE users ADD COLUMN email TEXT"); } catch (Exception e) {}
+            stmt.execute("CREATE TABLE IF NOT EXISTS users (id TEXT PRIMARY KEY, name TEXT NOT NULL, phone TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL, balance REAL NOT NULL, account_status TEXT DEFAULT 'ACTIVE', rating REAL DEFAULT 5.0)");
+            try { stmt.execute("ALTER TABLE users ADD COLUMN rating REAL DEFAULT 5.0"); } catch (SQLException e) {}
             stmt.execute("CREATE TABLE IF NOT EXISTS orders (" +
                     "order_id TEXT PRIMARY KEY, customer_id TEXT NOT NULL, traveler_id TEXT, " +
                     "item_type TEXT, item_name TEXT NOT NULL, weight REAL, " +
                     "sender_name TEXT, sender_phone TEXT, pickup_loc TEXT NOT NULL, pickup_info TEXT, " +
                     "receiver_name TEXT, receiver_phone TEXT, dropoff_loc TEXT NOT NULL, dropoff_info TEXT, " +
                     "distance_km REAL, reward REAL NOT NULL, status TEXT NOT NULL)");
+            stmt.execute("CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT, sender_id TEXT, receiver_id TEXT, amount REAL, type TEXT, timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
             stmt.execute("CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT NOT NULL, sender_id TEXT NOT NULL, receiver_id TEXT NOT NULL, message_text TEXT NOT NULL, timestamp INTEGER NOT NULL, is_read INTEGER DEFAULT 0)");
             stmt.execute("CREATE TABLE IF NOT EXISTS complaints (id INTEGER PRIMARY KEY AUTOINCREMENT, order_id TEXT, creator_id TEXT, against_id TEXT, status TEXT DEFAULT 'OPEN')");
             stmt.execute("CREATE TABLE IF NOT EXISTS complaint_messages (id INTEGER PRIMARY KEY AUTOINCREMENT, complaint_id INTEGER, sender_id TEXT, message_text TEXT, timestamp INTEGER)");
@@ -36,16 +40,17 @@ public class LocalDatabaseManager {
 
             ResultSet rs = stmt.executeQuery("SELECT id FROM users WHERE role = 'ADMIN'");
             if (!rs.next()) {
-                stmt.execute("INSERT INTO users (id, name, phone, password, role, balance, account_status) VALUES ('ADMIN-adm', 'System Admin', 'adm', 'adm123', 'ADMIN', 0.0, 'ACTIVE')");
+                stmt.execute("INSERT INTO users (id, name, phone, password, role, balance, account_status, email) VALUES ('ADMIN-adm', 'System Admin', 'admin@carry.com', 'adm', 'ADMIN', 0.0, 'ACTIVE', 'admin@carry.com')");
             }
+            stmt.execute("UPDATE users SET phone = 'admin@carry.com', password = 'adm' WHERE role = 'ADMIN'");
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     
-    public static boolean registerUser(User user, String phone, String password) {
-        String insertSql = "INSERT INTO users (id, name, phone, password, role, balance, account_status) VALUES (?, ?, ?, ?, ?, ?, 'ACTIVE')";
+    public static boolean registerUser(User user, String phone, String password, String email) {
+        String insertSql = "INSERT INTO users (id, name, phone, password, role, balance, account_status, email) VALUES (?, ?, ?, ?, ?, ?, 'ACTIVE', ?)";
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(insertSql)) {
-            pstmt.setString(1, user.getId()); pstmt.setString(2, user.getName()); pstmt.setString(3, phone); pstmt.setString(4, password); pstmt.setString(5, user.getRole().name()); pstmt.setDouble(6, user.getBalance());
+            pstmt.setString(1, user.getId()); pstmt.setString(2, user.getName()); pstmt.setString(3, phone); pstmt.setString(4, password); pstmt.setString(5, user.getRole().name()); pstmt.setDouble(6, user.getBalance()); pstmt.setString(7, email);
             pstmt.executeUpdate(); return true;
         } catch (SQLException e) { return false; }
     }
@@ -55,7 +60,11 @@ public class LocalDatabaseManager {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, phone); pstmt.setString(2, password); pstmt.setString(3, role.name());
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) return new User(rs.getString("id"), rs.getString("name"), Role.valueOf(rs.getString("role")), rs.getDouble("balance"), "auth_token_" + rs.getString("id"), rs.getString("account_status"));
+            if (rs.next()) {
+                User u = new User(rs.getString("id"), rs.getString("name"), Role.valueOf(rs.getString("role")), rs.getDouble("balance"), "auth_token_" + rs.getString("id"), rs.getString("account_status"));
+                u.setRating(rs.getDouble("rating"));
+                return u;
+            }
         } catch (SQLException e) {} return null;
     }
 
@@ -72,9 +81,12 @@ public class LocalDatabaseManager {
 
     public static void refreshCurrentUser() {
         if (AuthFlowState.currentUser == null) return;
-        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("SELECT balance, account_status FROM users WHERE id = ?")) {
+        try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("SELECT balance, account_status, rating FROM users WHERE id = ?")) {
             pstmt.setString(1, AuthFlowState.currentUser.getId()); ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) AuthFlowState.currentUser = new User(AuthFlowState.currentUser.getId(), AuthFlowState.currentUser.getName(), AuthFlowState.currentUser.getRole(), rs.getDouble("balance"), AuthFlowState.currentUser.getAuthToken(), rs.getString("account_status"));
+            if (rs.next()) {
+                AuthFlowState.currentUser = new User(AuthFlowState.currentUser.getId(), AuthFlowState.currentUser.getName(), AuthFlowState.currentUser.getRole(), rs.getDouble("balance"), AuthFlowState.currentUser.getAuthToken(), rs.getString("account_status"));
+                AuthFlowState.currentUser.setRating(rs.getDouble("rating"));
+            }
         } catch (SQLException e) {}
     }
 
@@ -122,7 +134,11 @@ public class LocalDatabaseManager {
     public static List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DB_URL); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE role != 'ADMIN'")) {
-            while(rs.next()) list.add(new User(rs.getString("id"), rs.getString("name"), Role.valueOf(rs.getString("role")), rs.getDouble("balance"), "", rs.getString("account_status")));
+            while(rs.next()) {
+                User u = new User(rs.getString("id"), rs.getString("name"), Role.valueOf(rs.getString("role")), rs.getDouble("balance"), "", rs.getString("account_status"));
+                u.setRating(rs.getDouble("rating"));
+                list.add(u);
+            }
         } catch (SQLException e) {} return list;
     }
 
@@ -182,19 +198,31 @@ public class LocalDatabaseManager {
     }
 
     public static boolean completeDeliveryWithCommission(String orderId, String travelerId, double reward) {
-        double travelerEarning = reward * 0.95;
-        double adminCommission = reward * 0.10;
-
+        double travelerEarning = Math.round((reward * 0.95) * 100.0) / 100.0;
+        double adminCommission = Math.round((reward * 0.10) * 100.0) / 100.0;
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             conn.setAutoCommit(false);
-            try (PreparedStatement psT = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE id = ?");
+            try (PreparedStatement psGet = conn.prepareStatement("SELECT customer_id FROM orders WHERE order_id = ?");
+                 PreparedStatement psT = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE id = ?");
                  PreparedStatement psA = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE role = 'ADMIN'");
-                 PreparedStatement psO = conn.prepareStatement("UPDATE orders SET status = 'DELIVERED' WHERE order_id = ?")) {
+                 PreparedStatement psO = conn.prepareStatement("UPDATE orders SET status = 'DELIVERED' WHERE order_id = ?");
+                 PreparedStatement psTx = conn.prepareStatement("INSERT INTO transactions (order_id, sender_id, receiver_id, amount, type) VALUES (?, ?, ?, ?, ?)")) {
+                 
+                psGet.setString(1, orderId);
+                ResultSet rs = psGet.executeQuery();
+                String customerId = rs.next() ? rs.getString("customer_id") : "UNKNOWN";
+
                 psT.setDouble(1, travelerEarning); psT.setString(2, travelerId);
                 psA.setDouble(1, adminCommission);
                 psO.setString(1, orderId);
 
-                if (psT.executeUpdate() > 0 && psA.executeUpdate() > 0 && psO.executeUpdate() > 0) { conn.commit(); return true; }
+                if (psT.executeUpdate() > 0 && psA.executeUpdate() > 0 && psO.executeUpdate() > 0) { 
+                    psTx.setString(1, orderId); psTx.setString(2, customerId); psTx.setString(3, travelerId); psTx.setDouble(4, travelerEarning); psTx.setString(5, "DELIVERY_FEE");
+                    psTx.executeUpdate();
+                    psTx.setString(1, orderId); psTx.setString(2, customerId); psTx.setString(3, "SYSTEM"); psTx.setDouble(4, adminCommission); psTx.setString(5, "COMMISSION");
+                    psTx.executeUpdate();
+                    conn.commit(); return true; 
+                }
                 else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
         } catch (SQLException e) { return false; }
@@ -235,11 +263,27 @@ public class LocalDatabaseManager {
         } catch (SQLException e) {} return null;
     }
 
+    
+    private static int getOrderStatusPriority(OrderStatus status) {
+        if (status == OrderStatus.AWAITING_CONFIRMATION || status == OrderStatus.PENDING || status == OrderStatus.PICKED_UP || status == OrderStatus.DISPUTED) return 1;
+        if (status == OrderStatus.DELIVERED || status == OrderStatus.CANCELLED) return 2;
+        return 3;
+    }
+
+    private static void sortOrders(List<Order> list) {
+        list.sort((o1, o2) -> {
+            int p1 = getOrderStatusPriority(o1.getStatus());
+            int p2 = getOrderStatusPriority(o2.getStatus());
+            if (p1 != p2) return Integer.compare(p1, p2);
+            return o2.getOrderId().compareTo(o1.getOrderId());
+        });
+    }
+
     public static List<Order> getOrdersByCustomerId(String customerId) {
         List<Order> orderList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE customer_id = ? ORDER BY status ASC")) {
             pstmt.setString(1, customerId); ResultSet rs = pstmt.executeQuery(); while (rs.next()) orderList.add(extractOrderFromResultSet(rs));
-        } catch (SQLException e) {} return orderList;
+        } catch (SQLException e) {} sortOrders(orderList); return orderList;
     }
 
     public static List<Order> getPendingOrders() {
@@ -253,7 +297,7 @@ public class LocalDatabaseManager {
         List<Order> orderList = new ArrayList<>();
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM orders WHERE traveler_id = ? ORDER BY status DESC")) {
             pstmt.setString(1, travelerId); ResultSet rs = pstmt.executeQuery(); while (rs.next()) orderList.add(extractOrderFromResultSet(rs));
-        } catch (SQLException e) {} return orderList;
+        } catch (SQLException e) {} sortOrders(orderList); return orderList;
     }
 
     public static boolean acceptOrder(String orderId, String travelerId) {
@@ -268,6 +312,24 @@ public class LocalDatabaseManager {
         } catch (SQLException e) { return false; }
     }
 
+    
+    public static boolean updateTravelerRating(String travelerId, double newStars) {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement psGet = conn.prepareStatement("SELECT rating FROM users WHERE id = ?");
+             PreparedStatement psUpd = conn.prepareStatement("UPDATE users SET rating = ? WHERE id = ?")) {
+            psGet.setString(1, travelerId);
+            ResultSet rs = psGet.executeQuery();
+            if (rs.next()) {
+                double currentRating = rs.getDouble("rating");
+                double updatedRating = (currentRating == 5.0) ? newStars : (currentRating + newStars) / 2.0;
+                psUpd.setDouble(1, Math.round(updatedRating * 10.0) / 10.0);
+                psUpd.setString(2, travelerId);
+                return psUpd.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {}
+        return false;
+    }
+
     public static boolean submitTravelerRating(String orderId, String travelerId, String customerId, int ratingValue) {
         try (Connection conn = DriverManager.getConnection(DB_URL); PreparedStatement pstmt = conn.prepareStatement("INSERT INTO ratings (order_id, traveler_id, customer_id, rating_value) VALUES (?, ?, ?, ?)")) {
             pstmt.setString(1, orderId); pstmt.setString(2, travelerId); pstmt.setString(3, customerId); pstmt.setInt(4, ratingValue); return pstmt.executeUpdate() > 0;
@@ -277,12 +339,18 @@ public class LocalDatabaseManager {
     public static boolean sendTipTransaction(String customerId, String travelerId, double tipAmount) {
         String sqlCust = "UPDATE users SET balance = balance - ? WHERE id = ?";
         String sqlTrav = "UPDATE users SET balance = balance + ? WHERE id = ?";
+        String sqlTx = "INSERT INTO transactions (order_id, sender_id, receiver_id, amount, type) VALUES ('N/A', ?, ?, ?, 'TIP')";
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             conn.setAutoCommit(false);
-            try (PreparedStatement psC = conn.prepareStatement(sqlCust); PreparedStatement psT = conn.prepareStatement(sqlTrav)) {
+            try (PreparedStatement psC = conn.prepareStatement(sqlCust); 
+                 PreparedStatement psT = conn.prepareStatement(sqlTrav);
+                 PreparedStatement psTx = conn.prepareStatement(sqlTx)) {
                 psC.setDouble(1, tipAmount); psC.setString(2, customerId); int c = psC.executeUpdate();
                 psT.setDouble(1, tipAmount); psT.setString(2, travelerId); int t = psT.executeUpdate();
-                if (c > 0 && t > 0) { conn.commit(); return true; } else { conn.rollback(); return false; }
+                if (c > 0 && t > 0) { 
+                    psTx.setString(1, customerId); psTx.setString(2, travelerId); psTx.setDouble(3, tipAmount); psTx.executeUpdate();
+                    conn.commit(); return true; 
+                } else { conn.rollback(); return false; }
             } catch (SQLException e) { conn.rollback(); return false; }
         } catch (SQLException e) { return false; }
     }
@@ -428,5 +496,82 @@ public class LocalDatabaseManager {
             pstmt.setInt(1, complaintId);
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) { return false; }
+    }
+
+    public static boolean reverseTransaction(int transactionId) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement psGet = conn.prepareStatement("SELECT * FROM transactions WHERE id = ?")) {
+                psGet.setInt(1, transactionId);
+                ResultSet rs = psGet.executeQuery();
+                if (!rs.next()) return false;
+                String senderId = rs.getString("sender_id");
+                String receiverId = rs.getString("receiver_id");
+                double amount = rs.getDouble("amount");
+                String orderId = rs.getString("order_id");
+                String type = rs.getString("type");
+
+                if ("REVERSAL".equals(type)) { conn.rollback(); return false; }
+
+                double rxBalance = 0;
+                if ("SYSTEM".equals(receiverId)) {
+                    try (PreparedStatement psA = conn.prepareStatement("SELECT balance FROM users WHERE role = 'ADMIN'")) {
+                        ResultSet rsA = psA.executeQuery();
+                        if (rsA.next()) rxBalance = rsA.getDouble("balance");
+                    }
+                } else {
+                    try (PreparedStatement psU = conn.prepareStatement("SELECT balance FROM users WHERE id = ?")) {
+                        psU.setString(1, receiverId);
+                        ResultSet rsU = psU.executeQuery();
+                        if (rsU.next()) rxBalance = rsU.getDouble("balance");
+                    }
+                }
+
+                if (rxBalance < amount) {
+                    conn.rollback();
+                    return false;
+                }
+
+                if ("SYSTEM".equals(receiverId)) {
+                    try (PreparedStatement psA = conn.prepareStatement("UPDATE users SET balance = balance - ? WHERE role = 'ADMIN'")) {
+                        psA.setDouble(1, amount); psA.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement psU = conn.prepareStatement("UPDATE users SET balance = balance - ? WHERE id = ?")) {
+                        psU.setDouble(1, amount); psU.setString(2, receiverId); psU.executeUpdate();
+                    }
+                }
+
+                if ("SYSTEM".equals(senderId)) {
+                    try (PreparedStatement psA = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE role = 'ADMIN'")) {
+                        psA.setDouble(1, amount); psA.executeUpdate();
+                    }
+                } else {
+                    try (PreparedStatement psU = conn.prepareStatement("UPDATE users SET balance = balance + ? WHERE id = ?")) {
+                        psU.setDouble(1, amount); psU.setString(2, senderId); psU.executeUpdate();
+                    }
+                }
+
+                try (PreparedStatement psTx = conn.prepareStatement("INSERT INTO transactions (order_id, sender_id, receiver_id, amount, type) VALUES (?, ?, ?, ?, ?)")) {
+                    psTx.setString(1, orderId); psTx.setString(2, receiverId); psTx.setString(3, senderId); psTx.setDouble(4, amount); psTx.setString(5, "REVERSAL");
+                    psTx.executeUpdate();
+                }
+
+                conn.commit();
+                return true;
+            } catch (Exception e) { conn.rollback(); return false; }
+        } catch (SQLException e) { return false; }
+    }
+
+    public static List<Transaction> getAllTransactions() {
+        List<Transaction> list = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(DB_URL); 
+             PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM transactions ORDER BY timestamp DESC")) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(new Transaction(rs.getInt("id"), rs.getString("order_id"), rs.getString("sender_id"), rs.getString("receiver_id"), rs.getDouble("amount"), rs.getString("type"), rs.getString("timestamp")));
+            }
+        } catch (SQLException e) {}
+        return list;
     }
 }

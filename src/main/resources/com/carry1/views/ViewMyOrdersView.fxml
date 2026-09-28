@@ -50,8 +50,8 @@
         </HBox>
 
         <VBox fx:id="tipInputBox" visible="false" managed="false" spacing="15" alignment="CENTER">
-            <TextField fx:id="tipAmountField" promptText="Enter Tip Amount (TK)" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
-            <PasswordField fx:id="tipPasswordField" promptText="Your Account Password" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px;"/>
+            <TextField fx:id="tipAmountField" promptText="Enter Tip Amount (TK)" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px; -fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;"/>
+            <PasswordField fx:id="tipPasswordField" promptText="Your Account Password" maxWidth="250" alignment="CENTER" style="-fx-font-size: 16px; -fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;"/>
             <Label fx:id="tipErrorLabel" textFill="RED" style="-fx-font-weight: bold;"/>
             <HBox spacing="10" alignment="CENTER">
                 <Button fx:id="cancelTipBtn" text="Cancel" onAction="#handleTipNo" prefWidth="100" style="-fx-background-color: transparent; -fx-text-fill: #757575; -fx-underline: true;"/>

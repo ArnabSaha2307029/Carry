@@ -16,12 +16,14 @@ public class LoginViewModel {
     private final StringProperty name = new SimpleStringProperty("");
     private final StringProperty phone = new SimpleStringProperty("");
     private final StringProperty password = new SimpleStringProperty("");
+    private final StringProperty email = new SimpleStringProperty("");
     private final StringProperty errorMessage = new SimpleStringProperty("");
     private final BooleanProperty isLoading = new SimpleBooleanProperty(false);
 
     public StringProperty nameProperty() { return name; }
     public StringProperty phoneProperty() { return phone; }
     public StringProperty passwordProperty() { return password; }
+    public StringProperty emailProperty() { return email; }
     public StringProperty errorMessageProperty() { return errorMessage; }
     public BooleanProperty isLoadingProperty() { return isLoading; }
 
@@ -42,7 +44,7 @@ public class LoginViewModel {
 
                 if (AuthFlowState.isSignUpMode) {
                     User newUser = new User(generatedId, name.get().trim(), role, 0.0, "token_" + generatedId, "ACTIVE");
-                    boolean success = LocalDatabaseManager.registerUser(newUser, phoneStr, passStr);
+                    boolean success = LocalDatabaseManager.registerUser(newUser, phoneStr, passStr, email.get().trim());
                     if (success) {
                         LocalDatabaseManager.saveSession(newUser);
                         GlobalNotificationService.start();

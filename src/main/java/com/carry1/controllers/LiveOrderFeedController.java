@@ -5,16 +5,20 @@ import com.carry1.database.LocalDatabaseManager;
 import com.carry1.models.Order;
 import com.carry1.models.User;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.Priority;
+import javafx.geometry.Pos;
+
+
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -24,25 +28,13 @@ import java.util.concurrent.TimeUnit;
 public class LiveOrderFeedController {
 
     @FXML private Label warningLabel;
-    @FXML private TableView<Order> feedTable;
-    @FXML private TableColumn<Order, String> colOrderId, colItemName, colPickup, colDropoff;
-    @FXML private TableColumn<Order, String> colDeliveryFee, colCharge, colTotalAmount;
-    @FXML private TableColumn<Order, Void> colAction;
+    @FXML private ListView<Order> feedListView;
 
     private ScheduledExecutorService pollingService;
 
     @FXML
     public void initialize() {
-        colOrderId.setCellValueFactory(new PropertyValueFactory<>("orderId"));
-        colItemName.setCellValueFactory(new PropertyValueFactory<>("itemName"));
-        colPickup.setCellValueFactory(new PropertyValueFactory<>("pickupLocation"));
-        colDropoff.setCellValueFactory(new PropertyValueFactory<>("dropoffLocation"));
-
-        colDeliveryFee.setCellValueFactory(param -> new SimpleStringProperty(String.format("%.2f", param.getValue().getRewardAmount())));
-        colCharge.setCellValueFactory(param -> new SimpleStringProperty(String.format("%.2f", param.getValue().getRewardAmount() * 0.05)));
-        colTotalAmount.setCellValueFactory(param -> new SimpleStringProperty(String.format("%.2f", param.getValue().getRewardAmount() * 0.95)));
-
-        setupActionColumn();
+        setupListView();
         startAutoRefresh();
     }
 
@@ -50,26 +42,63 @@ public class LiveOrderFeedController {
         pollingService = Executors.newSingleThreadScheduledExecutor();
         pollingService.scheduleAtFixedRate(() -> {
             List<Order> pendingOrders = LocalDatabaseManager.getPendingOrders();
-            Platform.runLater(() -> feedTable.setItems(FXCollections.observableArrayList(pendingOrders)));
+            Platform.runLater(() -> {
+                if (feedListView != null) {
+                    feedListView.setItems(FXCollections.observableArrayList(pendingOrders));
+                }
+            });
         }, 0, 2, TimeUnit.SECONDS);
     }
 
-    private void setupActionColumn() {
-        colAction.setCellFactory(param -> new TableCell<>() {
+    private void setupListView() {
+        feedListView.setCellFactory(param -> new ListCell<Order>() {
+            private final HBox root = new HBox(15);
+            private final VBox detailsBox = new VBox(5);
+            private final Label idLabel = new Label();
+            private final Label itemLabel = new Label();
+            private final Label routeLabel = new Label();
+            private final Label rewardLabel = new Label();
+            private final Label statusLabel = new Label();
             private final Button acceptBtn = new Button("Accept");
+            private final VBox actionBox = new VBox(5, acceptBtn);
+
             {
+                root.setAlignment(Pos.CENTER_LEFT);
+                root.setStyle("-fx-padding: 10; -fx-background-color: white; -fx-border-color: #E0E0E0; -fx-border-width: 0 0 1 0;");
+                
+                idLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
+                itemLabel.setStyle("-fx-text-fill: #555; -fx-font-size: 14px;");
+                routeLabel.setStyle("-fx-text-fill: #777; -fx-font-size: 12px;");
+                rewardLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #2196F3;");
+                
+                statusLabel.setStyle("-fx-padding: 3 8; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-background-color: #FFC107;");
+
+                actionBox.setAlignment(Pos.CENTER_RIGHT);
+                HBox.setHgrow(detailsBox, Priority.ALWAYS);
+
+                detailsBox.getChildren().addAll(idLabel, itemLabel, routeLabel, rewardLabel);
+                root.getChildren().addAll(detailsBox, statusLabel, actionBox);
+
                 acceptBtn.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;");
                 acceptBtn.setOnAction(event -> {
-                    Order order = getTableView().getItems().get(getIndex());
-                    handleAcceptOrder(order, acceptBtn);
+                    Order order = getItem();
+                    if (order != null) handleAcceptOrder(order, acceptBtn);
                 });
             }
 
             @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) setGraphic(null);
-                else setGraphic(acceptBtn);
+            protected void updateItem(Order order, boolean empty) {
+                super.updateItem(order, empty);
+                if (empty || order == null) {
+                    setGraphic(null);
+                } else {
+                    idLabel.setText("Order: " + order.getOrderId());
+                    itemLabel.setText("Item: " + order.getItemName());
+                    routeLabel.setText(order.getPickupLocation() + " -> " + order.getDropoffLocation());
+                    rewardLabel.setText("Reward: " + String.format("%.2f TK", order.getRewardAmount() * 0.95));
+                    statusLabel.setText(order.getStatus().toString());
+                    setGraphic(root);
+                }
             }
         });
     }
@@ -103,7 +132,7 @@ public class LiveOrderFeedController {
                 if (success) {
                     warningLabel.setVisible(false);
                     warningLabel.setManaged(false);
-                    feedTable.getItems().remove(order);
+                    feedListView.getItems().remove(order);
                 } else {
                     btn.setText("Accept");
                     btn.setDisable(false);

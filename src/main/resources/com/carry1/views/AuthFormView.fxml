@@ -16,7 +16,7 @@
 <StackPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.carry1.controllers.AuthFormController">
 
     <HBox fx:id="mainFormBox" prefHeight="720.0" prefWidth="1280.0">
-        <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: red;" HBox.hgrow="ALWAYS">
+        <VBox alignment="CENTER" prefWidth="640.0" style="-fx-background-color: #D32F2F;" HBox.hgrow="ALWAYS">
             <children>
                 <ImageView fitHeight="221.0" fitWidth="389.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -27,60 +27,60 @@
         </VBox>
 
         <ScrollPane fitToWidth="true" prefWidth="640.0" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: white; -fx-background-color: white;" HBox.hgrow="ALWAYS">
-            <VBox alignment="CENTER" spacing="12.0" style="-fx-background-color: white;">
+            <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
                 <padding>
                     <Insets bottom="30.0" left="40.0" right="40.0" top="30.0" />
                 </padding>
 
-                <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2196F3;"/>
+                <Label fx:id="headerLabel" text="Credentials" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #D32F2F;"/>
 
-                <TextField fx:id="nameField" promptText="Full Name" maxWidth="250"/>
-                <TextField fx:id="phoneField" promptText="Phone No" maxWidth="250"/>
-                <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="nameField" promptText="Full Name" maxWidth="250"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="phoneField" promptText="Phone No" maxWidth="250"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="customerEmailField" promptText="Email Address" maxWidth="250" visible="false" managed="false"/>
+                <PasswordField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="passwordField" promptText="Password" maxWidth="250"/>
 
-                <TextField fx:id="rollField" promptText="Roll No" maxWidth="250" visible="false" managed="false"/>
-                <TextField fx:id="studentEmailField" promptText="Student Email" maxWidth="250" visible="false" managed="false"/>
-                <TextField fx:id="departmentField" promptText="Department" maxWidth="250" visible="false" managed="false"/>
-                <TextField fx:id="hallField" promptText="Hall" maxWidth="250" visible="false" managed="false"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="rollField" promptText="Roll No" maxWidth="250" visible="false" managed="false"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="studentEmailField" promptText="Student Email" maxWidth="250" visible="false" managed="false"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="departmentField" promptText="Department" maxWidth="250" visible="false" managed="false"/>
+                <TextField style="-fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;" fx:id="hallField" promptText="Hall" maxWidth="250" visible="false" managed="false"/>
 
                 <Label fx:id="errorLabel" textFill="RED" wrapText="true" maxWidth="250"/>
 
-                <Label text="Enter the code below:" style="-fx-font-size: 13px; -fx-text-fill: #424242;"/>
+                <Label text="Enter the code below:" style="-fx-font-size: 13px; -fx-text-fill: #333333;"/>
 
                 <Canvas fx:id="captchaCanvas" width="250" height="70"
                         style="-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 4, 0, 0, 1);"/>
 
                 <HBox spacing="8.0" alignment="CENTER_LEFT" maxWidth="250">
                     <TextField fx:id="captchaInputField" promptText="Type code here" prefWidth="192"
-                               style="-fx-font-size: 14px; -fx-font-weight: bold;"/>
+                               style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;"/>
                     <Button text="↻" onAction="#handleRefreshCaptcha" prefWidth="50"
-                            style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-background-color: #2196F3; -fx-text-fill: white; -fx-background-radius: 5;"/>
+                            style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-background-radius: 30; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 8, 0, 0, 3);"/>
                 </HBox>
 
                 <Button fx:id="actionButton" text="Submit" onAction="#handleSubmit" prefWidth="250"
-                        style="-fx-font-weight: bold; -fx-background-color: #2196F3; -fx-text-fill: white;"/>
+                        style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-background-radius: 30; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 8, 0, 0, 3);"/>
 
-                <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword"
-                        style="-fx-background-color: transparent; -fx-text-fill: #1976D2; -fx-underline: true;"/>
+                <Button fx:id="forgotPasswordBtn" text="Forgot Password?" onAction="#goToForgotPassword" prefWidth="250"
+                        style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 23; -fx-cursor: hand;"/>
 
-                <Button text="← Back" onAction="#goBack" prefWidth="100"
-                        style="-fx-background-color: transparent; -fx-text-fill: #757575;"/>
+                <Button text="← Back" onAction="#goBack" prefWidth="250"
+                        style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 23; -fx-cursor: hand;"/>
             </VBox>
         </ScrollPane>
     </HBox>
 
-    <VBox fx:id="otpVerificationBox" visible="false" alignment="CENTER" spacing="15.0" style="-fx-background-color: white;">
-        <padding><Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/></padding>
-        <Label text="Verification" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-        <Label text="Enter the 6-digit OTP sent to your email" style="-fx-text-fill: #555;"/>
-        <TextField fx:id="otpInputField" promptText="6-Digit OTP" maxWidth="300" alignment="CENTER" style="-fx-font-size: 20px; -fx-letter-spacing: 5px;"/>
+    <VBox fx:id="otpVerificationBox" visible="false" alignment="CENTER" spacing="15.0" maxWidth="450" maxHeight="450" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #E0E0E0; -fx-border-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2); -fx-padding: 30;">
+        <Label text="Verification" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #D32F2F;"/>
+        <Label text="Enter the 6-digit OTP sent to your email" style="-fx-text-fill: #333333;"/>
+        <TextField fx:id="otpInputField" promptText="6-Digit OTP" maxWidth="300" alignment="CENTER" style="-fx-font-size: 20px; -fx-letter-spacing: 5px; -fx-border-color: #EF9A9A; -fx-border-width: 1.5; -fx-border-radius: 5; -fx-background-radius: 5;"/>
         <Label fx:id="otpErrorLabel" textFill="RED" wrapText="true" maxWidth="300" alignment="CENTER" style="-fx-font-weight: bold;"/>
-        <Button fx:id="verifyOtpBtn" text="OK" onAction="#handleVerifyOtp" prefWidth="300" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 16px;"/>
-        <Button fx:id="cancelOtpBtn" text="Cancel Registration" onAction="#handleCancelOtp" prefWidth="300" style="-fx-background-color: transparent; -fx-text-fill: red;"/>
+        <Button fx:id="verifyOtpBtn" text="OK" onAction="#handleVerifyOtp" prefWidth="300" style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-background-radius: 30; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 10 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(211,47,47,0.4), 8, 0, 0, 3);"/>
+        <Button fx:id="cancelOtpBtn" text="Cancel Registration" onAction="#handleCancelOtp" prefWidth="300" style="-fx-background-color: white; -fx-border-color: #D32F2F; -fx-border-width: 2; -fx-border-radius: 30; -fx-background-radius: 30; -fx-text-fill: #D32F2F; -fx-font-weight: bold; -fx-font-size: 14px; -fx-padding: 8 23; -fx-cursor: hand;"/>
     </VBox>
 
     <Label fx:id="notificationToast" visible="false" StackPane.alignment="TOP_CENTER"
-           style="-fx-background-color: #333; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 5; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);">
+           style="-fx-background-color: #D32F2F; -fx-text-fill: white; -fx-padding: 10 20; -fx-background-radius: 30; -fx-font-weight: bold; -fx-font-size: 14px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);">
         <StackPane.margin><Insets top="30"/></StackPane.margin>
     </Label>
 
